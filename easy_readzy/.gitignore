@@ -33,3 +33,6 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# Ignore ライブラリの実体はGitに含めない
+/node_modules/
