@@ -74,7 +74,9 @@
 
 ## ワイヤーフレーム兼画面遷移図
 
-![ワイヤーフレーム兼画面遷移図](/images/wireframe.png)
+[Figmaで閲覧する](https://www.figma.com/board/GnZ5sNqBKx8A5pyNtDLui7/Easy-Readzy%E3%81%AE%E7%94%BB%E9%9D%A2%E9%81%B7%E7%A7%BB%E5%9B%B3)
+
+![ワイヤーフレーム兼画面遷移図](/images/wireframe-min.png)
 
 ## ER図
 
