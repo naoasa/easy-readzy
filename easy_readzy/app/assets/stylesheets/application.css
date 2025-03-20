@@ -13,3 +13,66 @@
  *= require_tree .
  *= require_self
  */
+
+:root {
+  --azure: #6097E1;
+  --white: #FFFFFF;
+  --cloud: #E7EEF7;
+  --gold: #F5B50F;
+}
+
+.all-wrapper {
+  height: 100vh;
+  width: 100vw;
+}
+
+.all-image {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: url("./images/priscilla-du-preez-5vQJ4R0nQG8-unsplash.jpg") no-repeat center center;
+  background-size: cover;
+}
+
+.all-azure {
+  background: var(--azure);
+}
+
+.logo img {
+  margin-top: 20%;
+  width: 427px;
+}
+
+.slogan {
+  margin-top: 10px;
+}
+
+.introduction {
+  margin: 100px;
+}
+
+.button {
+  background: var(--azure);
+  color: var(--white);
+  height: 70px;
+  width: 275px;
+  border-radius: 35px;
+}
+
+.flex {
+  display: flex;
+}
+
+.card {
+  display: flex;
+  background: var(--white);
+  flex-direction: column;
+  align-items: center;
+  width: 30vw;
+  min-width: 500px;
+  max-width: 600px;
+  min-height: 740px;
+  height: 66vh;
+  margin: auto;
+  border-radius: 26px;
+}
