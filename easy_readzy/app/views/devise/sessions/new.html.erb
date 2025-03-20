@@ -1,10 +1,12 @@
 <link rel="stylesheet" href="login_page.css">
 
-<div class="card">
-  <div class="logo"></div>
-  <p class="slogan"></p>
-  <p class="introduction"></p>
-  <%= button_to 'ゲストログイン', users_guest_sign_in_path, method: :post %>
+<div class="all-wrapper flex all-image">
+  <div class="card">
+    <div class="logo"><%= image_tag "logo.svg", alt: "Easy-Readzyのロゴ" %></div>
+    <p class="slogan">積読、読んどく？学んどく？</p>
+    <p class="introduction">Easy-Readzyは技術書の管理とアウトプットに役立つアプリです</p>
+    <%= button_to "ゲストログイン", users_guest_sign_in_path, method: :post, class: "button" %>
+  </div>
 </div>
 
 <%#= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
