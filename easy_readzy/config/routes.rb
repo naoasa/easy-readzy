@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get "static_pages/home"
+  # サンプルページ
+  get "/" => "static_pages#home"
+
   devise_for :users, controllers: { sessions: "users/sessions" }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
