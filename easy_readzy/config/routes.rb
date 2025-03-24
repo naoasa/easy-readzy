@@ -3,6 +3,13 @@ Rails.application.routes.draw do
   # サンプルページ
   get "/" => "static_pages#home"
 
+  # ユーザーの本棚の本一覧ページのルーティング
+  resources :users do
+    resources :bookshelves do
+      resources :books, only: [:index]
+    end
+  end
+
   devise_for :users, controllers: { sessions: "users/sessions" }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
