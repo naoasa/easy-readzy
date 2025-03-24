@@ -3,19 +3,19 @@ Rails.application.routes.draw do
   # サンプルページ
   get "/" => "static_pages#home"
 
-  # ユーザーの本棚の本一覧ページのルーティング
-  resources :users do
-    resources :bookshelves do
-      resources :books, only: [:index]
-    end
-  end
-
   devise_for :users, controllers: { sessions: "users/sessions" }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # ゲストログイン用のルーティング
   devise_scope :user do
     post "users/guest_sign_in", to: "users/sessions#guest_sign_in"
+  end
+
+  # ユーザーの本棚の本一覧ページのルーティング
+  resources :users do
+    resources :bookshelves do
+      resources :books, only: [:index]
+    end
   end
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
