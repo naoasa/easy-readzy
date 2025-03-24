@@ -5,6 +5,15 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  GUEST_USER_EMAIL = "guest@example.com"
+
+  def self.guest
+    find_or_create_by!(email: GUEST_USER_EMAIL) do |user|
+      user.name = "ゲストユーザー"
+      user.password = SecureRandom.urlsafe_base64
+    end
+  end
+
   # アソシエーション(モデルの関連付け)
   has_many :contexts, dependent: :destroy # ユーザーが消えたら、コンテキストも消える
   has_many :book_shelves, dependent: :destroy # ユーザーが消えたら、本棚も消える
