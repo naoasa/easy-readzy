@@ -14,11 +14,28 @@
  *= require_self
  */
 
+// colors
 $azure: #6097E1;
 $white: #FFFFFF;
 $cloud: #E7EEF7;
 $gold: #F5B50F;
 $dark-azure: #3c6cab;
+$intro-gray: #7B7B7B;
+
+// fonts
+$font-family-base: 'Noto Sans JP', 'Roboto',sans-serif;
+$font-family-marugo: 'Hiragino Maru Gothic Pro', sans-serif;
+$font-size-base: 16px;
+$font-size-large: 32px;
+$font-size-h1: 26px;
+$font-size-h2: 20px;
+$font-size-h3: 18px;
+$font-size-caption: 12px;
+$font-size-small: 10px;
+
+html, body {
+  font-family: $font-family-base;
+}
 
 .all-wrapper {
   height: 100vh;
@@ -56,10 +73,13 @@ $dark-azure: #3c6cab;
 
 .slogan {
   margin-top: 10px;
+  font-family: $font-family-marugo;
+  font-size: $font-size-h3;
 }
 
 .introduction {
   margin: 100px;
+  color: $intro-gray;
 }
 
 .button {
