@@ -1,34 +1,32 @@
 require 'rails_helper'
 
 RSpec.describe "Users", type: :request do
-  describe "GET /users/sign_in" do
-    context "not logged in" do
-      it "renders the sign-in page" do
-        # 未ログインでリクエストを送信(/users/sign_in)
-        get new_user_session_path
+  describe "ログインページ" do
+    it "未ログイン状態でログインページにアクセスできる" do
+      # 未ログインでリクエストを送信(GET /users/sign_in)
+      get new_user_session_path
 
-        # レスポンスが成功することを確認
-        expect(response).to have_http_status(:ok)
+      # レスポンスが成功することを確認
+      expect(response).to have_http_status(:ok)
 
-        # レンダリングされたビューが正しいことを確認
-        expect(response.body).to include("Easy-Readzyのロゴ")
-        expect(response.body).to include("積読、読んどく？学んどく？")
-      end
+      # レンダリングされたビューが正しいことを確認
+      expect(response.body).to include("Easy-Readzyのロゴ")
+      expect(response.body).to include("積読、読んどく？学んどく？")
     end
 
-    context "logged in" do
-      # ログインの処理を書く
+    it "ゲストユーザーとしてログインできる" do
+      # ゲストユーザーとしてリクエストを送信(POST /users/guest_sign_in)
+      post "/users/guest_sign_in"
 
-      it "redirects to the home page" do
-        # ログイン
-        sign_in user
+      # レスポンスがリダイレクト(302)であることを確認
+      expect(response).to have_http_status(302)
 
-        # サインインページにアクセス
-        get new_user_session_path
+      # リダイレクト先がルートURLであることを確認
+      expect(response).to redirect_to("/")
 
-        # ログイン済みの場合はリダイレクトされることを確認
-        exprect(response).to redirect_to(root_path)
-      end
+      # ログイン後にログインページにアクセスすると、ルートURLにリダイレクトされることを確認
+      get "/users/sign_in"
+      expect(response).to redirect_to("/")
     end
   end
 end
