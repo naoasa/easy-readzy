@@ -1,0 +1,18 @@
+<h1>Books#index</h1>
+<p>Find me in app/views/books/index.html.erb</p>
+
+<ul>
+  <li>ユーザー名: <%= @user.name %></li>
+  <li>本棚名: <%= @bookshelf.bookshelf_name %></li>
+  <li>
+    <% @books.each do |book| %>
+      <p>google_book_id: <%= book.google_book_id %></p>
+      <p>本のタイトル: <%= book.title %></p>
+      <p>本の表紙: <%= book.cover_image_url %></p>
+      <p>本の著者: <%= book.author %></p>
+      <p>本の出版社: <%= book.publisher %></p>
+      <p>本の出版日: <%= book.published_date %></p>
+      <p>本の概要: <%= book.description %></p>
+    <% end %>
+  </li>
+</ul>

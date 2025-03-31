@@ -16,7 +16,7 @@ class User < ApplicationRecord
 
   # アソシエーション(モデルの関連付け)
   has_many :contexts, dependent: :destroy # ユーザーが消えたら、コンテキストも消える
-  has_many :book_shelves, dependent: :destroy # ユーザーが消えたら、本棚も消える
+  has_many :bookshelves, dependent: :destroy # ユーザーが消えたら、本棚も消える
 
   # バリデーション
   validates :name, presence: true, length: { minimum: 1, maximum: 114 }
