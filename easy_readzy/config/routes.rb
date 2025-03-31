@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   get "books/index"
   get "static_pages/home"
   # サンプルページ
-  get "/" => "static_pages#home"
+  root "static_pages#home"
 
   devise_for :users, controllers: { sessions: "users/sessions" }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   # ユーザーの本棚の本一覧ページのルーティング
   resources :users do
     resources :bookshelves do
-      resources :books, only: [:index]
+      resources :books, only: [ :index ]
     end
   end
 
