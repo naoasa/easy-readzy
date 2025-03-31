@@ -1,4 +1,6 @@
 class BooksController < ApplicationController
+  # Deviseのヘルパーメソッドでログインユーザーのみがコントローラーのアクションを実行できるようにする
+  before_action :authenticate_user!
   def index
     # ユーザーを取得
     @user = User.find(params[:user_id])
