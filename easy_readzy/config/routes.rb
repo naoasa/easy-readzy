@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "books/index"
   get "static_pages/home"
   # サンプルページ
   get "/" => "static_pages#home"
