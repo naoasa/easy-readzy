@@ -19,6 +19,13 @@
   </head>
 
   <body>
+    <%# ログインページには共通ヘッダーを表示しない %>
+    <% unless current_page?(new_user_session_path) %>
+      <header class="header">
+        <h1>サンプルヘッダーです。ここを作り込んでいきます。</h1>
+      </header>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>
