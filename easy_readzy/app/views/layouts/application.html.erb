@@ -33,7 +33,15 @@
             <%= image_tag "icon_R_0743.jpg", alt: "ユーザーアイコン", class: "header_user_icon_img" %>
           </div>
           <div class="header_my_bookshelf">
-            <%= link_to "マイ本棚", "#", class: "header_my_bookshelf_link" %>
+            <% if user_signed_in? %>
+              <% first_bookshelf_id = current_user.bookshelves.minimum(:id) %>
+              <% if first_bookshelf_id %>
+                <%= link_to "マイ本棚", user_bookshelf_books_path(user_id: current_user.id,
+                bookshelf_id: first_bookshelf_id), class: "header_my_bookshelf_link" %>
+              <% else %>
+                <%= link_to "マイ本棚", root_path, class: "header_my_bookshelf_link" %>
+              <% end %>
+            <% end %>
           </div>
         </div>
       </header>
