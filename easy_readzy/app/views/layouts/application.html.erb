@@ -22,7 +22,20 @@
     <%# ログインページには共通ヘッダーを表示しない %>
     <% unless current_page?(new_user_session_path) %>
       <header class="header">
-        <h1>サンプルヘッダーです。ここを作り込んでいきます。</h1>
+        <div class="header_logo">
+          <%= link_to image_tag("logo.svg", class: "header_logo_img"), root_path, class: "header_logo_link" %>
+        </div>
+        <div class="header_search">
+          <input type="text" placeholder="タイトル・著者名・キーワード" class="header_search_input">
+        </div>
+        <div class="header_right">
+          <div class="header_user_icon">
+            <%= image_tag "icon_R_0743.jpg", alt: "ユーザーアイコン", class: "header_user_icon_img" %>
+          </div>
+          <div class="header_my_bookshelf">
+            <%= link_to "マイ本棚", "#", class: "header_my_bookshelf_link" %>
+          </div>
+        </div>
       </header>
     <% end %>
 
