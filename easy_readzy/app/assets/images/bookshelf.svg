@@ -1,13 +1,13 @@
 <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect x="50" y="4" width="5" height="55" rx="1" fill="#F5B50F"/>
-<rect x="31" y="10" width="6" height="20" fill="#F5B50F"/>
-<rect x="22" y="10" width="6" height="20" fill="#F5B50F"/>
-<rect x="40" y="10" width="6" height="20" fill="#F5B50F"/>
-<rect x="31" y="37" width="6" height="20" fill="#F5B50F"/>
-<rect x="24.7761" y="37" width="6" height="20" transform="rotate(10.8831 24.7761 37)" fill="#F5B50F"/>
-<rect x="40" y="37" width="6" height="20" fill="#F5B50F"/>
-<rect x="13" y="4" width="5" height="55" rx="1" fill="#F5B50F"/>
-<rect x="49" y="57" width="2" height="30" transform="rotate(90 49 57)" fill="#F5B50F"/>
-<rect x="49" y="4" width="1" height="30" transform="rotate(90 49 4)" fill="#F5B50F"/>
-<rect x="49" y="30" width="2" height="30" transform="rotate(90 49 30)" fill="#F5B50F"/>
+<rect x="48" y="12" width="5" height="41" rx="1" fill="#F5B50F"/>
+<rect x="29" y="16" width="6" height="15" fill="#F5B50F"/>
+<rect x="20" y="16" width="6" height="15" fill="#F5B50F"/>
+<rect x="38" y="16" width="6" height="15" fill="#F5B50F"/>
+<rect x="29" y="36" width="6" height="15" fill="#F5B50F"/>
+<rect x="21.9443" y="35.6545" width="6" height="15.352" transform="rotate(11.0565 21.9443 35.6545)" fill="#F5B50F"/>
+<rect x="38" y="36" width="6" height="15" fill="#F5B50F"/>
+<rect x="11" y="12" width="5" height="41" rx="1" fill="#F5B50F"/>
+<rect x="47" y="51" width="2" height="30" transform="rotate(90 47 51)" fill="#F5B50F"/>
+<rect x="47" y="12" width="2" height="30" transform="rotate(90 47 12)" fill="#F5B50F"/>
+<rect x="47" y="31" width="2" height="30" transform="rotate(90 47 31)" fill="#F5B50F"/>
 </svg>
