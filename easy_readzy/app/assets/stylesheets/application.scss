@@ -124,10 +124,18 @@ html, body {
 }
 
 .header_search {
+  display: flex;
+  align-items: center;
   background: $white;
   width: 30%;
   border-radius: 7px;
   min-width: 500px;
+}
+
+.header_search_img {
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
 }
 
 .header_search_input {
