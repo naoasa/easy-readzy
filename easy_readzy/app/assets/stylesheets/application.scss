@@ -21,6 +21,7 @@ $cloud: #E7EEF7;
 $gold: #F5B50F;
 $dark-azure: #3c6cab;
 $intro-gray: #7B7B7B;
+$user-menu-gray: #E5E5E5;
 
 // fonts
 $font-family-base: 'Noto Sans JP', 'Roboto',sans-serif;
@@ -157,15 +158,53 @@ html, body {
   align-items: center;
 }
 
+.header_user_icon {
+  margin: 0 20px 0;
+  position: relative;
+  cursor: pointer;
+}
+
 .header_user_icon_img {
   width: 40px;
   height: 40px;
   border-radius: 50%;
 }
 
+.header_user_menu_card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 60px; // ユーザーメニューはユーザーアイコンの下に配置
+  right: 40px;
+  width: 231px;
+  height: 120px;
+  background: $white;
+  border: 1px solid $user-menu-gray;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+
+  .header_user_logout_btn {
+    width: calc(231px - 8px); // .header_user_menu_cardの幅より8px小さい
+    height: 42px;
+    border-radius: 6px;
+    &:hover {
+      background: $user-menu-gray;
+    }
+  }
+}
+
 .header_my_bookshelf {
-  margin-top: 5px;
-  margin-left: 20px;
+  margin: 5px 20px 0;
   font-size: $font-size-base;
   color: $dark-azure;
+}
+
+// ユーザーの本棚
+
+.books_index {
+  background: $cloud;
+  width: 100%;
+  height: 100vh;
 }

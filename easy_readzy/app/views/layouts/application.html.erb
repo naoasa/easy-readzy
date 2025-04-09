@@ -45,6 +45,11 @@
               <% end %>
             <% end %>
           </div>
+          <div class="header_user_menu_card">
+            <% if user_signed_in?%>
+              <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "header_user_logout_btn" %>
+            <% end %>
+          </div>
         </div>
       </header>
     <% end %>
