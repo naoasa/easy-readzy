@@ -217,7 +217,7 @@ html, body {
   align-items: center;
   z-index: 100; // ダイアログの背面に配置
   &.hidden {
-    // display: none; // class: hiddenが付いている時は非表示
+    display: none; // class: hiddenが付いている時は非表示
   }
 }
 

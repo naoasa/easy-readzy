@@ -3,6 +3,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchBox = document.querySelector('.header_search'); // 検索ボックス
   const userIcon = document.querySelector('.header_user_icon'); // ユーザーアイコン
   const userMenuCard = document.querySelector('.header_user_menu_card'); // ユーザーメニューカード
+  const logoutButton = document.querySelector('.header_user_logout_btn'); // ログアウトボタン
+  const cancelButton = document.querySelector('.dialog_cancel_btn'); // キャンセルボタン
+  const dialogOverlay = document.querySelector('.dialog_overlay'); // ダイアログオーバーレイ
+
+  if (logoutButton) {
+    // ログアウトボタンをクリックした時にダイアログを表示する
+    logoutButton.addEventListener('click', (event) => {
+      event.preventDefault(); // デフォルトの動作をキャンセル
+      dialogOverlay.classList.remove('hidden');
+    });
+
+    // キャンセルボタンをクリックした時にダイアログを非表示にする
+    cancelButton.addEventListener('click', () => {
+      dialogOverlay.classList.add('hidden');
+    });
+  }
 
   if (searchInput && searchBox) {
     // フォーカス時にクラスを追加し、枠線を青色に変更
