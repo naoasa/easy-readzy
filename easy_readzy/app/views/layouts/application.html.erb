@@ -59,7 +59,7 @@
         <div class="logout_dialog_logo"><%= image_tag "logo-simple.svg", alt: "Easy-ReadzyのEのロゴ" %></div>
         <p class="logout_dialog_message">Easy-Readzyからログアウトしますか？</p>
         <div class="logout_dialog_buttons">
-          <%= button_tag "ログアウト", type: "button", class: "dialog_logout_btn" %>
+          <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "dialog_logout_btn" %>
           <%= button_tag "キャンセル", type: "button", class: "dialog_cancel_btn" %>
         </div>
       </div>
