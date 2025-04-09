@@ -26,6 +26,7 @@ $user-menu-gray: #E5E5E5;
 // fonts
 $font-family-base: 'Noto Sans JP', 'Roboto',sans-serif;
 $font-family-marugo: 'Hiragino Maru Gothic Pro', sans-serif;
+// font-size
 $font-size-base: 16px;
 $font-size-large: 32px;
 $font-size-h1: 26px;
@@ -33,6 +34,10 @@ $font-size-h2: 20px;
 $font-size-h3: 18px;
 $font-size-caption: 12px;
 $font-size-small: 10px;
+// font-weight
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-light: 300;
 
 html, body {
   font-family: $font-family-base;
@@ -245,6 +250,7 @@ html, body {
 
 .logout_dialog_message {
   font-size: $font-size-h3;
+  font-weight: $font-weight-medium;
   margin-top: 20px;
 }
 
