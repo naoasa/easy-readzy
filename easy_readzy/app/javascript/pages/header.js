@@ -6,17 +6,33 @@ document.addEventListener('DOMContentLoaded', () => {
   const logoutButton = document.querySelector('.header_user_logout_btn'); // ログアウトボタン
   const cancelButton = document.querySelector('.dialog_cancel_btn'); // キャンセルボタン
   const dialogOverlay = document.querySelector('.dialog_overlay'); // ダイアログオーバーレイ
+  const dialogCard = document.querySelector('.logout_dialog_card'); // ダイアログカード
 
   if (logoutButton) {
-    // ログアウトボタンをクリックした時にダイアログを表示する
+    // ログアウトボタンをクリックした時にダイアログを表示し、ユーザーメニューカードを非表示にする
     logoutButton.addEventListener('click', (event) => {
       event.preventDefault(); // デフォルトの動作をキャンセル
       dialogOverlay.classList.remove('hidden');
+      userMenuCard.classList.remove('visible');
     });
 
     // キャンセルボタンをクリックした時にダイアログを非表示にする
     cancelButton.addEventListener('click', () => {
       dialogOverlay.classList.add('hidden');
+    });
+
+    // Escキーを押した時にダイアログを非表示にする(=> class: hiddenを追加する)
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        dialogOverlay.classList.add('hidden');
+      }
+    });
+
+    // ダイアログの外をクリックした時にダイアログを非表示にする(=> class: hiddenを追加する)
+    document.addEventListener('click', (event) => {
+      if (dialogOverlay && !dialogCard.contains(event.target) && !logoutButton.contains(event.target)) {
+        dialogOverlay.classList.add('hidden');
+      }
     });
   }
 
