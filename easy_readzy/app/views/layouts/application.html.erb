@@ -24,7 +24,15 @@
     <% unless current_page?(new_user_session_path) %>
       <header class="header">
         <div class="header_logo">
-          <%= link_to image_tag("logo.svg", class: "header_logo_img"), root_path, class: "header_logo_link" %>
+          <% if user_signed_in? %>
+            <% first_bookshelf_id = current_user.bookshelves.minimum(:id) %>
+            <% if first_bookshelf_id %>
+              <%= link_to image_tag("logo.svg", class: "header_logo_img"), user_bookshelf_books_path(user_id: current_user.id,
+              bookshelf_id: first_bookshelf_id), class: "header_logo_link" %>
+            <% else %>
+              <%= link_to image_tag("logo.svg", class: "header_logo_img"), root_path, class: "header_logo_link" %>
+            <% end %>
+          <% end %>
         </div>
         <div class="header_search">
           <%= image_tag "icon_B_0741.svg", alt: "検索アイコン", class: "header_search_img" %>
