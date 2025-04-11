@@ -137,7 +137,7 @@ html, body {
   width: 30%;
   border-radius: 7px;
   min-width: 500px;
-  border: none; // デフォルトはボーダーなし
+  border: 1px solid $light-azure;
   outline: none; // デフォルトはアウトラインなし
 }
 
