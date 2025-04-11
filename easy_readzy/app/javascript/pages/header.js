@@ -3,14 +3,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchBox = document.querySelector('.header_search'); // 検索ボックス
   const userIcon = document.querySelector('.header_user_icon'); // ユーザーアイコン
   const userMenuCard = document.querySelector('.header_user_menu_card'); // ユーザーメニューカード
-  const logoutButton = document.querySelector('.header_user_logout_btn'); // ログアウトボタン
+  const openLogoutDialogButton = document.querySelector('.header_user_logout_btn'); // ログアウトダイアログを表示するボタン
   const cancelButton = document.querySelector('.dialog_cancel_btn'); // キャンセルボタン
   const dialogOverlay = document.querySelector('.dialog_overlay'); // ダイアログオーバーレイ
   const dialogCard = document.querySelector('.logout_dialog_card'); // ダイアログカード
 
-  if (logoutButton) {
+  if (openLogoutDialogButton) {
     // ログアウトボタンをクリックした時にダイアログを表示し、ユーザーメニューカードを非表示にする
-    logoutButton.addEventListener('click', (event) => {
+    openLogoutDialogButton.addEventListener('click', (event) => {
       event.preventDefault(); // デフォルトの動作をキャンセル
       dialogOverlay.classList.remove('hidden');
       userMenuCard.classList.remove('visible');
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ダイアログの外をクリックした時にダイアログを非表示にする(=> class: hiddenを追加する)
     document.addEventListener('click', (event) => {
-      if (dialogOverlay && !dialogCard.contains(event.target) && !logoutButton.contains(event.target)) {
+      if (dialogOverlay && !dialogCard.contains(event.target) && !openLogoutDialogButton.contains(event.target)) {
         dialogOverlay.classList.add('hidden');
       }
     });
