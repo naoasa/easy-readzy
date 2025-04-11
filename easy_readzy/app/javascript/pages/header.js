@@ -72,7 +72,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ログアウトボタンが表示されている状態で、Enterキーが押された場合、ログアウトボタンをクリックしたことにする
   document.addEventListener('keydown', (event) => {
-    if (logoutButton && event.key === 'Enter') {
+    if (logoutButton && event.key === 'Enter' && dialogOverlay &&
+      // ダイアログオーバーレイ(半透明の黒かぶせ)のclassにhiddenがない場合
+      !dialogOverlay.classList.contains('hidden')) {
       event.preventDefault();
       logoutButton.click(); // ログアウトボタンをクリック
     }
