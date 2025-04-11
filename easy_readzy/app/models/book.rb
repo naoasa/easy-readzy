@@ -1,4 +1,7 @@
 class Book < ApplicationRecord
+  # Active Storage
+  has_one_attached :cover_image
+
   # アソシエーション
   has_many :bookshelf_books
 
@@ -10,4 +13,5 @@ class Book < ApplicationRecord
   validates :published_date, length: { maximum: 100 }
   validates :description, length: { maximum: 1000 }
   validates :summary, length: { maximum: 300 }
+  validates :cover_image, content_type: [ "image/png", "image/jpg", "image/jpeg" ]
 end
