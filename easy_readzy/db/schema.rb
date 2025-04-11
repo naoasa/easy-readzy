@@ -10,11 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_07_151728) do
+ActiveRecord::Schema[7.2].define(version: 2025_04_11_135634) do
   create_table "books", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "google_book_id", limit: 100, null: false
     t.string "title", limit: 500, null: false
-    t.string "cover_image_url", limit: 2500
     t.string "author", limit: 100
     t.string "publisher", limit: 100
     t.string "published_date", limit: 100
