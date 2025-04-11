@@ -16,9 +16,63 @@
     <%# リセットCSS %>
     <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
   </head>
 
   <body>
+    <%# ログインページには共通ヘッダーを表示しない %>
+    <% unless current_page?(new_user_session_path) %>
+      <header class="header">
+        <div class="header_logo">
+          <% if user_signed_in? %>
+            <% first_bookshelf_id = current_user.bookshelves.minimum(:id) %>
+            <% if first_bookshelf_id %>
+              <%= link_to image_tag("logo.svg", class: "header_logo_img"), user_bookshelf_books_path(user_id: current_user.id,
+              bookshelf_id: first_bookshelf_id), class: "header_logo_link" %>
+            <% else %>
+              <%= link_to image_tag("logo.svg", class: "header_logo_img"), root_path, class: "header_logo_link" %>
+            <% end %>
+          <% end %>
+        </div>
+        <div class="header_search">
+          <%= image_tag "icon_B_0741.svg", alt: "検索アイコン", class: "header_search_img" %>
+          <input type="text" placeholder="タイトル・著者名・キーワード" class="header_search_input">
+        </div>
+        <div class="header_right">
+          <div class="header_user_icon">
+            <%= image_tag "icon_R_0743.jpg", alt: "ユーザーアイコン", class: "header_user_icon_img" %>
+          </div>
+          <div class="header_my_bookshelf">
+            <% if user_signed_in? %>
+              <% first_bookshelf_id = current_user.bookshelves.minimum(:id) %>
+              <% if first_bookshelf_id %>
+                <%= link_to image_tag("bookshelf.svg", class: "header_bookshelf_img"), user_bookshelf_books_path(user_id: current_user.id,
+                bookshelf_id: first_bookshelf_id), class: "header_my_bookshelf_link" %>
+              <% else %>
+                <%= link_to image_tag("bookshelf.svg", class: "header_bookshelf_img"), root_path, class: "header_my_bookshelf_link" %>
+              <% end %>
+            <% end %>
+          </div>
+          <div class="header_user_menu_card">
+            <% if user_signed_in?%>
+              <%= button_tag "ログアウト", type: "button", class: "header_user_logout_btn" %>
+            <% end %>
+          </div>
+        </div>
+      </header>
+    <% end %>
+
+    <div id="logout_dialog" class="dialog_overlay hidden">
+      <div class="logout_dialog_card">
+        <div class="logout_dialog_logo"><%= image_tag "logo-simple.svg", alt: "Easy-ReadzyのEのロゴ" %></div>
+        <p class="logout_dialog_message">Easy-Readzyからログアウトしますか？</p>
+        <div class="logout_dialog_buttons">
+          <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "dialog_logout_btn" %>
+          <%= button_tag "キャンセル", type: "button", class: "dialog_cancel_btn" %>
+        </div>
+      </div>
+    </div>
+
     <%= yield %>
   </body>
 </html>

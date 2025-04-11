@@ -21,10 +21,12 @@ $cloud: #E7EEF7;
 $gold: #F5B50F;
 $dark-azure: #3c6cab;
 $intro-gray: #7B7B7B;
+$user-menu-gray: #E5E5E5;
 
 // fonts
 $font-family-base: 'Noto Sans JP', 'Roboto',sans-serif;
 $font-family-marugo: 'Hiragino Maru Gothic Pro', sans-serif;
+// font-size
 $font-size-base: 16px;
 $font-size-large: 32px;
 $font-size-h1: 26px;
@@ -32,6 +34,10 @@ $font-size-h2: 20px;
 $font-size-h3: 18px;
 $font-size-caption: 12px;
 $font-size-small: 10px;
+// font-weight
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-light: 300;
 
 html, body {
   font-family: $font-family-base;
@@ -109,4 +115,179 @@ html, body {
   height: 66vh;
   margin: auto;
   border-radius: 26px;
+}
+
+// ヘッダー
+
+.header {
+  background: $cloud;
+  width: 100%;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+}
+
+.header_search {
+  display: flex;
+  align-items: center;
+  background: $white;
+  width: 30%;
+  border-radius: 7px;
+  min-width: 500px;
+  border: none; // デフォルトはボーダーなし
+  outline: none; // デフォルトはアウトラインなし
+}
+
+.header_search_focus {
+  outline: 2px solid $azure; // フォーカス時に外側に枠線を表示
+}
+
+.header_search_img {
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+}
+
+.header_search_input {
+  width: 100%;
+  height: 40px;
+  border-radius: 20px;
+  padding-left: 20px;
+  font-size: $font-size-base;
+}
+
+.header_right {
+  display: flex;
+  align-items: center;
+}
+
+.header_user_icon {
+  margin: 0 20px 0;
+  position: relative;
+  cursor: pointer;
+}
+
+.header_user_icon_img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.header_user_menu_card {
+  display: none; // デフォルトで非表示
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 60px; // ユーザーメニューはユーザーアイコンの下に配置
+  right: 40px;
+  width: 231px;
+  height: 120px;
+  background: $white;
+  border: 1px solid $user-menu-gray;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+
+  .header_user_logout_btn {
+    width: calc(231px - 8px); // .header_user_menu_cardの幅より8px小さい
+    height: 42px;
+    border-radius: 6px;
+    &:hover {
+      background: $user-menu-gray;
+    }
+  }
+
+  &.visible {
+    display: flex;
+  }
+}
+
+.header_my_bookshelf {
+  margin: 5px 20px 0;
+  font-size: $font-size-base;
+  color: $dark-azure;
+}
+
+.dialog_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100; // ダイアログの背面に配置
+  &.hidden {
+    display: none; // class: hiddenが付いている時は非表示
+  }
+}
+
+.logout_dialog_card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: $white;
+  width: 14%;
+  min-width: 400px;
+  height: 32%;
+  min-height: 430px;
+  border-radius: 18px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.logout_dialog_logo {
+  margin-bottom: 20px;
+  img {
+    width: 80px;
+  }
+}
+
+.logout_dialog_message {
+  font-size: $font-size-h3;
+  font-weight: $font-weight-medium;
+  margin-top: 20px;
+}
+
+.logout_dialog_buttons {
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+}
+
+.dialog_logout_btn {
+  background: $azure;
+  color: $white;
+  width: 278px;
+  height: 58px;
+  border-radius: 30px;
+  &:hover {
+    background: $dark-azure;
+  }
+}
+
+.dialog_cancel_btn {
+  background: $white;
+  width: 278px;
+  height: 58px;
+  border-radius: 30px;
+  border: 1px solid #D9D9D9;
+  margin-top: 20px;
+  &:hover {
+    background: #EDEDED;
+  }
+}
+
+
+// ユーザーの本棚
+
+.books_index {
+  background: $cloud;
+  width: 100%;
+  height: calc(100vh - 64px);
 }
