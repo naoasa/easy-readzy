@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const userIcon = document.querySelector('.header_user_icon'); // ユーザーアイコン
   const userMenuCard = document.querySelector('.header_user_menu_card'); // ユーザーメニューカード
   const openLogoutDialogButton = document.querySelector('.header_user_logout_btn'); // ログアウトダイアログを表示するボタン
+  const logoutButton = document.querySelector('.dialog_logout_btn'); // ログアウトボタン
   const cancelButton = document.querySelector('.dialog_cancel_btn'); // キャンセルボタン
   const dialogOverlay = document.querySelector('.dialog_overlay'); // ダイアログオーバーレイ
   const dialogCard = document.querySelector('.logout_dialog_card'); // ダイアログカード
@@ -68,4 +69,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // ログアウトボタンが表示されている状態で、Enterキーが押された場合、ログアウトボタンをクリックしたことにする
+  document.addEventListener('keydown', (event) => {
+    if (logoutButton && event.key === 'Enter') {
+      event.preventDefault();
+      logoutButton.click(); // ログアウトボタンをクリック
+    }
+  });
 });
