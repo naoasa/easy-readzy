@@ -34,10 +34,11 @@
             <% end %>
           <% end %>
         </div>
-        <div class="header_search">
+        <%= form_with(url: search_books_path, method: :get, local: true, class: "header_search") do |f| %>
           <%= image_tag "icon_B_0741.svg", alt: "検索アイコン", class: "header_search_img" %>
-          <input type="text" placeholder="タイトル・著者名・キーワード" class="header_search_input">
-        </div>
+          <%= f.text_field :query, placeholder: "タイトル・著者名・キーワード", class: "header_search_input" %>
+          <%#= f.submit "検索" %>
+        <% end %>
         <div class="header_right">
           <div class="header_user_icon">
             <%= image_tag "icon_R_0743.jpg", alt: "ユーザーアイコン", class: "header_user_icon_img" %>
