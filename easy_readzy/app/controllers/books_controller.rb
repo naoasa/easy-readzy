@@ -1,16 +1,22 @@
 class BooksController < ApplicationController
-  require "google/apis/books_v1"
+  require "httparty"
 
   # Deviseのヘルパーメソッドでログインユーザーのみがコントローラーのアクションを実行できるようにする
   before_action :authenticate_user!
 
   def search
     @query = params[:query]
-    books = Google::Apis::BooksV1::BooksService.new
-    books.key = ENV["GOOGLE_BOOKS_API_KEY"]
 
-    @results = books.list_volumes(@query, max_results: 4)
-    @books = @results.items || []
+    # HTTPartyを利用してGoogle Books APIを呼び出す
+    response = HTTParty.get("https://www.googleapis.com/books/v1/volumes",
+    query: {
+      q: @query,
+      maxResults: 4,
+      key: ENV["GOOGLE_BOOKS_API_KEY"]
+    })
+
+    results = JSON.parse(response.body)
+    @books = results["items"] || []
   end
 
   def index

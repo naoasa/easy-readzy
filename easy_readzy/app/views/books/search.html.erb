@@ -1,14 +1,16 @@
+<%# HTTPartyで取得したJSONはハッシュなので、文字列キーを用いて値を取り出す必要がある %>
+
 <h1><%= "「#{@query}」の検索結果" %></h1>
 
 <% @books.each do |book| %>
-  <% if book.volume_info.image_links&.thumbnail %>
-    <%= image_tag book.volume_info.image_links.thumbnail, alt: book.volume_info.title %>
+  <% if book.dig("volumeInfo", "imageLinks", "thumbnail") %>
+    <%= image_tag book.dig("volumeInfo", "imageLinks", "thumbnail"), alt: book.dig("volumeInfo", "title") %>
   <% else %>
     <p>No Image</p>
   <% end %>
-  <h2><%= book.volume_info.title %></h2>
+  <h2><%= book.dig("volumeInfo", "title") %></h2>
   <%# 著者が複数の場合はカンマ区切りでまとめる(["著者A", "著者B"] => "著者A, 著者B") %>
-  <p>著者: <%= book.volume_info.authors&.join(", ") || "-" %></p>
-  <p>出版社: <%= book.volume_info.publisher || "-" %></p>
-  <p>出版日: <%= book.volume_info.published_date || "-" %></p>
+  <p>著者: <%= book.dig("volumeInfo", "authors")&.join(", ") || "-" %></p>
+  <p>出版社: <%= book.dig("volumeInfo", "publisher") || "-" %></p>
+  <p>出版日: <%= book.dig("volumeInfo", "publishedDate") || "-" %></p>
 <% end %>
