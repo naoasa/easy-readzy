@@ -26,7 +26,7 @@ class BooksController < ApplicationController
     # 本棚を取得
     @bookshelf = @user.bookshelves.find(params[:bookshelf_id])
 
-    # 本棚の本一覧を取得
-    @books = @bookshelf.books
+    # 本棚の本一覧を取得(preloadを使用)
+    @books = @bookshelf.books.preload(:cover_image_attachment)
   end
 end
