@@ -19,6 +19,9 @@ class BooksController < ApplicationController
     @books = results["items"] || []
   end
 
+  def new
+  end
+
   def index
     # ユーザーを取得
     @user = User.find(params[:user_id])
