@@ -8,6 +8,9 @@ class BooksController < ApplicationController
   GOOGLE_BOOKS_ENDPOINT = "https://www.googleapis.com/books/v1/volumes".freeze
 
   def search
+    @user = current_user
+    first_bookshelf = @user.bookshelves.minimum(:id)
+    @bookshelf = first_bookshelf
     @query = params[:query]
 
     # HTTPartyを利用してGoogle Books APIを呼び出す
