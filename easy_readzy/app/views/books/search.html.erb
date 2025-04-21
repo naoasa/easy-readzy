@@ -4,15 +4,20 @@
   <h1><%= "「#{@query}」の検索結果" %></h1>
 
   <% @books.each do |book| %>
-    <% if book.dig("volumeInfo", "imageLinks", "thumbnail") %>
-      <%= image_tag book.dig("volumeInfo", "imageLinks", "thumbnail"), alt: book.dig("volumeInfo", "title") %>
-    <% else %>
-      <p>No Image</p>
+    <%# itemからid(google_books_id)を取得 %>
+    <% google_books_id = book["id"] %>
+
+    <%= link_to new_user_bookshelf_book_path(@user, @bookshelf, google_books_id: google_books_id), class: "book_item" do %>
+      <% if book.dig("volumeInfo", "imageLinks", "thumbnail") %>
+        <%= image_tag book.dig("volumeInfo", "imageLinks", "thumbnail"), alt: book.dig("volumeInfo", "title") %>
+      <% else %>
+        <p>No Image</p>
+      <% end %>
+      <h2><%= book.dig("volumeInfo", "title") %></h2>
+      <%# 著者が複数の場合はカンマ区切りでまとめる(["著者A", "著者B"] => "著者A, 著者B") %>
+      <p>著者: <%= book.dig("volumeInfo", "authors")&.join(", ") || "-" %></p>
+      <p>出版社: <%= book.dig("volumeInfo", "publisher") || "-" %></p>
+      <p>出版日: <%= book.dig("volumeInfo", "publishedDate") || "-" %></p>
     <% end %>
-    <h2><%= book.dig("volumeInfo", "title") %></h2>
-    <%# 著者が複数の場合はカンマ区切りでまとめる(["著者A", "著者B"] => "著者A, 著者B") %>
-    <p>著者: <%= book.dig("volumeInfo", "authors")&.join(", ") || "-" %></p>
-    <p>出版社: <%= book.dig("volumeInfo", "publisher") || "-" %></p>
-    <p>出版日: <%= book.dig("volumeInfo", "publishedDate") || "-" %></p>
   <% end %>
 </div>
