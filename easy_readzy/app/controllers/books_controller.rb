@@ -65,10 +65,10 @@ class BooksController < ApplicationController
       {
         google_books_id: google_books_id,
         title: volume["title"],
-        authors: Array(volume["authors"]).join(", "),
-        publisher: volume["publisher"],
-        published_date: volume["publishedDate"],
-        description: volume["description"],
+        authors: Array(volume["authors"]).join(", ").presence || "-", # 空文字になった場合は"-"を返す
+        publisher: volume["publisher"] || "-",
+        published_date: volume["publishedDate"] || "-",
+        description: volume["description"] || "-",
         # イメージURLはhttpsで取得
         image_url: volume.dig("imageLinks", "thumbnail")&.gsub("http://", "https://")
       }
