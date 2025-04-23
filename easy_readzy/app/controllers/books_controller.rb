@@ -48,6 +48,22 @@ class BooksController < ApplicationController
       book.publisher = info[:publisher]
       book.published_date = info[:published_date]
       book.description = info[:description]
+
+      # サムネイルを取得してアタッチ
+      if info[:image_url].present? && !book.cover_image.attached?
+        response = HTTParty.get(info[:image_url], stream_body: true) # バイナリ取得
+        if response.success?
+          io = StringIO.new(response.body)
+          book.cover_image.attach(
+            io: io,
+            filename: "#{google_id}.jpg",
+            content_type: response.headers["content-type"] || "image/jpeg"
+          )
+        else
+          Rails.logger.warn("Cover image download failed: #{response.code}")
+        end
+      end
+
       book.save!
     end
 
