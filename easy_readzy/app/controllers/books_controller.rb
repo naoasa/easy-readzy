@@ -26,8 +26,42 @@ class BooksController < ApplicationController
   end
 
   def new
+    @user = current_user
+    @bookshelf = @user.bookshelves.find(params[:bookshelf_id])
     @google_books_id = params[:google_books_id]
     @book_info = fetch_book_info(@google_books_id)
+  end
+
+  def create
+    # URLから「ユーザー」と「本棚」と「google_books_id」を取得
+    @user = current_user
+    @bookshelf = @user.bookshelves.find(params[:bookshelf_id])
+    google_id = params[:google_books_id]
+
+    # Bookを作成または取得
+    book = Book.find_or_initialize_by(google_book_id: google_id)
+
+    if book.new_record?
+      info = fetch_book_info(google_id) # 書籍情報を取得
+      book.title = info[:title]
+      book.author = info[:authors]
+      book.publisher = info[:publisher]
+      book.published_date = info[:published_date]
+      book.description = info[:description]
+      book.save!
+    end
+
+    # BookshelfBookを作成(locationはひとまずサンプルデータ)
+    shelf_book = @bookshelf.bookshelf_books.build(book: book, location: "自宅の机の上")
+    shelf_book.save!
+
+    # Goalを作成
+    (params[:goals] || []).each do |text|
+      shelf_book.goals.create!(goal_text: text)
+    end
+
+    # マイ本棚にリダイレクト
+    redirect_to user_bookshelf_books_path(@user, @bookshelf), notice: "保存が完了しました"
   end
 
   def index

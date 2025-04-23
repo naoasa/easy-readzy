@@ -27,8 +27,23 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // 本棚への保存(ロジックはあとで実装)
-  saveToBookshelfButton.addEventListener('click', () => {
-    // 保存処理を実装(保存には「場所(location)が不可欠」)
-    alert('保存が完了しました');
+  saveToBookshelfButton.addEventListener('click', (event) => {
+    event.preventDefault();
+    const form = document.getElementById('new_book_form');
+
+    // 既存のgoals[] hidden inputをクリア
+    form.querySelectorAll('input[name="goals[]"]').forEach((i) => i.remove());
+
+    // 各goal_itemをhidden inputにしてformに追加
+    document.querySelectorAll('.goal_item').forEach((item) => {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'goals[]';
+      input.value = item.textContent;
+      form.appendChild(input);
+    });
+
+    // formを送信
+    form.submit();
   });
 });
