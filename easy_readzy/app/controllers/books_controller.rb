@@ -47,7 +47,7 @@ class BooksController < ApplicationController
       book.author = info[:authors]
       book.publisher = info[:publisher]
       book.published_date = info[:published_date]
-      book.description = info[:description]
+      book.description = info[:description].to_s.slice(0, 1000) # 1000文字を超える場合は切り捨てる
 
       # サムネイルを取得してアタッチ
       if info[:image_url].present? && !book.cover_image.attached?
