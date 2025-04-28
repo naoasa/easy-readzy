@@ -1,5 +1,5 @@
 <% unless @book_info[:title].blank? %>
-  <img src="<%= @book_info[:image_url] %>" alt="<%= @book_info[:title] %>">
+  <%= image_tag @book_info[:image_url], alt: @book_info[:title] %>
   <h1><%= @book_info[:title] %></h1>
   <p><%= @book_info[:authors] %> / <%= @book_info[:publisher] %> / <%= @book_info[:published_date] %></p>
 <% else %>
