@@ -11,7 +11,7 @@
       <% if book.dig("volumeInfo", "imageLinks", "thumbnail") %>
         <%= image_tag book.dig("volumeInfo", "imageLinks", "thumbnail"), alt: book.dig("volumeInfo", "title") %>
       <% else %>
-        <p>No Image</p>
+        <%= image_tag "no_image.jpg", alt: book.dig("volumeInfo", "title") %>
       <% end %>
       <h2><%= book.dig("volumeInfo", "title") %></h2>
       <%# 著者が複数の場合はカンマ区切りでまとめる(["著者A", "著者B"] => "著者A, 著者B") %>
