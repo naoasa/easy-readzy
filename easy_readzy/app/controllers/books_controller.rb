@@ -64,6 +64,15 @@ class BooksController < ApplicationController
         end
       end
 
+      # サムネイルがない場合は差し替え画像をアタッチ
+      unless book.cover_image.attached?
+        book.cover_image.attach(
+          io: File.open(Rails.root.join("app/assets/images/no_image.jpg")),
+          filename: "no_image.jpg",
+          content_type: "image/jpeg"
+        )
+      end
+
       book.save!
     end
 
