@@ -20,5 +20,11 @@
     <button type="button" id="clear_goal_text">入力取り消し</button>
   </div>
 
+  <div class="location_section">
+    <p>本の保管場所を入力してください</p>
+    <label for="location"></label>
+    <%= text_field_tag :location, nil, placeholder: "例: Kindle" %>
+  </div>
+
   <button type="button" id="save_to_bookshelf" style="display: none;">マイ本棚に保存</button>
 <% end %>
