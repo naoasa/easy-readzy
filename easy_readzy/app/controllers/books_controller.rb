@@ -76,8 +76,8 @@ class BooksController < ApplicationController
       book.save!
     end
 
-    # BookshelfBookを作成(locationはひとまずサンプルデータ)
-    shelf_book = @bookshelf.bookshelf_books.build(book: book, location: "自宅の机の上")
+    # BookshelfBookを作成
+    shelf_book = @bookshelf.bookshelf_books.build(book: book, location: params[:location])
     shelf_book.save!
 
     # Goalを作成
