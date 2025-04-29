@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('goal_text').value = '';
   });
 
-  // 本棚への保存(ロジックはあとで実装)
+  // 本棚への保存
   saveToBookshelfButton.addEventListener('click', (event) => {
     event.preventDefault();
     const form = document.getElementById('new_book_form');
