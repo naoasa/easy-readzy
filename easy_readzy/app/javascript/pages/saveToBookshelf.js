@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // locationモーダルを出す
   saveToBookshelfButton.addEventListener('click', (event) => {
     event.preventDefault();
-    document.getElementById('save_modal').style.display = 'block';
+    document.getElementById('save_modal').style.display = 'flex';
   });
 
   // locationモーダルの「キャンセル」
