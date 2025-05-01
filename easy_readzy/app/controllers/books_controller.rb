@@ -41,8 +41,11 @@ class BooksController < ApplicationController
     # Bookを作成または取得
     book = Book.find_or_initialize_by(google_book_id: google_id)
 
+    # 書籍情報は常に取得
+    info = fetch_book_info(google_id)
+
+    # 新規の時は属性をセット
     if book.new_record?
-      info = fetch_book_info(google_id) # 書籍情報を取得
       book.title = info[:title]
       book.author = info[:authors]
       book.publisher = info[:publisher]
@@ -105,7 +108,7 @@ class BooksController < ApplicationController
     # google_books_id をもとに書籍情報を取得して整形して返す
     def fetch_book_info(google_books_id)
       # google_books_idがないときは空のハッシュを返す
-      {} if google_books_id.blank?
+      return {} if google_books_id.blank?
 
       url = "#{GOOGLE_BOOKS_ENDPOINT}/#{google_books_id}"
       response = HTTParty.get(
@@ -114,9 +117,8 @@ class BooksController < ApplicationController
         # リクエスト全体(リクエスト送信, サーバー応答の受信, レスポンスボディの読み込み)の最大許容時間[秒]
         timeout: 5
       )
-
       # ステータスが正常でない場合は空のハッシュを返す
-      {} unless response.code == 200
+      return {} unless response.code == 200
 
       data   = JSON.parse(response.body)
       volume = data["volumeInfo"] || {}
