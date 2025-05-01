@@ -261,12 +261,15 @@ html, body {
   margin-top: 50px;
 }
 
-.dialog_logout_btn {
-  background: $azure;
-  color: $white;
+.dialog_btn {
   width: 278px;
   height: 58px;
   border-radius: 30px;
+}
+
+.logout_colors {
+  background: $azure;
+  color: $white;
   &:hover {
     background: $dark-azure;
   }
