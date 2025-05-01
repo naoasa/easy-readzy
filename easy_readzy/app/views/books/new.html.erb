@@ -24,10 +24,12 @@
 
   <div id="save_modal" class="dialog_overlay" style="display: none;">
     <div class="dialog_card">
-      <p>本の保管場所を入力してください</p>
+      <p class="location_message">本の保管場所を入力してください</p>
       <input id="modal_location_input" class="one_line_input" type="text" placeholder="例: Kindle">
-      <button type="button" id="confirm_save" class="dialog_btn save_colors">保存を完了する</button>
-      <button type="button" id="cancel_save" class="dialog_cancel_btn">キャンセル</button>
+      <div class="save_and_cancel_btns">
+        <button type="button" id="confirm_save" class="dialog_btn save_colors">保存を完了する</button>
+        <button type="button" id="cancel_save" class="dialog_cancel_btn">キャンセル</button>
+      </div>
     </div>
   </div>
 <% end %>
