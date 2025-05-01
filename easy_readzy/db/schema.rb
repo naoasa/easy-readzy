@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_11_141241) do
+ActiveRecord::Schema[7.2].define(version: 2025_05_01_172010) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -42,7 +42,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_11_141241) do
   create_table "books", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "google_book_id", limit: 100, null: false
     t.string "title", limit: 500, null: false
-    t.string "author", limit: 100
+    t.string "author", limit: 500
     t.string "publisher", limit: 100
     t.string "published_date", limit: 100
     t.string "description", limit: 1000
