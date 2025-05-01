@@ -26,16 +26,41 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('goal_text').value = '';
   });
 
-  // 本棚への保存
+  // locationモーダルを出す
   saveToBookshelfButton.addEventListener('click', (event) => {
     event.preventDefault();
+    document.getElementById('save_modal').style.display = 'block';
+  });
+
+  // locationモーダルの「キャンセル」
+  document.getElementById('cancel_save').addEventListener('click', () => {
+    document.getElementById('save_modal').style.display = 'none';
+  });
+
+  // locationモーダルの「保存を完了する」
+  document.getElementById('confirm_save').addEventListener('click', () => {
     const form = document.getElementById('new_book_form');
+    const locationValue = document.getElementById('modal_location_input').value.trim();
+    if (!locationValue) {
+      alert('本の保管場所を入力してください。');
+      return;
+    }
 
-    // 既存のgoals[] hidden inputをクリア
-    form.querySelectorAll('input[name="goals[]"]').forEach((i) => i.remove());
+    // location を hidden input としてセット
+    let locInput = form.querySelector('input[name="location"]');
+    if (locInput) {
+      locInput.value = locationValue;
+    } else {
+      const hiddenLoc = document.createElement('input');
+      hiddenLoc.type = 'hidden';
+      hiddenLoc.name = 'location';
+      hiddenLoc.value = locationValue;
+      form.appendChild(hiddenLoc);
+    }
 
-    // 各goal_itemをhidden inputにしてformに追加
-    document.querySelectorAll('.goal_item').forEach((item) => {
+    // goals[] hidden input を再構築
+    form.querySelectorAll('input[name="goals[]"]').forEach(el => el.remove());
+    document.querySelectorAll('.goal_item').forEach(item => {
       const input = document.createElement('input');
       input.type = 'hidden';
       input.name = 'goals[]';
@@ -43,7 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
       form.appendChild(input);
     });
 
-    // formを送信
     form.submit();
   });
 });
