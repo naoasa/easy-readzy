@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const logoutButton = document.querySelector('.dialog_logout_btn'); // ログアウトボタン
   const cancelButton = document.querySelector('.dialog_cancel_btn'); // キャンセルボタン
   const dialogOverlay = document.querySelector('.dialog_overlay'); // ダイアログオーバーレイ
-  const dialogCard = document.querySelector('.logout_dialog_card'); // ダイアログカード
+  const dialogCard = document.querySelector('.dialog_card'); // ダイアログカード
 
   if (openLogoutDialogButton) {
     // ログアウトボタンをクリックした時にダイアログを表示し、ユーザーメニューカードを非表示にする
