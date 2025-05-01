@@ -19,6 +19,7 @@ $azure: #6097E1;
 $white: #FFFFFF;
 $cloud: #F6F6F6;
 $gold: #F5B50F;
+$dark-gold: #d49306;
 $light-azure: #E7EEF7;
 $dark-azure: #3c6cab;
 $intro-gray: #7B7B7B;
@@ -302,4 +303,12 @@ html, body {
   background: $cloud;
   width: 100%;
   height: calc(100vh - 64px);
+}
+
+.save_colors {
+  background: $gold;
+  color: $white;
+  &:hover {
+    background: $dark-gold;
+  }
 }
