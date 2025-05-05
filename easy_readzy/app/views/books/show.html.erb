@@ -1,1 +1,3 @@
-show page
+<% if @book.cover_image.attached? %>
+  <%= image_tag @book.cover_image %>
+<% end %>
