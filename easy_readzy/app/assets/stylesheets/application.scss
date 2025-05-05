@@ -307,6 +307,12 @@ html, body {
 
 // 新規登録
 
+.books_new {
+  background: $cloud;
+  width: 100%;
+  height: calc(100vh - 64px);
+}
+
 .save_colors {
   background: $gold;
   color: $white;
