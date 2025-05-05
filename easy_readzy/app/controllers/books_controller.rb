@@ -107,6 +107,7 @@ class BooksController < ApplicationController
     @user = User.find(params[:user_id])
     @bookshelf = @user.bookshelves.find(params[:bookshelf_id])
     @book = @bookshelf.books.find(params[:id])
+    @shelf_book = @bookshelf.bookshelf_books.find_by(book_id: @book.id)
   end
 
   private
