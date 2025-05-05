@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   # ユーザーの本棚の本一覧ページのルーティング
   resources :users do
     resources :bookshelves do
-      resources :books, only: [ :index, :new, :create ]
+      resources :books, only: [ :index, :new, :create, :show ]
     end
   end
 
