@@ -19,6 +19,7 @@ $azure: #6097E1;
 $white: #FFFFFF;
 $cloud: #F6F6F6;
 $gold: #F5B50F;
+$dark-gold: #d49306;
 $light-azure: #E7EEF7;
 $dark-azure: #3c6cab;
 $intro-gray: #7B7B7B;
@@ -227,7 +228,7 @@ html, body {
   }
 }
 
-.logout_dialog_card {
+.dialog_card {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -261,12 +262,15 @@ html, body {
   margin-top: 50px;
 }
 
-.dialog_logout_btn {
-  background: $azure;
-  color: $white;
+.dialog_btn {
   width: 278px;
   height: 58px;
   border-radius: 30px;
+}
+
+.logout_colors {
+  background: $azure;
+  color: $white;
   &:hover {
     background: $dark-azure;
   }
@@ -299,4 +303,32 @@ html, body {
   background: $cloud;
   width: 100%;
   height: calc(100vh - 64px);
+}
+
+// 新規登録
+
+.save_colors {
+  background: $gold;
+  color: $white;
+  &:hover {
+    background: $dark-gold;
+  }
+}
+
+.one_line_input {
+  width: 275px;
+  height: 53px;
+  margin-top: 20px;
+  border-radius: 8px;
+  padding-left: 20px;
+  border: 1px solid #D9D9D9;
+}
+
+.location_message {
+  font-size: $font-size-h3;
+  margin-top: 60px;
+}
+
+.save_and_cancel_btns {
+  margin-top: 50px;
 }
