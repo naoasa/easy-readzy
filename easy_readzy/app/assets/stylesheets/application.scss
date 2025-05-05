@@ -332,3 +332,11 @@ html, body {
 .save_and_cancel_btns {
   margin-top: 50px;
 }
+
+// 詳細ページ
+
+.books_show {
+  background: $cloud;
+  width: 100%;
+  height: calc(100vh - 64px);
+}
