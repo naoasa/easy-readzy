@@ -7,3 +7,13 @@
 <p><%= @book.author || "-" %> / <%= @book.publisher || "-" %> / <%= @book.published_date || "-" %></p>
 <p><%= @shelf_book&.location || "-" %></p>
 <p><%= @book.description || "-" %></p>
+
+<% if @shelf_book&.goals.present? %>
+  <ul>
+    <% @shelf_book.goals.each do |goal| %>
+      <li><%= goal.goal_text %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>目標テキストがありません</p>
+<% end %>
