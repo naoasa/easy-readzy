@@ -15,15 +15,24 @@
         <li>
           <div class="goal_item" data_goal_id="<%= goal.id %>">
             <span class="goal_text"><%= goal.goal_text %></span>
-            <%# アウトプット作成ボタン %>
-            <button type="button" class="create_output_btn">アウトプット作成</button>
-            <%# 隠しフォーム %>
-            <div class="output_form" style="display: none;">
-              <%= form_with scope: :output, url: goal_output_path(goal), method: :post, local: true do |f| %>
-                <%= f.text_area :output_text, rows: 4, placeholder: "アウトプットを入力" %>
-                <%= f.submit "アウトプットを保存" %>
-              <% end %>
-            </div>
+
+            <%# アウトプットの作成/未作成によってボタンの表示/非表示を切り替える %>
+            <% if goal.output.present? %>
+              <%# アウトプットがある場合は、アウトプットテキストを表示 %>
+              <div class="output_text">
+                <%= simple_format(goal.output.output_text) %>
+              </div>
+            <% else %>
+              <%# アウトプット未作成の場合は、アウトプット作成ボタンを表示 %>
+              <button type="button" class="create_output_btn">アウトプット作成</button>
+              <%# 隠しフォーム %>
+              <div class="output_form" style="display: none;">
+                <%= form_with scope: :output, url: goal_output_path(goal), method: :post, local: true do |f| %>
+                  <%= f.text_area :output_text, rows: 4, placeholder: "アウトプットを入力" %>
+                  <%= f.submit "アウトプットを保存" %>
+                <% end %>
+              </div>
+            <% end %>
           </div>
         </li>
       <% end %>
