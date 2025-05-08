@@ -29,6 +29,7 @@
               <div class="output_form" style="display: none;">
                 <%= form_with scope: :output, url: goal_output_path(goal), method: :post, local: true do |f| %>
                   <%= f.text_area :output_text, rows: 4, placeholder: "アウトプットを入力" %>
+                  <button type="button" id="clear_output_text">入力をクリア</button>
                   <%= f.submit "アウトプットを保存" %>
                 <% end %>
               </div>
