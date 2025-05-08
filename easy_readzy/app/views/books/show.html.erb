@@ -12,7 +12,20 @@
   <% if @shelf_book&.goals.present? %>
     <ul>
       <% @shelf_book.goals.each do |goal| %>
-        <li><%= goal.goal_text %></li>
+        <li>
+          <div class="goal_item" data_goal_id="<%= goal.id %>">
+            <span class="goal_text"><%= goal.goal_text %></span>
+            <%# アウトプット作成ボタン %>
+            <button type="button" class="create_output_btn">アウトプット作成</button>
+            <%# 隠しフォーム %>
+            <div class="output_form" style="display: none;">
+              <%= form_with scope: :output, url: goal_output_path(goal), method: :post, local: true do |f| %>
+                <%= f.text_area :output_text, rows: 4, placeholder: "アウトプットを入力" %>
+                <%= f.submit "アウトプットを保存" %>
+              <% end %>
+            </div>
+          </div>
+        </li>
       <% end %>
     </ul>
   <% else %>
