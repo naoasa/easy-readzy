@@ -1,0 +1,44 @@
+<div class="books_show">
+  <% if @book.cover_image.attached? %>
+    <%= image_tag @book.cover_image %>
+  <% else %>
+    <%= image_tag "no_image.jpg" %>
+  <% end %>
+  <h1><%= @book.title %></h1>
+  <p><%= @book.author || "-" %> / <%= @book.publisher || "-" %> / <%= @book.published_date || "-" %></p>
+  <p><%= @shelf_book&.location || "-" %></p>
+  <p><%= @book.description || "-" %></p>
+
+  <% if @shelf_book&.goals.present? %>
+    <ul>
+      <% @shelf_book.goals.each do |goal| %>
+        <li>
+          <div class="goal_item" data_goal_id="<%= goal.id %>">
+            <span class="goal_text"><%= goal.goal_text %></span>
+
+            <%# アウトプットの作成/未作成によってボタンの表示/非表示を切り替える %>
+            <% if goal.output.present? %>
+              <%# アウトプットがある場合は、アウトプットテキストを表示 %>
+              <div class="output_text">
+                <%= simple_format(goal.output.output_text) %>
+              </div>
+            <% else %>
+              <%# アウトプット未作成の場合は、アウトプット作成ボタンを表示 %>
+              <button type="button" class="create_output_btn">アウトプット作成</button>
+              <%# 隠しフォーム %>
+              <div class="output_form" style="display: none;">
+                <%= form_with scope: :output, url: goal_output_path(goal), method: :post, local: true do |f| %>
+                  <%= f.text_area :output_text, rows: 4, placeholder: "アウトプットを入力" %>
+                  <button type="button" id="clear_output_text">入力をクリア</button>
+                  <%= f.submit "アウトプットを保存" %>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>目標テキストがありません</p>
+  <% end %>
+</div>

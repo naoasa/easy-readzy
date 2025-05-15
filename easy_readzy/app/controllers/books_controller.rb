@@ -103,6 +103,13 @@ class BooksController < ApplicationController
     @books = @bookshelf.books.preload(:cover_image_attachment)
   end
 
+  def show
+    @user = User.find(params[:user_id])
+    @bookshelf = @user.bookshelves.find(params[:bookshelf_id])
+    @book = @bookshelf.books.find(params[:id])
+    @shelf_book = @bookshelf.bookshelf_books.preload(goals: :output).find_by(book_id: @book.id)
+  end
+
   private
 
     # google_books_id をもとに書籍情報を取得して整形して返す

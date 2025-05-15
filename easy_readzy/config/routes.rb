@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   # ユーザーの本棚の本一覧ページのルーティング
   resources :users do
     resources :bookshelves do
-      resources :books, only: [ :index, :new, :create ]
+      resources :books, only: [ :index, :new, :create, :show ]
     end
   end
 
@@ -24,6 +24,11 @@ Rails.application.routes.draw do
     collection do
       get "search"
     end
+  end
+
+  # アウトプット作成のためのルーティング
+  resources :goals, only: [] do
+    resource :output, only: [ :create ]
   end
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

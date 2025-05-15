@@ -2,3 +2,4 @@
 
 import './pages/header';
 import './pages/saveToBookshelf';
+import './pages/createOutput';
