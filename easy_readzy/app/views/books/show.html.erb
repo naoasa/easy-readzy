@@ -8,6 +8,7 @@
   <p><%= @book.author || "-" %> / <%= @book.publisher || "-" %> / <%= @book.published_date || "-" %></p>
   <p><%= @shelf_book&.location || "-" %></p>
   <p><%= @book.description || "-" %></p>
+  <%= button_to "マイ本棚から削除", user_bookshelf_book_path(@user, @bookshelf, @book), method: :delete, data: { turbo_confirm: "本当に削除しますか？" }, class: "delete_book_link" %>
 
   <% if @shelf_book&.goals.present? %>
     <ul>

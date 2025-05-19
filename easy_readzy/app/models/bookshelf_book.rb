@@ -2,7 +2,7 @@ class BookshelfBook < ApplicationRecord
   # アソシエーション
   belongs_to :bookshelf
   belongs_to :book
-  has_many :goals
+  has_many :goals, dependent: :destroy # 紐づくGoalも削除
 
   # バリデーション
   validates :bookshelf_id, presence: true
