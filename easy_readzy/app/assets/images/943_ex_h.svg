@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <defs>
+    <style>
+      .a {
+        fill: none;
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 2px;
+      }
+    </style>
+  </defs>
+  <title>icn_7</title>
+  <rect class="a" x="21" y="8" width="6" height="20" rx="3"/>
+  <circle class="a" cx="24" cy="37" r="3"/>
+</svg>
