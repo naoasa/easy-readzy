@@ -22,7 +22,9 @@
   <body>
     <turbo-frame id="flash">
       <% flash.each do |type, message| %>
-        <div class="flash <%= type %>"><%= message %></div>
+        <div class="flash <%= type %>">
+          <%= message %>
+        </div>
       <% end %>
     </turbo-frame>
 

@@ -120,6 +120,25 @@ html, body {
   border-radius: 26px;
 }
 
+// フラッシュメッセージ
+
+.flash {
+  display: flex;
+  position: fixed;
+  left: 24px;
+  bottom: 20px;
+  align-items: center;
+  width: 396px;
+  height: 60px;
+  background: #282828;
+  color: $white;
+  font-size: 15px;
+  padding: 10px 20px;
+  border-radius: 9px;
+  border: 1px solid $azure;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+}
+
 // ヘッダー
 
 .header {
