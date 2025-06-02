@@ -4,3 +4,4 @@ import './pages/header';
 import './pages/saveToBookshelf';
 import './pages/createOutput';
 import './pages/deleteBook';
+import './pages/flash';
