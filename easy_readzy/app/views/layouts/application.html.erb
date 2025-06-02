@@ -20,6 +20,12 @@
   </head>
 
   <body>
+    <turbo-frame id="flash">
+      <% flash.each do |type, message| %>
+        <div class="flash <%= type %>"><%= message %></div>
+      <% end %>
+    </turbo-frame>
+
     <%# ログインページには共通ヘッダーを表示しない %>
     <% unless current_page?(new_user_session_path) %>
       <header class="header">
