@@ -139,6 +139,26 @@ html, body {
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
 }
 
+.close_btn {
+  cursor: pointer;
+  // バツマークを中央に
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 1px; // 線の太さ
+    height: 20px; // 線の長さ
+    background: #D9D9D9; // 線の色
+  }
+  &::before {
+    transform: rotate(45deg);
+  }
+  &::after {
+    transform: rotate(-45deg);
+  }
+}
+
 // ヘッダー
 
 .header {
