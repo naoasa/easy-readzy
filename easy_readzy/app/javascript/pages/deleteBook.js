@@ -26,5 +26,12 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.style.display = 'none';
       }
     });
+
+    // Escキーで非表示
+    document.addEventListener('keydown', (e) => {
+      if (modal.style.display === 'flex' && e.key === 'Escape') {
+        modal.style.display = 'none';
+      }
+    });
   }
 });
