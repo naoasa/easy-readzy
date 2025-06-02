@@ -11,6 +11,8 @@
     <p>書籍情報を取得できませんでした。</p>
   <% end %>
 
+  <div id="js_flash" class="add_goal_flash" style="display: none;"></div>
+
   <%= form_with url: user_bookshelf_books_path(@user, @bookshelf), method: :post, local: true, id: "new_book_form" do %>
     <%= hidden_field_tag :google_books_id, @google_books_id %>
 
