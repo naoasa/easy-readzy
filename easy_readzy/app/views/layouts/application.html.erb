@@ -24,10 +24,15 @@
       <% flash.each do |type, message| %>
         <div class="flash <%= type %>">
           <%= message %>
-          <span class="close_btn"></span>
+          <span id="close_flash" class="close_btn"></span>
         </div>
       <% end %>
     </turbo-frame>
+
+    <div class="flash notice">
+      本を削除しました
+      <span id="close_flash" class="close_btn"></span>
+    </div>
 
     <%# ログインページには共通ヘッダーを表示しない %>
     <% unless current_page?(new_user_session_path) %>

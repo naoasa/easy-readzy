@@ -138,7 +138,7 @@ html, body {
   border: 1px solid $azure;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
   // フェードアウト用
-  transition: opacity .5s ease;
+  transition: opacity .4s ease;
   opacity: 1;
   &.fade-out {
     opacity: 0;
@@ -147,16 +147,24 @@ html, body {
 }
 
 .close_btn {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 30px; // 当たり判定
+  height: 30px; // 当たり判定
+  transform: translateY(-50%);
   cursor: pointer;
-  // バツマークを中央に
+  z-index: 1;
+
   &::before, &::after {
     content: '';
     position: absolute;
-    right: 20px;
-    top: 20px;
+    left: 14px;
+    top: 6px;
     width: 1px; // 線の太さ
     height: 20px; // 線の長さ
-    background: #D9D9D9; // 線の色
+    background: #D9D9D9;
+    border-radius: 2px;
   }
   &::before {
     transform: rotate(45deg);
