@@ -9,6 +9,8 @@
         <% if book.cover_image.attached? %>
           <%#= image_tag book.cover_image %>
           <%= link_to image_tag(book.cover_image), user_bookshelf_book_path(@user, @bookshelf, book) %>
+        <% else %>
+          <%= link_to image_tag("no_image.jpg"), user_bookshelf_book_path(@user, @bookshelf, book) %>
         <% end %>
         <p>本の著者: <%= book.author %></p>
         <p>本の出版社: <%= book.publisher %></p>

@@ -20,6 +20,15 @@
   </head>
 
   <body>
+    <turbo-frame id="flash">
+      <% flash.each do |type, message| %>
+        <div class="flash <%= type %>">
+          <%= message %>
+          <span id="close_flash" class="close_btn"></span>
+        </div>
+      <% end %>
+    </turbo-frame>
+
     <%# ログインページには共通ヘッダーを表示しない %>
     <% unless current_page?(new_user_session_path) %>
       <header class="header">
@@ -55,8 +64,11 @@
             <% end %>
           </div>
           <div class="header_user_menu_card">
-            <% if user_signed_in?%>
-              <%= button_tag "ログアウト", type: "button", class: "header_user_logout_btn" %>
+            <% if user_signed_in? %>
+              <%= button_tag type: "button", class: "header_user_logout_btn" do %>
+                <%= image_tag "logout-icon.svg", class: "logout_icon" %>
+                <span>ログアウト</span>
+              <% end %>
             <% end %>
           </div>
         </div>

@@ -110,6 +110,18 @@ class BooksController < ApplicationController
     @shelf_book = @bookshelf.bookshelf_books.preload(goals: :output).find_by(book_id: @book.id)
   end
 
+  def destroy
+    @user = User.find(params[:user_id]) # ユーザーを取得
+    @bookshelf = @user.bookshelves.find(params[:bookshelf_id]) # 本棚を取得
+    @shelf_book = @bookshelf.bookshelf_books.find_by(book_id: params[:id]) # 中間テーブルを取得
+
+    if @shelf_book&.destroy
+      redirect_to user_bookshelf_books_path(@user, @bookshelf), notice: "本を削除しました"
+    else
+      redirect_to user_bookshelf_book_path(@user, @bookshelf, params[:id]), alert: "本の削除に失敗しました"
+    end
+  end
+
   private
 
     # google_books_id をもとに書籍情報を取得して整形して返す

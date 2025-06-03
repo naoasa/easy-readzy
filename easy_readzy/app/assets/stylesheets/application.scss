@@ -24,6 +24,7 @@ $light-azure: #E7EEF7;
 $dark-azure: #3c6cab;
 $intro-gray: #7B7B7B;
 $user-menu-gray: #E5E5E5;
+$delete-red: #F25457;
 
 // fonts
 $font-family-base: 'Noto Sans JP', 'Roboto',sans-serif;
@@ -119,6 +120,101 @@ html, body {
   border-radius: 26px;
 }
 
+// フラッシュメッセージ
+
+@keyframes flash-in {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.flash {
+  display: flex;
+  position: fixed;
+  left: 24px;
+  bottom: 20px;
+  align-items: center;
+  width: 396px;
+  height: 60px;
+  background: #282828;
+  color: $white;
+  font-size: 15px;
+  padding: 10px 20px;
+  border-radius: 9px;
+  border: 1px solid $azure;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+  // フェードイン
+  animation: flash-in 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  // フェードアウト用
+  transition: opacity .4s ease;
+  opacity: 1;
+  &.fade-out {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+.add_goal_flash {
+  display: flex;
+  position: fixed;
+  left: 24px;
+  bottom: 20px;
+  align-items: center;
+  width: 396px;
+  height: 60px;
+  background: #282828;
+  color: $white;
+  font-size: 15px;
+  padding: 10px 20px;
+  border-radius: 9px;
+  border: 1px solid $azure;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+  // フェードイン
+  animation: flash-in 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#js_flash {
+  white-space: pre-line;
+  transition: opacity .5s;
+}
+
+#js_flash.fade-out {
+  opacity: 0;
+}
+
+.close_btn {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 30px; // 当たり判定
+  height: 30px; // 当たり判定
+  transform: translateY(-50%);
+  cursor: pointer;
+  z-index: 1;
+
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 6px;
+    width: 1px; // 線の太さ
+    height: 20px; // 線の長さ
+    background: #D9D9D9;
+    border-radius: 2px;
+  }
+  &::before {
+    transform: rotate(45deg);
+  }
+  &::after {
+    transform: rotate(-45deg);
+  }
+}
+
 // ヘッダー
 
 .header {
@@ -193,6 +289,9 @@ html, body {
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 
   .header_user_logout_btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: calc(231px - 8px); // .header_user_menu_cardの幅より8px小さい
     height: 42px;
     border-radius: 6px;
@@ -203,6 +302,11 @@ html, body {
 
   &.visible {
     display: flex;
+  }
+
+  .logout_icon {
+    width: 34px;
+    margin-right: 8px;
   }
 }
 
@@ -345,4 +449,75 @@ html, body {
   background: $cloud;
   width: 100%;
   height: calc(100vh - 64px);
+}
+
+// 本の削除モーダル
+
+.exclamation_icon {
+  width: 64px;
+}
+
+.delete_book_message {
+  margin-top: 20px;
+  font-size: $font-size-h3;
+}
+
+.delete_info_container {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.delete_information_contents ul {
+  list-style-position: inside; // 箇条書きの中点をテキストのすぐ左に
+  text-align: left; // リスト全体を左寄せ
+}
+
+.delete_information_title {
+  color: #757575;
+}
+
+.delete_information_contents {
+  margin-top: 10px;
+  background: #EEEEEE;
+  color: #585858;
+  width: 272px;
+  padding: 18px 20px;
+  border-radius: 7px;
+}
+
+.dialog_card.delete_book_dialog {
+  height: 35%;
+}
+
+.delete_and_cancel_btns {
+  display: flex;
+  margin-top: 36px;
+  width: 300px; // cancelとdeleteボタンの間にスキマを設けるため
+  justify-content: space-between;
+}
+
+.cancel_btn {
+  background: $white;
+  width: 145px;
+  font-size: 14px;
+  height: 58px;
+  border-radius: 30px;
+  border: 1px solid #D9D9D9;
+  &:hover {
+    background: #EDEDED;
+  }
+}
+
+.delete_btn {
+  background: $delete-red;
+  color: $white;
+  width: 145px;
+  font-size: 14px;
+  height: 58px;
+  border-radius: 30px;
+  &:hover {
+    background: #DA3034;
+  }
 }

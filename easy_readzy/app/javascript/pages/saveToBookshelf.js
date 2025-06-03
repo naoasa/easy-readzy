@@ -1,3 +1,21 @@
+// flashメッセージを表示する関数
+function showFlashMessage(message) {
+  const flash = document.getElementById('js_flash');
+  flash.textContent = message;
+  flash.style.display = 'flex';
+  // 透明化クラスを外す
+  flash.classList.remove('fade-out');
+  // 2秒後にフェードアウト
+  setTimeout(() => {
+    flash.classList.add('fade-out');
+    // アニメーション終了後に非表示
+    setTimeout(() => {
+      flash.style.display = 'none';
+      flash.classList.remove('fade-out'); // 次回のためにリセット
+    }, 500); // CSSのtransitionと同じ時間
+  }, 2000);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const addGoalButton = document.getElementById('add_goal'); // 目標追加ボタン
   const goalsList = document.getElementById('goals_list'); // 目標たちを挿入するdiv要素
@@ -15,6 +33,9 @@ document.addEventListener('DOMContentLoaded', () => {
       // goalItem => <div class="goal_item">これは目標です。</div>
       goalsList.appendChild(goalItem); // div要素内にアイテムを挿入
       document.getElementById('goal_text').value = ''; // 要素を取得し直して、テキストエリアを空にする
+
+      // フラッシュメッセージを表示
+      showFlashMessage('目標が本に追加されました\n本棚への保存は完了していません');
 
       // 目標が1つ以上ある場合に保存ボタンを表示(ブロック要素にする)
       document.getElementById('save_to_bookshelf').style.display = 'block';
