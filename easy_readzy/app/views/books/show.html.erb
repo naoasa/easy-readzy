@@ -43,7 +43,7 @@
             <% if goal.output.present? %>
               <%# アウトプットがある場合は、アウトプットテキストを表示 %>
               <div class="output_text">
-                <%= simple_format(goal.output.output_text) %>
+                <%= goal.output.output_text %>
               </div>
               <%= link_to "アウトプットを編集", edit_goal_output_path(goal), class: "edit_output_btn" %>
             <% else %>
