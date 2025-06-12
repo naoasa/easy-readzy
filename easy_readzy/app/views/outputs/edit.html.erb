@@ -1,0 +1,27 @@
+<div class="books_show">
+  <%# 本の詳細情報 %>
+  <% if @book.cover_image.attached? %>
+    <%= image_tag @book.cover_image %>
+  <% else %>
+    <%= image_tag "no_image.jpg" %>
+  <% end %>
+  <h1><%= @book.title %></h1>
+  <p><%= @book.author || "-" %> / <%= @book.publisher || "-" %> / <%= @book.published_date || "-" %></p>
+  <p><%= @goal.bookshelf_book.location || "-" %></p>
+  <p><%= @book.description || "-" %></p>
+
+  <%# 編集対象の目標とアウトプットフォーム %>
+  <div class="goal_item" data_goal_id="<%= @goal.id %>">
+    <span class="goal_text"><%= @goal.goal_text %></span>
+    <div class="output_form">
+      <%= form_with model: [@goal, @output], url: goal_output_path(@goal), method: :patch, local: true do |f| %>
+        <%= f.text_area :output_text, rows: 4, placeholder: "アウトプットを入力" %>
+        <div>
+          <button type="button" id="clear_output_text">入力をクリア</button>
+          <%= f.submit "アウトプットを保存" %>
+        </div>
+      <% end %>
+      <%= button_to "削除", goal_output_path(@goal), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "delete_btn" %>
+    </div>
+  </div>
+</div>

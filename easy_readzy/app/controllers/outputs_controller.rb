@@ -12,6 +12,49 @@ class OutputsController < ApplicationController
     redirect_to request.referer, notice: "アウトプットが保存されました"
   end
 
+  def edit
+    @goal = Goal.find(params[:goal_id])
+    @output = @goal.output
+    @bookshelf_book = @goal.bookshelf_book
+    @book = @bookshelf_book.book
+    @bookshelf = @bookshelf_book.bookshelf
+    @user = @bookshelf.user
+  end
+
+  def update
+    goal = Goal.find(params[:goal_id])
+    output = goal.output
+    bookshelf_book = goal.bookshelf_book
+    bookshelf = bookshelf_book.bookshelf
+    user = bookshelf.user
+    book = bookshelf_book.book
+
+    if output.update(output_params)
+      redirect_to user_bookshelf_book_path(user, bookshelf, book), notice: "アウトプットを更新しました"
+    else
+      flash.now[:alert] = "更新に失敗しました"
+      @goal = goal
+      @output = output
+      @bookshelf_book = bookshelf_book
+      @book = book
+      @bookshelf = bookshelf
+      @user = user
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    goal = Goal.find(params[:goal_id])
+    output = goal.output
+    bookshelf_book = goal.bookshelf_book
+    bookshelf = bookshelf_book.bookshelf
+    user = bookshelf.user
+    book = bookshelf_book.book
+
+    output.destroy if output.present?
+    redirect_to user_bookshelf_book_path(user, bookshelf, book), notice: "アウトプットを削除しました"
+  end
+
   private
 
     def output_params
