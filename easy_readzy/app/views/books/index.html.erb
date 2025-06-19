@@ -4,18 +4,12 @@
     <li>本棚名: <%= @bookshelf.bookshelf_name %></li>
     <li>
       <% @books.each do |book| %>
-        <p>google_book_id: <%= book.google_book_id %></p>
-        <p>本のタイトル: <%= book.title %></p>
+        <p><%= book.title %></p>
         <% if book.cover_image.attached? %>
-          <%#= image_tag book.cover_image %>
           <%= link_to image_tag(book.cover_image), user_bookshelf_book_path(@user, @bookshelf, book) %>
         <% else %>
           <%= link_to image_tag("no_image.jpg"), user_bookshelf_book_path(@user, @bookshelf, book) %>
         <% end %>
-        <p>本の著者: <%= book.author %></p>
-        <p>本の出版社: <%= book.publisher %></p>
-        <p>本の出版日: <%= book.published_date %></p>
-        <p>本の概要: <%= book.description %></p>
       <% end %>
     </li>
   </ul>
