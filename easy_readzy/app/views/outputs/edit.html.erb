@@ -26,9 +26,17 @@
       <!-- アウトプットの削除モーダル -->
       <div id="delete_book_modal" class="dialog_overlay" style="display: none;">
       <%# <div id="delete_book_modal" class="dialog_overlay" style="display: flex;"> %>
-        <div id="delete_book_dialog" class="dialog_card delete_book_dialog">
+        <div id="delete_book_dialog" class="dialog_card delete_output_dialog">
           <%= image_tag "943_ex_h.svg", class: "exclamation_icon" %>
           <p class="delete_book_message">アウトプットを削除しますか？</p>
+          <div class="delete_info_container">
+            <p class="delete_information_title">削除される情報</p>
+            <div class="delete_information_contents">
+              <ul>
+                <li>本に紐づくアウトプット</li>
+              </ul>
+            </div>
+          </div>
           <div class="delete_and_cancel_btns">
             <button type="button" id="cancel_delete" class="cancel_btn">キャンセル</button>
             <%= button_to "削除", goal_output_path(@goal), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "delete_btn" %>
