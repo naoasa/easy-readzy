@@ -28,7 +28,7 @@ Rails.application.routes.draw do
 
   # アウトプット作成のためのルーティング
   resources :goals, only: [] do
-    resource :output, only: [ :create ]
+    resource :output, only: [ :create, :edit, :update, :destroy ]
   end
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

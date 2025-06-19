@@ -91,4 +91,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     form.submit();
   });
+
+  // Enterキー押下での保存機能
+  document.addEventListener('keydown', (event) => {
+    const saveModal = document.getElementById('save_modal');
+    // モーダルが表示されている(= display: flex;)時のみ処理を実行
+    if (saveModal.style.display === 'flex') {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        // 保管場所の入力チェック
+        const locationValue = document.getElementById('modal_location_input').value.trim();
+        if (!locationValue) {
+          alert('本の保管場所を入力してください。');
+          return;
+        }
+        // confirm_saveボタンのクリック
+        document.getElementById('confirm_save').click();
+      }
+    }
+  });
 });
