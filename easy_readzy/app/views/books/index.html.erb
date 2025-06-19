@@ -3,14 +3,22 @@
     <li>ユーザー名: <%= @user.name %></li>
     <li>本棚名: <%= @bookshelf.bookshelf_name %></li>
     <li>
-      <% @books.each do |book| %>
-        <p><%= book.title %></p>
-        <% if book.cover_image.attached? %>
-          <%= link_to image_tag(book.cover_image), user_bookshelf_book_path(@user, @bookshelf, book) %>
-        <% else %>
-          <%= link_to image_tag("no_image.jpg"), user_bookshelf_book_path(@user, @bookshelf, book) %>
+      <div class="grid_container">
+        <ul class="books_grid">
+        <% @books.each do |book| %>
+          <li class="book_tile">
+            <%= link_to user_bookshelf_book_path(@user, @bookshelf, book) do %>
+              <% if book.cover_image.attached? %>
+                <%= image_tag(book.cover_image, class: "book_cover") %>
+              <% else %>
+                <%= image_tag("no_image.jpg", class: "book_cover") %>
+              <% end %>
+              <div class="book_title"><%= book.title %></div>
+            <% end %>
+          </li>
         <% end %>
-      <% end %>
+        </ul>
+      </div>
     </li>
   </ul>
 </div>

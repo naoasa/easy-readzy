@@ -401,6 +401,38 @@ html, body {
   height: calc(100vh - 64px);
 }
 
+.books_grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 32px 24px; // 行間・列間のスペース
+  list-style: none;
+  padding: 40px 0 0 0;
+  margin: 0 auto;
+  width: 60%;
+  justify-items: center;
+}
+
+.books_grid .book_tile a {
+  text-decoration: none;
+  color: black;
+}
+
+.book_tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.book_cover {
+  height: 200px;
+  box-shadow: -5px 7px 8px rgba(0, 0, 0, 0.1);
+}
+
+.book_title {
+  margin-top: 6px;
+  font-size: 15px;
+}
+
 // 検索結果
 
 .books_search {
