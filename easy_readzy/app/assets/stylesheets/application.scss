@@ -431,6 +431,10 @@ html, body {
   box-shadow: -5px 7px 8px rgba(0, 0, 0, 0.1);
 }
 
+.book_tile a:hover .book_cover {
+  opacity: .6;
+}
+
 .book_title {
   margin-top: 6px;
   width: 158px;
