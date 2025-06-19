@@ -21,7 +21,20 @@
           <%= f.submit "アウトプットを保存" %>
         </div>
       <% end %>
-      <%= button_to "削除", goal_output_path(@goal), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "delete_btn" %>
+      <%#= button_to "削除", goal_output_path(@goal), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "delete_btn" %>
+      <a href="javascript:void(0);" id="show_delete_output_modal" class="delete_output_link"><%= image_tag "1038_tr_h.svg" %></a>
+      <!-- アウトプットの削除モーダル -->
+      <div id="delete_book_modal" class="dialog_overlay" style="display: none;">
+      <%# <div id="delete_book_modal" class="dialog_overlay" style="display: flex;"> %>
+        <div id="delete_book_dialog" class="dialog_card delete_book_dialog">
+          <%= image_tag "943_ex_h.svg", class: "exclamation_icon" %>
+          <p class="delete_book_message">アウトプットを削除しますか？</p>
+          <div class="delete_and_cancel_btns">
+            <button type="button" id="cancel_delete" class="cancel_btn">キャンセル</button>
+            <%= button_to "削除", goal_output_path(@goal), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "delete_btn" %>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
