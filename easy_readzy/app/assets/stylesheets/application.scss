@@ -465,6 +465,59 @@ html, body {
   background: $cloud;
   width: 100%;
   height: calc(100vh - 64px);
+  display: flex;
+  justify-content: center;
+}
+
+.search_name {
+  height: 40px;
+  display: flex;
+  margin-top: 10px;
+  font-size: $font-size-h2;
+  align-items: center;
+}
+
+a.search_book_card {
+  border-radius: 12px;
+  background: white;
+  display: flex;
+  align-items: center;
+  height: 17vh;
+  text-decoration: none;
+  color: black;
+  h2 {
+    font-size: $font-size-h2;
+    font-weight: normal;
+  }
+  p {
+    font-size: $font-size-base;
+    margin-top: 12px;
+  }
+}
+
+.book_item img {
+  height: 15vh;
+  margin-left: 10px;
+}
+
+.search_book_cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.search_book_info {
+  display: flex;
+  flex-direction: column;
+  padding: 24px 40px;
+}
+
+.search_book_cover {
+  box-shadow: 5px 8px 11px 0px rgba(0, 0, 0, 0.1);
+}
+
+a.book_item {
+  display: flex;
 }
 
 // 新規登録
