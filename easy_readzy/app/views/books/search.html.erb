@@ -21,6 +21,7 @@
               <%= book.dig("volumeInfo", "authors")&.join(", ") || "-" %> / <%= book.dig("volumeInfo", "publisher") || "-" %> / <%= book.dig("volumeInfo", "publishedDate") || "-" %>
             </p>
           </div>
+          <div class="button add_to_bookshelf">本棚に追加</div>
         <% end %>
       <% end %>
     </div>

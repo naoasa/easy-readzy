@@ -485,6 +485,7 @@ a.search_book_card {
   height: 17vh;
   text-decoration: none;
   color: black;
+  justify-content: space-between;
   h2 {
     font-size: $font-size-h2;
     font-weight: normal;
@@ -496,6 +497,9 @@ a.search_book_card {
   &:hover {
     .search_book_cover {
       opacity: .7;
+    }
+    .button.add_to_bookshelf {
+      background: $dark-azure;
     }
   }
 }
@@ -515,6 +519,8 @@ a.search_book_card {
   display: flex;
   flex-direction: column;
   padding: 24px 40px;
+  flex: 1;
+  min-width: 0;
 }
 
 .search_book_cover {
@@ -523,6 +529,17 @@ a.search_book_card {
 
 a.book_item {
   display: flex;
+}
+
+.add_to_bookshelf {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 13px;
+  font-size: 18px;
+  width: 190px;
+  height: 65px;
+  margin-right: 5%;
 }
 
 // 新規登録
