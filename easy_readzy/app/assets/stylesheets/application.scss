@@ -493,6 +493,11 @@ a.search_book_card {
     font-size: $font-size-base;
     margin-top: 12px;
   }
+  &:hover {
+    .search_book_cover {
+      opacity: .7;
+    }
+  }
 }
 
 .book_item img {
