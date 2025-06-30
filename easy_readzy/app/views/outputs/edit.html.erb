@@ -22,7 +22,7 @@
       <span class="goal_text text_card"><%= @goal.goal_text %></span>
       <div class="output_form">
         <%= form_with model: [@goal, @output], url: goal_output_path(@goal), method: :patch, local: true do |f| %>
-          <%= f.text_area :output_text, rows: 4, placeholder: "アウトプットを入力" %>
+          <%= f.text_area :output_text, rows: 4, placeholder: "アウトプットを入力", class: "input_form" %>
           <div>
             <button type="button" id="clear_output_text">入力をクリア</button>
             <%= f.submit "アウトプットを保存" %>
