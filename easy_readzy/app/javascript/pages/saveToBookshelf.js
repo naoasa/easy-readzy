@@ -27,11 +27,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const goalText = document.getElementById('goal_text').value;
 
     if (goalText.trim() !== '') {
-      const goalItem = document.createElement('div'); // div要素を作成
-      goalItem.className = 'goal_item'; // div要素にclass="goal_item"を追加
-      goalItem.textContent = goalText; // div要素のテキストはテキストエリアから取得したものとする
-      // goalItem => <div class="goal_item">これは目標です。</div>
-      goalsList.appendChild(goalItem); // div要素内にアイテムを挿入
+      const goalItem = document.createElement('div');
+      goalItem.className = 'goal_item';
+
+      const textCard = document.createElement('div');
+      textCard.className = 'text_card';
+      textCard.textContent = goalText;
+
+      goalItem.appendChild(textCard);
+      goalsList.appendChild(goalItem);
+
       document.getElementById('goal_text').value = ''; // 要素を取得し直して、テキストエリアを空にする
 
       // フラッシュメッセージを表示
