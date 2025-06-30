@@ -24,6 +24,7 @@
         <%= form_with model: [@goal, @output], url: goal_output_path(@goal), method: :patch, local: true do |f| %>
           <%= f.text_area :output_text, rows: 4, placeholder: "アウトプットを入力", class: "input_form" %>
           <div class="c_s_btns_container">
+            <a href="javascript:void(0);" id="show_delete_output_modal" class="delete_output_link"><%= image_tag "1038_tr_h.svg" %></a>
             <div class="clear_and_save_btns">
               <button type="button" id="clear_output_text" class="clear_input_btn"><%= image_tag "icon_B_0405.svg", class: "eraser_img" %>入力をクリア</button>
               <%= f.submit "アウトプットを保存", class: "save_output_btn" %>
@@ -31,7 +32,6 @@
           </div>
         <% end %>
         <%#= button_to "削除", goal_output_path(@goal), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "delete_btn" %>
-        <a href="javascript:void(0);" id="show_delete_output_modal" class="delete_output_link"><%= image_tag "1038_tr_h.svg" %></a>
         <!-- アウトプットの削除モーダル -->
         <div id="delete_book_modal" class="dialog_overlay" style="display: none;">
         <%# <div id="delete_book_modal" class="dialog_overlay" style="display: flex;"> %>
