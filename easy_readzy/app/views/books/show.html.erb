@@ -64,8 +64,12 @@
                 <div class="output_form" style="display: none;">
                   <%= form_with scope: :output, url: goal_output_path(goal), method: :post, local: true do |f| %>
                     <%= f.text_area :output_text, rows: 4, placeholder: "アウトプットを入力", class: "input_form" %>
-                    <button type="button" id="clear_output_text">入力をクリア</button>
-                    <%= f.submit "アウトプットを保存" %>
+                    <div class="c_s_btns_container">
+                      <div class="clear_and_save_btns">
+                        <button type="button" id="clear_output_text" class="clear_input_btn"><%= image_tag "icon_B_0405.svg", class: "eraser_img" %>入力をクリア</button>
+                        <%= f.submit "アウトプットを保存", class: "save_output_btn" %>
+                      </div>
+                    </div>
                   <% end %>
                 </div>
               <% end %>

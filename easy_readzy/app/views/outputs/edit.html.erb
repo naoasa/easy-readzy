@@ -23,9 +23,11 @@
       <div class="output_form">
         <%= form_with model: [@goal, @output], url: goal_output_path(@goal), method: :patch, local: true do |f| %>
           <%= f.text_area :output_text, rows: 4, placeholder: "アウトプットを入力", class: "input_form" %>
-          <div>
-            <button type="button" id="clear_output_text" class="clear_input_btn"><%= image_tag "icon_B_0405.svg", class: "eraser_img" %>入力をクリア</button>
-            <%= f.submit "アウトプットを保存" %>
+          <div class="c_s_btns_container">
+            <div class="clear_and_save_btns">
+              <button type="button" id="clear_output_text" class="clear_input_btn"><%= image_tag "icon_B_0405.svg", class: "eraser_img" %>入力をクリア</button>
+              <%= f.submit "アウトプットを保存", class: "save_output_btn" %>
+            </div>
           </div>
         <% end %>
         <%#= button_to "削除", goal_output_path(@goal), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "delete_btn" %>

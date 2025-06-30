@@ -691,6 +691,30 @@ a.book_item {
   background: $dark-azure;
 }
 
+.save_output_btn {
+  width: 187px;
+  height: 58px;
+  background: $gold;
+  color: $white;
+  border-radius: 18px;
+  font-size: $font-size-base;
+  margin-left: 12px;
+  &:hover {
+    background: $dark-gold;
+  }
+}
+
+.c_s_btns_container {
+  display: flex;
+  margin-top: 8px;
+}
+
+.clear_and_save_btns {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
 // フォーム
 
 .input_form {
