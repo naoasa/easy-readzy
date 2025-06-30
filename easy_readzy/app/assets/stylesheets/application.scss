@@ -750,6 +750,13 @@ a.book_item {
   outline: 1px solid $azure; // フォーカス時に外側に枠線を表示
 }
 
+.goal_section {
+  textarea {
+    field-sizing: content;
+    resize: none;
+  }
+}
+
 .output_form {
   textarea {
     field-sizing: content;
