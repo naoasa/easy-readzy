@@ -673,6 +673,20 @@ a.book_item {
   margin-left: auto;
 }
 
+.clear_input_btn {
+  width: 126px;
+  height: 46px;
+  background: #D9D9D9;
+  font-size: $font-size-caption;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .eraser_img {
+    width: 27px;
+  }
+}
+
 .create_output_btn:hover {
   background: $dark-azure;
 }
