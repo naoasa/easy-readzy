@@ -1,68 +1,76 @@
 <div class="books_show">
-  <% if @book.cover_image.attached? %>
-    <%= image_tag @book.cover_image %>
-  <% else %>
-    <%= image_tag "no_image.jpg" %>
-  <% end %>
-  <h1><%= @book.title %></h1>
-  <p><%= @book.author || "-" %> / <%= @book.publisher || "-" %> / <%= @book.published_date || "-" %></p>
-  <p><%= @shelf_book&.location || "-" %></p>
-  <p><%= @book.description || "-" %></p>
-  <!-- モーダルを表示させるためのダミーのリンク -->
-  <a href="javascript:void(0);" id="show_delete_modal" class="delete_book_link">マイ本棚から削除</a>
-  <!-- 本の削除モーダル -->
-  <div id="delete_book_modal" class="dialog_overlay" style="display: none;">
-    <div id="delete_book_dialog" class="dialog_card delete_book_dialog">
-      <%= image_tag "943_ex_h.svg", class: "exclamation_icon" %>
-      <p class="delete_book_message">マイ本棚から本を削除しますか？</p>
-      <div class="delete_info_container">
-        <p class="delete_information_title">削除される情報</p>
-        <div class="delete_information_contents">
-          <ul>
-            <li>本の保管場所</li>
-            <li>本に紐づく目標</li>
-            <li>本に紐づくアウトプット</li>
-          </ul>
+  <div class="narrow_container">
+    <div class="book_show_card">
+      <% if @book.cover_image.attached? %>
+        <%= image_tag @book.cover_image, class: "book_cover show_book_cover" %>
+      <% else %>
+        <%= image_tag "no_image.jpg", class: "book_cover show_book_cover" %>
+      <% end %>
+      <div class="book_show_container">
+        <h1><%= @book.title %></h1>
+        <div class="author_and_location">
+          <p class="author"><%= @book.author || "-" %> / <%= @book.publisher || "-" %> / <%= @book.published_date || "-" %></p>
+          <p class="location"><%= @shelf_book&.location || "-" %></p>
         </div>
-      </div>
-      <div class="delete_and_cancel_btns">
-        <button type="button" id="cancel_delete" class="cancel_btn">キャンセル</button>
-        <%= button_to "削除", user_bookshelf_book_path(@user, @bookshelf, @book), method: :delete, data: { turbo_confirm: "本当に削除しますか？" }, class: "delete_btn" %>
+        <p class="description"><%= @book.description || "-" %></p>
+        <!-- モーダルを表示させるためのダミーのリンク -->
+        <a href="javascript:void(0);" id="show_delete_modal" class="delete_book_link">マイ本棚から削除</a>
       </div>
     </div>
-  </div>
-
-  <% if @shelf_book&.goals.present? %>
-    <ul>
-      <% @shelf_book.goals.each do |goal| %>
-        <li>
-          <div class="goal_item" data_goal_id="<%= goal.id %>">
-            <span class="goal_text"><%= goal.goal_text %></span>
-
-            <%# アウトプットの作成/未作成によってボタンの表示/非表示を切り替える %>
-            <% if goal.output.present? %>
-              <%# アウトプットがある場合は、アウトプットテキストを表示 %>
-              <div class="output_text">
-                <%= goal.output.output_text %>
-              </div>
-              <%= link_to "アウトプットを編集", edit_goal_output_path(goal), class: "edit_output_btn" %>
-            <% else %>
-              <%# アウトプット未作成の場合は、アウトプット作成ボタンを表示 %>
-              <button type="button" class="create_output_btn">アウトプット作成</button>
-              <%# 隠しフォーム %>
-              <div class="output_form" style="display: none;">
-                <%= form_with scope: :output, url: goal_output_path(goal), method: :post, local: true do |f| %>
-                  <%= f.text_area :output_text, rows: 4, placeholder: "アウトプットを入力" %>
-                  <button type="button" id="clear_output_text">入力をクリア</button>
-                  <%= f.submit "アウトプットを保存" %>
-                <% end %>
-              </div>
-            <% end %>
+    <!-- 本の削除モーダル -->
+    <div id="delete_book_modal" class="dialog_overlay" style="display: none;">
+      <div id="delete_book_dialog" class="dialog_card delete_book_dialog">
+        <%= image_tag "943_ex_h.svg", class: "exclamation_icon" %>
+        <p class="delete_book_message">マイ本棚から本を削除しますか？</p>
+        <div class="delete_info_container">
+          <p class="delete_information_title">削除される情報</p>
+          <div class="delete_information_contents">
+            <ul>
+              <li>本の保管場所</li>
+              <li>本に紐づく目標</li>
+              <li>本に紐づくアウトプット</li>
+            </ul>
           </div>
-        </li>
-      <% end %>
-    </ul>
-  <% else %>
-    <p>目標テキストがありません</p>
-  <% end %>
+        </div>
+        <div class="delete_and_cancel_btns">
+          <button type="button" id="cancel_delete" class="cancel_btn">キャンセル</button>
+          <%= button_to "削除", user_bookshelf_book_path(@user, @bookshelf, @book), method: :delete, data: { turbo_confirm: "本当に削除しますか？" }, class: "delete_btn" %>
+        </div>
+      </div>
+    </div>
+
+    <% if @shelf_book&.goals.present? %>
+      <ul>
+        <% @shelf_book.goals.each do |goal| %>
+          <li>
+            <div class="goal_item" data_goal_id="<%= goal.id %>">
+              <span class="goal_text"><%= goal.goal_text %></span>
+
+              <%# アウトプットの作成/未作成によってボタンの表示/非表示を切り替える %>
+              <% if goal.output.present? %>
+                <%# アウトプットがある場合は、アウトプットテキストを表示 %>
+                <div class="output_text">
+                  <%= goal.output.output_text %>
+                </div>
+                <%= link_to "アウトプットを編集", edit_goal_output_path(goal), class: "edit_output_btn" %>
+              <% else %>
+                <%# アウトプット未作成の場合は、アウトプット作成ボタンを表示 %>
+                <button type="button" class="create_output_btn">アウトプット作成</button>
+                <%# 隠しフォーム %>
+                <div class="output_form" style="display: none;">
+                  <%= form_with scope: :output, url: goal_output_path(goal), method: :post, local: true do |f| %>
+                    <%= f.text_area :output_text, rows: 4, placeholder: "アウトプットを入力" %>
+                    <button type="button" id="clear_output_text">入力をクリア</button>
+                    <%= f.submit "アウトプットを保存" %>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p>目標テキストがありません</p>
+    <% end %>
+  </div>
 </div>
