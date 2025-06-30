@@ -552,6 +552,8 @@ a.book_item {
   background: $cloud;
   width: 100%;
   height: calc(100vh - 64px);
+  display: flex;
+  justify-content: center;
 }
 
 .save_colors {
