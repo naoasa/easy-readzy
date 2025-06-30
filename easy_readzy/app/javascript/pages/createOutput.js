@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // クリアボタンのクリックでテキストエリアをクリア
   document.querySelectorAll('#clear_output_text').forEach(clearBtn => {
-    clearBtn.addEventListener('click', (e) => {
+    clearBtn.addEventListener('click', () => {
       const form = clearBtn.closest('.output_form');
       const textarea = form.querySelector('textarea');
       if (textarea) textarea.value = '';
