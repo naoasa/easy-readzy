@@ -582,6 +582,22 @@ a.book_item {
   margin-top: 50px;
 }
 
+.add_goal_btn {
+  width: 187px;
+  height: 58px;
+  background: $azure;
+  color: $white;
+  border-radius: 18px;
+  font-size: $font-size-h3;
+  &:hover {
+    background: $dark-azure;
+  }
+}
+
+.clear_and_add_goal_btns {
+  display: flex;
+}
+
 // 詳細ページ
 
 .books_show {

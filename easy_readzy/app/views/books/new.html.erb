@@ -26,9 +26,11 @@
 
       <div class="goal_section">
         <div id="goals_list"></div>
-        <textarea id="goal_text" placeholder="目標・目的を入力（例: テーブル結合を使えるようになる）"></textarea>
-        <button type="button" id="add_goal">目標を追加</button>
-        <button type="button" id="clear_goal_text">入力をクリア</button>
+        <textarea id="goal_text" class="input_form" placeholder="目標・目的を入力（例: テーブル結合を使えるようになる）"></textarea>
+        <div clear_and_add_goal_btns>
+          <button type="button" id="clear_goal_text" class="clear_input_btn"><%= image_tag "icon_B_0405.svg", class: "eraser_img" %>入力をクリア</button>
+          <button type="button" id="add_goal" class="add_goal_btn">目標を追加</button>
+        </div>
       </div>
 
       <button type="button" id="save_to_bookshelf" style="display: none;">マイ本棚に保存</button>
