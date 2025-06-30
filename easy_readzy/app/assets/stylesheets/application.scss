@@ -638,6 +638,20 @@ a.book_item {
   }
 }
 
+.goal_output_list {
+  list-style: none;
+}
+
+.goal_item {
+  .text_card {
+    background: $white;
+    border-radius: 7px;
+    margin-top: 12px;
+    padding: 28px 48px;
+    font-size: $font-size-h3;
+  }
+}
+
 // .books_index { // index画面全体の背景
 //   background: $cloud;
 //   width: 100%;
