@@ -51,7 +51,9 @@
                 <%# アウトプットがある場合は、アウトプットテキストを表示 %>
                 <div class="output_text text_card">
                   <%= goal.output.output_text %>
-                  <%= link_to "アウトプットを編集", edit_goal_output_path(goal), class: "edit_output_btn" %>
+                  <div class="edit_link">
+                    <%= link_to image_tag("edit-icon.svg"), edit_goal_output_path(goal), class: "edit_output_btn" %>
+                  </div>
                 </div>
               <% else %>
                 <%# アウトプット未作成の場合は、アウトプット作成ボタンを表示 %>

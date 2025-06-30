@@ -649,6 +649,17 @@ a.book_item {
     margin-top: 12px;
     padding: 28px 48px;
     font-size: $font-size-h3;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.edit_link {
+  margin-left: auto;
+  .edit_output_btn {
+    img {
+      width: 42px;
+    }
   }
 }
 
