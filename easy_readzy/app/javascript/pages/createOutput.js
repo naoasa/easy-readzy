@@ -1,9 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const clearOutputText = document.getElementById('clear_output_text'); // アウトプットテキストの取り消しボタン
+  // 「アウトプット作成」ボタンのクリックでフォーム表示/非表示
   document.querySelectorAll('.create_output_btn').forEach(button => {
     button.addEventListener('click', () => {
-      const form = button.nextElementSibling;
-      if(form.style.display === 'none') {
+      // .goal_item内の.output_formを取得
+      const goalItem = button.closest('.goal_item');
+      const form = goalItem.querySelector('.output_form');
+      if (form.style.display === 'none' || form.style.display === '') {
         form.style.display = 'block';
       } else {
         form.style.display = 'none';
@@ -11,8 +13,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // アウトプットテキスト入力のクリアボタン
-  clearOutputText.addEventListener('click', () => {
-    document.getElementById('output_output_text').value = '';
+  // クリアボタンのクリックでテキストエリアをクリア
+  document.querySelectorAll('#clear_output_text').forEach(clearBtn => {
+    clearBtn.addEventListener('click', (e) => {
+      const form = clearBtn.closest('.output_form');
+      const textarea = form.querySelector('textarea');
+      if (textarea) textarea.value = '';
+    });
   });
 });

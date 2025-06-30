@@ -44,9 +44,13 @@
         <% @shelf_book.goals.each do |goal| %>
           <li>
             <div class="goal_item" data_goal_id="<%= goal.id %>">
-              <div class="goal_text text_card"><%= goal.goal_text %></div>
+              <div class="goal_text text_card"><%= goal.goal_text %>
+                <%# アウトプット未作成の場合のみ、ここに作成ボタンを表示 %>
+                <% unless goal.output.present? %>
+                  <button type="button" class="create_output_btn">アウトプット作成</button>
+                <% end %>
+              </div>
 
-              <%# アウトプットの作成/未作成によってボタンの表示/非表示を切り替える %>
               <% if goal.output.present? %>
                 <%# アウトプットがある場合は、アウトプットテキストを表示 %>
                 <div class="output_text text_card">
@@ -56,8 +60,6 @@
                   </div>
                 </div>
               <% else %>
-                <%# アウトプット未作成の場合は、アウトプット作成ボタンを表示 %>
-                <button type="button" class="create_output_btn">アウトプット作成</button>
                 <%# 隠しフォーム %>
                 <div class="output_form" style="display: none;">
                   <%= form_with scope: :output, url: goal_output_path(goal), method: :post, local: true do |f| %>
