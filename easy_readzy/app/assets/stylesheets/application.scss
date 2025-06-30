@@ -680,32 +680,6 @@ a.book_item {
   outline: 1px solid $azure; // フォーカス時に外側に枠線を表示
 }
 
-//
-.fancy-textarea {
-  width: 100%;
-  padding: 12px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  resize: vertical;
-
-  /* 内側シャドウ */
-  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
-
-  /* 背景とフォーカス時の効果 */
-  background-color: #fdfdfd;
-  transition: box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-.fancy-textarea:focus {
-  outline: none;
-  border-color: #66afe9;
-  box-shadow:
-    inset 0 2px 6px rgba(0, 0, 0, 0.1),
-    0 0 5px rgba(102, 175, 233, 0.6); /* 外側シャドウを追加 */
-}
-//
-
 .output_form {
   textarea {
     field-sizing: content;
