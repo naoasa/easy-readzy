@@ -468,7 +468,7 @@ html, body {
 .books_search {
   background: $cloud;
   width: 100%;
-  height: calc(100vh - 64px);
+  min-height: calc(100vh - 64px);
   display: flex;
   justify-content: center;
 }
@@ -551,7 +551,7 @@ a.book_item {
 .books_new {
   background: $cloud;
   width: 100%;
-  height: calc(100vh - 64px);
+  min-height: calc(100vh - 64px);
   display: flex;
   justify-content: center;
 }
@@ -636,7 +636,7 @@ a.book_item {
 .books_show {
   background: $cloud;
   width: 100%;
-  height: calc(100vh - 64px);
+  min-height: calc(100vh - 64px);
   display: flex;
   justify-content: center;
 }
