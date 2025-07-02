@@ -30,11 +30,13 @@
       </div>
 
       <div class="footer_btns">
-        <button type="button" id="save_to_bookshelf" style="display: none;">マイ本棚に保存</button>
-        <div clear_and_add_goal_btns>
+        <div class="clear_and_add_goal_btns">
           <button type="button" id="clear_goal_text" class="clear_input_btn"><%= image_tag "icon_B_0405.svg", class: "eraser_img" %>入力をクリア</button>
           <button type="button" id="add_goal" class="add_goal_btn">目標を追加</button>
         </div>
+      </div>
+      <div class="save_btn_container">
+        <button type="button" id="save_to_bookshelf" class="save_btn" style="display: none;">マイ本棚に保存</button>
       </div>
 
       <div id="save_modal" class="dialog_overlay" style="display: none;">
