@@ -405,6 +405,22 @@ html, body {
   justify-content: center; // 中央寄せ
 }
 
+.pagination_container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0 20px;
+  span {
+    a {
+      text-decoration: none;
+      color: black;
+      font-size: $font-size-h2;
+    }
+    &.current {
+      font-size: $font-size-h2;
+    }
+  }
+}
+
 // コンテンツを真ん中に寄せる汎用コンテナ
 
 .container {
