@@ -100,7 +100,8 @@ class BooksController < ApplicationController
     @bookshelf = @user.bookshelves.find(params[:bookshelf_id])
 
     # 本棚の本一覧を取得(preloadを使用)
-    @books = @bookshelf.books.preload(:cover_image_attachment)
+    # @books = @bookshelf.books.preload(:cover_image_attachment) # kaminari 導入前
+    @books = @bookshelf.books.preload(:cover_image_attachment).page(params[:page]).per(25) # 5 * 5 = 25件 / ページ
   end
 
   def show
