@@ -23,6 +23,7 @@ $dark-gold: #d49306;
 $light-azure: #E7EEF7;
 $dark-azure: #3c6cab;
 $intro-gray: #7B7B7B;
+$pagination-gray: #505050;
 $user-menu-gray: #E5E5E5;
 $delete-red: #F25457;
 
@@ -412,13 +413,49 @@ html, body {
   span {
     a {
       text-decoration: none;
-      color: black;
-      font-size: $font-size-h2;
+      color: $intro-gray;
     }
     &.current {
-      font-size: $font-size-h2;
+      color: $white;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: black;
     }
   }
+}
+
+nav.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+}
+
+span.next {
+  a {
+    display: flex;
+    align-items: center;
+  }
+}
+
+span.prev {
+  a {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.next_icon {
+  width: 18px;
+}
+
+.prev_icon {
+  width: 18px;
+  transform: rotate(180deg);
 }
 
 // コンテンツを真ん中に寄せる汎用コンテナ
