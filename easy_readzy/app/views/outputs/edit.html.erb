@@ -20,9 +20,10 @@
     <%# 編集対象の目標とアウトプットフォーム %>
     <div class="goal_item" data_goal_id="<%= @goal.id %>">
       <span class="goal_text text_card"><%= @goal.goal_text %></span>
+      <div class="connector_line"></div>
       <div class="output_form">
         <%= form_with model: [@goal, @output], url: goal_output_path(@goal), method: :patch, local: true do |f| %>
-          <%= f.text_area :output_text, rows: 4, placeholder: "アウトプットを入力", class: "input_form" %>
+          <%= f.text_area :output_text, rows: 4, placeholder: "アウトプットを入力", class: "input_form edit_output_form" %>
           <div class="c_s_btns_container">
             <a href="javascript:void(0);" id="show_delete_output_modal" class="delete_output_link"><%= image_tag "1038_tr_h.svg" %></a>
             <div class="clear_and_save_btns">
