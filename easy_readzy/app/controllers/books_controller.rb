@@ -93,11 +93,16 @@ class BooksController < ApplicationController
   end
 
   def index
-    # ユーザーを取得
-    @user = User.find(params[:user_id])
-
-    # 本棚を取得
-    @bookshelf = @user.bookshelves.find(params[:bookshelf_id])
+    if params[:user_id].present? && params[:bookshelf_id].present?
+      # ユーザーを取得
+      @user = User.find(params[:user_id])
+      # 本棚を取得
+      @bookshelf = @user.bookshelves.find(params[:bookshelf_id])
+    else
+      # ルート "/" からアクセスされた場合
+      @user = current_user
+      @bookshelf = @user.bookshelves.first # 最初の本棚を取得
+    end
 
     # 本棚の本一覧を取得(preloadを使用)
     # @books = @bookshelf.books.preload(:cover_image_attachment) # kaminari 導入前
