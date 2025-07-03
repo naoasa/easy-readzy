@@ -1,39 +1,54 @@
 <div class="books_new">
-  <% unless @book_info[:title].blank? %>
-    <% if @book_info[:image_url] %>
-      <%= image_tag @book_info[:image_url], alt: @book_info[:title] %>
-    <% else %>
-      <%= image_tag "no_image.jpg", alt: @book_info[:title] %>
-    <% end %>
-    <h1><%= @book_info[:title] %></h1>
-    <p><%= @book_info[:authors] %> / <%= @book_info[:publisher] %> / <%= @book_info[:published_date] %></p>
-  <% else %>
-    <p>書籍情報を取得できませんでした。</p>
-  <% end %>
-
-  <div id="js_flash" class="add_goal_flash" style="display: none;"></div>
-
-  <%= form_with url: user_bookshelf_books_path(@user, @bookshelf), method: :post, local: true, id: "new_book_form" do %>
-    <%= hidden_field_tag :google_books_id, @google_books_id %>
-
-    <div class="goal_section">
-      <div id="goals_list"></div>
-      <textarea id="goal_text" placeholder="目標・目的を入力（例: テーブル結合を使えるようになる）"></textarea>
-      <button type="button" id="add_goal">目標を追加</button>
-      <button type="button" id="clear_goal_text">入力をクリア</button>
+  <div class="narrow_container">
+    <div class="book_show_card">
+      <% unless @book_info[:title].blank? %>
+        <% if @book_info[:image_url] %>
+          <%= image_tag @book_info[:image_url], alt: @book_info[:title], class: "book_cover show_book_cover" %>
+        <% else %>
+          <%= image_tag "no_image.jpg", alt: @book_info[:title], class: "book_cover show_book_cover" %>
+        <% end %>
+        <div class="book_show_container">
+          <h1><%= @book_info[:title] %></h1>
+          <div class="author_and_location">
+            <p class="author"><%= @book_info[:authors] %> / <%= @book_info[:publisher] %> / <%= @book_info[:published_date] %></p>
+          </div>
+          <p class="description"><%= @book_info[:description] %></p>
+      <% else %>
+        <p>書籍情報を取得できませんでした。</p>
+      <% end %>
+        </div>
     </div>
 
-    <button type="button" id="save_to_bookshelf" style="display: none;">マイ本棚に保存</button>
+    <div id="js_flash" class="add_goal_flash" style="display: none;"></div>
 
-    <div id="save_modal" class="dialog_overlay" style="display: none;">
-      <div class="dialog_card">
-        <p class="location_message">本の保管場所を入力してください</p>
-        <input id="modal_location_input" class="one_line_input" type="text" placeholder="例: Kindle">
-        <div class="save_and_cancel_btns">
-          <button type="button" id="confirm_save" class="dialog_btn save_colors">保存を完了する</button>
-          <button type="button" id="cancel_save" class="dialog_cancel_btn">キャンセル</button>
+    <%= form_with url: user_bookshelf_books_path(@user, @bookshelf), method: :post, local: true, id: "new_book_form" do %>
+      <%= hidden_field_tag :google_books_id, @google_books_id %>
+
+      <div class="goal_section">
+        <div id="goals_list"></div>
+        <textarea id="goal_text" class="input_form" placeholder="目標・目的を入力（例: テーブル結合を使えるようになる）"></textarea>
+      </div>
+
+      <div class="footer_btns">
+        <div class="clear_and_add_goal_btns">
+          <button type="button" id="clear_goal_text" class="clear_input_btn"><%= image_tag "icon_B_0405.svg", class: "eraser_img" %>入力をクリア</button>
+          <button type="button" id="add_goal" class="add_goal_btn">目標を追加</button>
         </div>
       </div>
-    </div>
-  <% end %>
+      <div class="save_btn_container">
+        <button type="button" id="save_to_bookshelf" class="save_btn" style="display: none;">マイ本棚に保存</button>
+      </div>
+
+      <div id="save_modal" class="dialog_overlay" style="display: none;">
+        <div class="dialog_card">
+          <p class="location_message">本の保管場所を入力してください</p>
+          <input id="modal_location_input" class="one_line_input" type="text" placeholder="例: Kindle">
+          <div class="save_and_cancel_btns">
+            <button type="button" id="confirm_save" class="dialog_btn save_colors">保存を完了する</button>
+            <button type="button" id="cancel_save" class="dialog_cancel_btn">キャンセル</button>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>

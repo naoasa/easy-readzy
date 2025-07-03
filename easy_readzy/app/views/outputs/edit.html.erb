@@ -1,45 +1,56 @@
 <div class="books_show">
-  <%# 本の詳細情報 %>
-  <% if @book.cover_image.attached? %>
-    <%= image_tag @book.cover_image %>
-  <% else %>
-    <%= image_tag "no_image.jpg" %>
-  <% end %>
-  <h1><%= @book.title %></h1>
-  <p><%= @book.author || "-" %> / <%= @book.publisher || "-" %> / <%= @book.published_date || "-" %></p>
-  <p><%= @goal.bookshelf_book.location || "-" %></p>
-  <p><%= @book.description || "-" %></p>
-
-  <%# 編集対象の目標とアウトプットフォーム %>
-  <div class="goal_item" data_goal_id="<%= @goal.id %>">
-    <span class="goal_text"><%= @goal.goal_text %></span>
-    <div class="output_form">
-      <%= form_with model: [@goal, @output], url: goal_output_path(@goal), method: :patch, local: true do |f| %>
-        <%= f.text_area :output_text, rows: 4, placeholder: "アウトプットを入力" %>
-        <div>
-          <button type="button" id="clear_output_text">入力をクリア</button>
-          <%= f.submit "アウトプットを保存" %>
-        </div>
+  <div class="narrow_container">
+    <%# 本の詳細情報 %>
+    <div class="book_show_card">
+      <% if @book.cover_image.attached? %>
+        <%= image_tag @book.cover_image, class: "book_cover show_book_cover" %>
+      <% else %>
+        <%= image_tag "no_image.jpg", class: "book_cover show_book_cover" %>
       <% end %>
-      <%#= button_to "削除", goal_output_path(@goal), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "delete_btn" %>
-      <a href="javascript:void(0);" id="show_delete_output_modal" class="delete_output_link"><%= image_tag "1038_tr_h.svg" %></a>
-      <!-- アウトプットの削除モーダル -->
-      <div id="delete_book_modal" class="dialog_overlay" style="display: none;">
-      <%# <div id="delete_book_modal" class="dialog_overlay" style="display: flex;"> %>
-        <div id="delete_book_dialog" class="dialog_card delete_output_dialog">
-          <%= image_tag "943_ex_h.svg", class: "exclamation_icon" %>
-          <p class="delete_book_message">アウトプットを削除しますか？</p>
-          <div class="delete_info_container">
-            <p class="delete_information_title">削除される情報</p>
-            <div class="delete_information_contents">
-              <ul>
-                <li>本に紐づくアウトプット</li>
-              </ul>
+      <div class="book_show_container">
+        <h1><%= @book.title %></h1>
+        <div class="author_and_location">
+          <p class="author"><%= @book.author || "-" %> / <%= @book.publisher || "-" %> / <%= @book.published_date || "-" %></p>
+          <p class="location"><%= @goal.bookshelf_book.location || "-" %></p>
+        </div>
+        <p class="description"><%= @book.description || "-" %></p>
+      </div>
+    </div>
+
+    <%# 編集対象の目標とアウトプットフォーム %>
+    <div class="goal_item" data_goal_id="<%= @goal.id %>">
+      <span class="goal_text text_card"><%= @goal.goal_text %></span>
+      <div class="connector_line"></div>
+      <div class="output_form">
+        <%= form_with model: [@goal, @output], url: goal_output_path(@goal), method: :patch, local: true do |f| %>
+          <%= f.text_area :output_text, rows: 4, placeholder: "アウトプットを入力", class: "input_form edit_output_form" %>
+          <div class="c_s_btns_container">
+            <a href="javascript:void(0);" id="show_delete_output_modal" class="delete_output_link"><%= image_tag "1038_tr_h.svg" %></a>
+            <div class="clear_and_save_btns">
+              <button type="button" id="clear_output_text" class="clear_input_btn"><%= image_tag "icon_B_0405.svg", class: "eraser_img" %>入力をクリア</button>
+              <%= f.submit "アウトプットを保存", class: "save_output_btn" %>
             </div>
           </div>
-          <div class="delete_and_cancel_btns">
-            <button type="button" id="cancel_delete" class="cancel_btn">キャンセル</button>
-            <%= button_to "削除", goal_output_path(@goal), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "delete_btn" %>
+        <% end %>
+        <%#= button_to "削除", goal_output_path(@goal), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "delete_btn" %>
+        <!-- アウトプットの削除モーダル -->
+        <div id="delete_book_modal" class="dialog_overlay" style="display: none;">
+        <%# <div id="delete_book_modal" class="dialog_overlay" style="display: flex;"> %>
+          <div id="delete_book_dialog" class="dialog_card delete_output_dialog">
+            <%= image_tag "943_ex_h.svg", class: "exclamation_icon" %>
+            <p class="delete_book_message">アウトプットを削除しますか？</p>
+            <div class="delete_info_container">
+              <p class="delete_information_title">削除される情報</p>
+              <div class="delete_information_contents">
+                <ul>
+                  <li>本に紐づくアウトプット</li>
+                </ul>
+              </div>
+            </div>
+            <div class="delete_and_cancel_btns">
+              <button type="button" id="cancel_delete" class="cancel_btn">キャンセル</button>
+              <%= button_to "削除", goal_output_path(@goal), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "delete_btn" %>
+            </div>
           </div>
         </div>
       </div>

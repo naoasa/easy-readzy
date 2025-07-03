@@ -395,10 +395,72 @@ html, body {
 
 // ユーザーの本棚
 
-.books_index {
+.books_index { // index画面全体の背景
   background: $cloud;
   width: 100%;
-  height: calc(100vh - 64px);
+  // height: calc(100vh - 64px);
+  height: auto;
+  display: flex; // フレックス
+  justify-content: center; // 中央寄せ
+}
+
+// コンテンツを真ん中に寄せる汎用コンテナ
+
+.container {
+  width: 80%;
+}
+
+.narrow_container {
+  width: 60%;
+}
+
+.bookshelf_name {
+  height: 40px;
+  display: flex;
+  margin-left: 25%;
+  margin-top: 10px;
+  font-size: $font-size-h2;
+  align-items: center;
+}
+
+.books_grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 32px 24px; // 行間・列間のスペース
+  list-style: none;
+  padding: 12px 0 0 0;
+  margin: 0 auto;
+  width: 52%;
+  justify-items: center;
+}
+
+.books_grid .book_tile a {
+  text-decoration: none;
+  color: black;
+}
+
+.book_tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.book_cover {
+  height: 18.5vh;
+  overflow: hidden;
+  box-shadow: -5px 7px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.18s; // 浮かび上がり
+}
+
+.book_tile a:hover .book_cover {
+  opacity: .7;
+  transform: translateY(-16px); // 書影が上に浮かぶ
+}
+
+.book_title {
+  margin-top: 6px;
+  width: 158px;
+  font-size: 14px;
 }
 
 // 検索結果
@@ -406,7 +468,82 @@ html, body {
 .books_search {
   background: $cloud;
   width: 100%;
-  height: calc(100vh - 64px);
+  min-height: calc(100vh - 64px);
+  display: flex;
+  justify-content: center;
+}
+
+.search_name {
+  height: 40px;
+  display: flex;
+  margin-top: 10px;
+  font-size: $font-size-h2;
+  align-items: center;
+}
+
+a.search_book_card {
+  border-radius: 12px;
+  background: white;
+  display: flex;
+  align-items: center;
+  height: 17vh;
+  text-decoration: none;
+  color: black;
+  justify-content: space-between;
+  h2 {
+    font-size: $font-size-h2;
+    font-weight: normal;
+  }
+  p {
+    font-size: $font-size-base;
+    margin-top: 12px;
+  }
+  &:hover {
+    .search_book_cover {
+      opacity: .7;
+    }
+    .button.add_to_bookshelf {
+      background: $dark-azure;
+    }
+  }
+}
+
+.book_item img {
+  height: 15vh;
+  margin-left: 10px;
+}
+
+.search_book_cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.search_book_info {
+  display: flex;
+  flex-direction: column;
+  padding: 24px 40px;
+  flex: 1;
+  min-width: 0;
+}
+
+.search_book_cover {
+  box-shadow: 5px 8px 11px 0px rgba(0, 0, 0, 0.1);
+}
+
+a.book_item {
+  display: flex;
+}
+
+.add_to_bookshelf {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 13px;
+  font-size: 18px;
+  width: 190px;
+  height: 65px;
+  margin-right: 5%;
 }
 
 // 新規登録
@@ -414,7 +551,9 @@ html, body {
 .books_new {
   background: $cloud;
   width: 100%;
-  height: calc(100vh - 64px);
+  min-height: calc(100vh - 64px);
+  display: flex;
+  justify-content: center;
 }
 
 .save_colors {
@@ -443,13 +582,242 @@ html, body {
   margin-top: 50px;
 }
 
+.add_goal_btn {
+  width: 187px;
+  height: 58px;
+  background: $azure;
+  color: $white;
+  border-radius: 18px;
+  font-size: $font-size-h3;
+  margin-left: 12px;
+  &:hover {
+    background: $dark-azure;
+  }
+}
+
+.clear_and_add_goal_btns {
+  display: flex;
+}
+
+.clear_and_add_goal_btns {
+  display: flex;
+  align-items: center;
+  margin-top: 12px;
+  margin-bottom: 20px;
+  margin-left: auto;
+}
+
+.save_btn {
+  width: 188px;
+  height: 60px;
+  background: $gold;
+  color: $white;
+  border-radius: 19px;
+  font-size: $font-size-base;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+  &:hover {
+    background: $dark-gold;
+  }
+}
+
+.footer_btns {
+  display: flex;
+  align-items: center;
+}
+
+.save_btn_container {
+  height: 80px;
+}
+
 // 詳細ページ
 
 .books_show {
   background: $cloud;
   width: 100%;
-  height: calc(100vh - 64px);
+  min-height: calc(100vh - 64px);
+  display: flex;
+  justify-content: center;
 }
+
+.book_show_card {
+  background: $white;
+  border-radius: 7px;
+  display: flex;
+  h1 {
+    font-weight: normal;
+  }
+  .show_book_cover {
+    background: yellow;
+    margin: 32px 43px;
+  }
+}
+
+.book_show_container {
+  padding: 42px 60px;
+  width: 74%;
+  display: flex;
+  flex-direction: column;
+  h1 {
+    font-size: $font-size-large;
+  }
+  p {
+    font-size: $font-size-caption;
+  }
+  .description {
+    font-size: $font-size-base;
+    margin-top: 32px;
+  }
+  .delete_book_link {
+    text-decoration: none;
+    color: $azure;
+    align-self: flex-end;
+  }
+}
+
+.author_and_location {
+  display: flex;
+  margin-top: 12px;
+  .author {
+    padding: 5px 8px;
+  }
+  .location {
+    background: #D9D9D9;
+    padding: 5px 8px;
+    border-radius: 5px;
+  }
+}
+
+.goal_output_list {
+  list-style: none;
+}
+
+.goal_item {
+  .text_card {
+    background: $white;
+    border-radius: 7px;
+    margin-top: 12px;
+    padding: 20px 42px;
+    font-size: $font-size-h3;
+    display: flex;
+    align-items: center;
+  }
+  .output_text {
+    margin-top: 0;
+  }
+}
+
+.connector_line {
+  width: 20px;
+  height: 16px;
+  margin-left: 3%;
+  background: $azure;
+}
+
+.edit_link {
+  margin-left: auto;
+  .edit_output_btn {
+    img {
+      width: 42px;
+    }
+  }
+}
+
+.create_output_btn {
+  font-size: 16px;
+  width: 188px;
+  height: 60px;
+  background: $azure;
+  color: $white;
+  border-radius: 19px;
+  margin-left: auto;
+}
+
+.clear_input_btn {
+  width: 126px;
+  height: 46px;
+  background: #D9D9D9;
+  font-size: $font-size-caption;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .eraser_img {
+    width: 27px;
+  }
+}
+
+.create_output_btn:hover {
+  background: $dark-azure;
+}
+
+.save_output_btn {
+  width: 187px;
+  height: 58px;
+  background: $gold;
+  color: $white;
+  border-radius: 18px;
+  font-size: $font-size-base;
+  margin-left: 12px;
+  &:hover {
+    background: $dark-gold;
+  }
+}
+
+.c_s_btns_container {
+  display: flex;
+  margin-top: 8px;
+}
+
+.clear_and_save_btns {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+// フォーム
+
+.input_form {
+  background: $white;
+  margin-top: 10px;
+  border-radius: 7px;
+  padding: 20px 42px;
+  width: 100%;
+  font-size: $font-size-base;
+  border: 1px solid #CCC;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
+  &.edit_output_form {
+    margin-top: 0;
+  }
+}
+
+.input_form:focus {
+  outline: 1px solid $azure; // フォーカス時に外側に枠線を表示
+}
+
+.goal_section {
+  textarea {
+    field-sizing: content;
+    resize: none;
+  }
+}
+
+.output_form {
+  textarea {
+    field-sizing: content;
+    resize: none;
+  }
+}
+
+// .books_index { // index画面全体の背景
+//   background: $cloud;
+//   width: 100%;
+//   // height: calc(100vh - 64px);
+//   height: auto;
+//   display: flex; // フレックス
+//   justify-content: center; // 中央寄せ
+// }
 
 // 本の削除モーダル
 
