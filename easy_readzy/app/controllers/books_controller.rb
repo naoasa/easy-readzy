@@ -17,7 +17,7 @@ class BooksController < ApplicationController
     response = HTTParty.get(GOOGLE_BOOKS_ENDPOINT,
     query: {
       q: @query,
-      maxResults: 4,
+      maxResults: 20,
       key: ENV["GOOGLE_BOOKS_API_KEY"]
     })
 
