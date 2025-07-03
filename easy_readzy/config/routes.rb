@@ -1,8 +1,7 @@
 Rails.application.routes.draw do
   get "books/index"
   get "static_pages/home"
-  # サンプルページ
-  root "static_pages#home"
+  root "books#index"
 
   devise_for :users, controllers: { sessions: "users/sessions" }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
