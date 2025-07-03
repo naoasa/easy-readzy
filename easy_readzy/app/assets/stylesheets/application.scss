@@ -263,14 +263,14 @@ html, body {
 }
 
 .header_user_icon {
-  margin: 0 20px 0;
+  margin: 4px 20px 0;
   position: relative;
   cursor: pointer;
 }
 
 .header_user_icon_img {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
 }
 
@@ -416,6 +416,12 @@ html, body {
     a {
       text-decoration: none;
       color: $intro-gray;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     &.current {
       color: $white;
@@ -430,11 +436,23 @@ html, body {
   }
 }
 
+.pagination_container {
+  nav.pagination {
+    span.page {
+      a {
+        &:hover {
+          background: #e7e7e7;
+        }
+      }
+    }
+  }
+}
+
 nav.pagination {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 24px;
+  gap: 12px;
 }
 
 span.next {
@@ -757,7 +775,7 @@ a.book_item {
   .text_card {
     background: $white;
     border-radius: 7px;
-    margin-top: 12px;
+    margin-top: 24px;
     padding: 20px 42px;
     font-size: $font-size-h3;
     display: flex;
@@ -869,15 +887,6 @@ a.book_item {
     resize: none;
   }
 }
-
-// .books_index { // index画面全体の背景
-//   background: $cloud;
-//   width: 100%;
-//   // height: calc(100vh - 64px);
-//   height: auto;
-//   display: flex; // フレックス
-//   justify-content: center; // 中央寄せ
-// }
 
 // 本の削除モーダル
 
