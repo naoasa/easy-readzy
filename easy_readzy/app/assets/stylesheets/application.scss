@@ -703,6 +703,16 @@ a.book_item {
     display: flex;
     align-items: center;
   }
+  .output_text {
+    margin-top: 0;
+  }
+}
+
+.connector_line {
+  width: 20px;
+  height: 16px;
+  margin-left: 3%;
+  background: $azure;
 }
 
 .edit_link {
