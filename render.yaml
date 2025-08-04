@@ -14,7 +14,7 @@ services:
     healthCheckPath: /up # ヘルスチェック用エンドポイント
 
   - name: mysql-db
-    type: private
+    type: service
     repo: https://github.com/render-examples/mysql # one-clickテンプレ
     branch: master
     runtime: docker
