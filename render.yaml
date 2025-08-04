@@ -1,6 +1,7 @@
 services:
   - name: easy-readzy-web
     type: web
+    rootDir: easy_readzy
     runtime: ruby
     plan: starter
     envVars:
