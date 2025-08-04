@@ -6,8 +6,13 @@ services:
     runtime: ruby
     plan: starter
 
-    buildCommand: bundle install && yarn install && bundle exec rake assets:precompile
-    preDeployCommand: bundle exec rails db:migrate
+    buildCommand: |
+      bundle install
+      yarn install
+      bundle exec rake assets:precompile
+    preDeployCommand: |
+      bundle exec rails db:migrate
+      bundle exec rails db:seed
     startCommand: bundle exec puma -C config/puma.rb
     healthCheckPath: /up
 
