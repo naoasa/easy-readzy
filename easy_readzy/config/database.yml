@@ -49,9 +49,6 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  adapter: mysql2
+  url: <%= ENV["DATABASE_URL"] %>
+  reconnect: true
   encoding: utf8mb4
-  host: <%= ENV['DB_HOST'] %>
-  database: easy_readzy_production
-  username: <%= ENV['DB_USER'] %>
-  password: <%= ENV['DB_PASSWORD'] %>
