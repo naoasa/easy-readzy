@@ -19,7 +19,8 @@ class BooksController < ApplicationController
       q: @query,
       maxResults: 20,
       key: ENV["GOOGLE_BOOKS_API_KEY"],
-      langRestrict: "ja" # 日本語の書籍を優先
+      langRestrict: "ja",
+      country: "JP"
     })
 
     results = JSON.parse(response.body)
