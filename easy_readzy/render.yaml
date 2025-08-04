@@ -1,0 +1,33 @@
+services:
+  - name: easy-readzy-web
+    type: web
+    runtime: ruby
+    plan: starter
+    envVars:
+      - key: DATABASE_URL # Renderが自動で挿入する内部URL
+        fromService: mysql-db
+      - key: RAILS_MASTER_KEY # GitHub秘密変数かRenderダッシュボードで設定
+    buildCommand: bundle install && yarn install
+    startCommand: bundle exec puma -C config/puma.rb
+    deployScript: bundle exec rails db:migrate
+    healthCheckPath: /up # ヘルスチェック用エンドポイント
+
+  - name: mysql-db
+    type: private
+    repo: https://github.com/render-examples/mysql # one-clickテンプレ
+    branch: master
+    runtime: docker
+    plan: starter
+    disk:
+      name: mysql
+      mountPath: /var/lib/mysql
+      sizeGB: 10
+    envVars:
+      - key: MYSQL_DATABASE
+        value: easy_readzy_production
+      - key: MYSQL_USER
+        value: easyreadzy
+      - key: MYSQL_PASSWORD
+        generateValue: true
+      - key: MYSQL_ROOT_PASSWORD
+        generateValue: true
