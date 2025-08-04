@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Escキーを押した時にダイアログを非表示にする(=> class: hiddenを追加する)
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') {
+      if (event.key === 'Escape' && dialogOverlay) {
         dialogOverlay.classList.add('hidden');
       }
     });
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Escキーを押した時にメニューを非表示にする(=> class: visibleを削除する)
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') {
+      if (event.key === 'Escape' && userMenuCard) {
         userMenuCard.classList.remove('visible');
       }
     });
