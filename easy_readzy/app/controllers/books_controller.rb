@@ -16,7 +16,7 @@ class BooksController < ApplicationController
     # HTTPartyを利用してGoogle Books APIを呼び出す
     response = HTTParty.get(GOOGLE_BOOKS_ENDPOINT,
     query: {
-      q: @query,
+      q: "#{@query} in language:jp",
       maxResults: 20,
       key: ENV["GOOGLE_BOOKS_API_KEY"],
       langRestrict: "ja",
