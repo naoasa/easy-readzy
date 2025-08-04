@@ -49,6 +49,10 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  url: <%= ENV["DATABASE_URL"] %>
-  reconnect: true
+  adapter:  mysql2
   encoding: utf8mb4
+  host:     <%= ENV['DB_HOST'] %>
+  port:     <%= ENV['DB_PORT'] %>
+  database: <%= ENV['DB_NAME'] %>
+  username: <%= ENV['DB_USER'] %>
+  password: <%= ENV['DB_PASS'] %>
