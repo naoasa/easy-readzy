@@ -7,7 +7,7 @@ services:
     plan: starter
 
     buildCommand: bundle install && yarn install
-    deployScript: bundle exec rails db:migrate
+    preDeployCommand: bundle exec rails db:migrate
     startCommand: bundle exec puma -C config/puma.rb
     healthCheckPath: /up
 
