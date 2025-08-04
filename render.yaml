@@ -1,28 +1,61 @@
 services:
-  - name: easy-readzy-web
-    type: web
-    rootDir: easy_readzy
+  # Rails(パブリックサービス)
+  - type: web
+    name: easy-readzy-web
+    rootDir: easy_readzy # Railsアプリがあるディレクトリ
     runtime: ruby
     plan: starter
-    envVars:
-      - key: DATABASE_URL # Renderが自動で挿入する内部URL
-        fromService: mysql-db
-      - key: RAILS_MASTER_KEY # GitHub秘密変数かRenderダッシュボードで設定
-    buildCommand: bundle install && yarn install
-    startCommand: bundle exec puma -C config/puma.rb
-    deployScript: bundle exec rails db:migrate
-    healthCheckPath: /up # ヘルスチェック用エンドポイント
 
-  - name: mysql-db
-    type: service
-    repo: https://github.com/render-examples/mysql # one-clickテンプレ
-    branch: master
+    buildCommand: bundle install && yarn install
+    deployScript: bundle exec rails db:migrate
+    startCommand: bundle exec puma -C config/puma.rb
+    healthCheckPath: /up
+
+    envVars:
+      # MySQLへの接続情報をプライベートサービスから参照
+      - key: DB_HOST
+        fromService:
+          name: mysql-db
+          type: pserv
+          property: host # 例: mysql-db
+      - key: DB_PORT
+        fromService:
+          name: mysql-db
+          type: pserv
+          property: port # 例: 3306
+      - key: DB_NAME
+        fromService:
+          name: mysql-db
+          type: pserv
+          envVarKey: MYSQL_DATABASE
+      - key: DB_USER
+        fromService:
+          name: mysql-db
+          type: pserv
+          envVarKey: MYSQL_USER
+      - key: DB_PASS
+        fromService:
+          name: mysql-db
+          type: pserv
+          envVarKey: MYSQL_PASSWORD
+
+      # master.keyはGitHubと同期させない
+      - key: RAILS_MASTER_KEY
+        sync: false
+
+  # MySQL(プライベートサービス)
+  - type: pserv
+    name: mysql-db
     runtime: docker
+    repo: https://github.com/render-examples/mysql # Render公式MySQLテンプレ
+    branch: master
     plan: starter
+
     disk:
       name: mysql
       mountPath: /var/lib/mysql
       sizeGB: 10
+
     envVars:
       - key: MYSQL_DATABASE
         value: easy_readzy_production
