@@ -83,3 +83,5 @@
 ![ER図](/images/erd.png)
 
 ## システム構成図
+
+![システム構成図](/images/system-diagram.png)
