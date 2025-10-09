@@ -11,20 +11,39 @@ class BooksController < ApplicationController
     @user = current_user
     first_bookshelf = @user.bookshelves.minimum(:id)
     @bookshelf = first_bookshelf
-    @query = params[:query]
+    @query = params[:query].to_s.strip
 
-    # HTTPartyを利用してGoogle Books APIを呼び出す
-    response = HTTParty.get(GOOGLE_BOOKS_ENDPOINT,
-    query: {
-      q: "#{@query} in language:jp",
-      maxResults: 20,
-      key: ENV["GOOGLE_BOOKS_API_KEY"],
-      langRestrict: "ja",
-      country: "JP"
-    })
+    # Google Books API: 書籍のみを対象にする
+    response = HTTParty.get(
+      GOOGLE_BOOKS_ENDPOINT,
+      query: {
+        q: @query.presence || "",
+        maxResults: 20,
+        key: ENV["GOOGLE_BOOKS_API_KEY"],
+        langRestrict: "ja",
+        country: "JP",
+        printType: "books" # 雑誌・新聞（magazines）を除外
+      },
+      timeout: 5
+    )
 
     results = JSON.parse(response.body)
-    @books = results["items"] || []
+
+    raw_items = results["items"] || []
+
+    # 念のためクライアント側でも非書籍を除外
+    disallowed_keywords = /(periodicals|journal|newspaper|magazine|proceedings|conference|学会誌|紀要|論文集|雑誌|新聞)/i
+
+    @books = raw_items.select do |item|
+      v = item["volumeInfo"] || {}
+      print_type_ok = (v["printType"] == "BOOK")
+      categories = Array(v["categories"]).join(" ")
+      categories_ok = categories.blank? || categories !~ disallowed_keywords
+      print_type_ok && categories_ok
+    end
+  rescue JSON::ParserError, HTTParty::Error, SocketError => e
+    Rails.logger.warn("Google Books search error: #{e.message}")
+    @books = []
   end
 
   def new
