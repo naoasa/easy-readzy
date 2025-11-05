@@ -743,9 +743,12 @@ a.book_item {
   p {
     font-size: $font-size-caption;
   }
-  .description {
-    font-size: $font-size-base;
+  div.description {
+    font-size: 14px;
     margin-top: 32px;
+    p {
+      font-size: 14px;
+    }
   }
   .delete_book_link {
     text-decoration: none;
