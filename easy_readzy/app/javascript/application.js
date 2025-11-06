@@ -6,3 +6,4 @@ import 'pages/createOutput';
 import 'pages/deleteBook';
 import 'pages/deleteOutput';
 import 'pages/flash';
+import 'pages/confirmCancel';

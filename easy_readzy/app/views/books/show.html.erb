@@ -68,6 +68,7 @@
                     <div class="c_s_btns_container">
                       <div class="clear_and_save_btns">
                         <button type="button" id="clear_output_text" class="clear_input_btn"><%= image_tag "icon_B_0405.svg", class: "eraser_img" %>入力をクリア</button>
+                        <%= link_to "キャンセル", user_bookshelf_book_path(@user, @bookshelf, @book), id: "cancel_edit", class: "cancel_link" %>
                         <%= f.submit "アウトプットを保存", class: "save_output_btn" %>
                       </div>
                     </div>
