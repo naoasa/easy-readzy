@@ -44,7 +44,9 @@
         <% @shelf_book.goals.each do |goal| %>
           <li>
             <div class="goal_item" data_goal_id="<%= goal.id %>">
-              <div class="goal_text text_card"><%= goal.goal_text %>
+              <div class="goal_text text_card">
+                <div class="label">目標・目的</div>
+                <%= goal.goal_text %>
                 <%# アウトプット未作成の場合のみ、ここに作成ボタンを表示 %>
                 <% unless goal.output.present? %>
                   <button type="button" class="create_output_btn">アウトプット作成</button>
@@ -55,6 +57,7 @@
                 <div class="connector_line"></div>
                 <%# アウトプットがある場合は、アウトプットテキストを表示 %>
                 <div class="output_text text_card">
+                  <span class="label output_label">アウトプット</span>
                   <%= goal.output.output_text %>
                   <div class="edit_link">
                     <%= link_to image_tag("edit-icon.svg"), edit_goal_output_path(goal), class: "edit_output_btn" %>

@@ -866,6 +866,21 @@ a.cancel_link {
   align-items: center;
 }
 
+.label {
+  display: block;
+  margin-right: 12px;
+  font-weight: 600;
+  font-size: $font-size-h3;
+  background: #c4d9e8;
+  padding: 5px 8px;
+  border-radius: 5px;
+  color: #666;
+}
+
+.output_label {
+  background: #fad679;
+}
+
 // フォーム
 
 .input_form {
