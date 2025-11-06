@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const goalsList = document.getElementById('goals_list'); // 目標たちを挿入するdiv要素
   const clearGoalText = document.getElementById('clear_goal_text'); // 目標テキストの取り消しボタン
   const saveToBookshelfButton = document.getElementById('save_to_bookshelf'); // 本棚に保存するボタン
+  const form = document.getElementById('new_book_form');
+  let isSubmitting = false; // フォームが送信中であるか判定するため(二重送信防止用)
 
   // 目標追加ボタンをクリックした時にテキストエリアの文字をgoalTextに格納
   addGoalButton.addEventListener('click', () => {
@@ -65,12 +67,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // locationモーダルの「保存を完了する」
   document.getElementById('confirm_save').addEventListener('click', () => {
-    const form = document.getElementById('new_book_form');
+    // 既に送信中の場合は処理を中断
+    if (isSubmitting) {
+      return;
+    }
+
     const locationValue = document.getElementById('modal_location_input').value.trim();
     if (!locationValue) {
       alert('本の保管場所を入力してください。');
       return;
     }
+
+    // 送信フラグを立てる(二重送信防止用)
+    isSubmitting = true;
+
+    // 送信中の場合はボタンを無効化(二重送信防止用)
+    const confirmSaveButton = document.getElementById('confirm_save');
+    confirmSaveButton.disabled = true;
 
     // location を hidden input としてセット
     let locInput = form.querySelector('input[name="location"]');
@@ -101,7 +114,8 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('keydown', (event) => {
     const saveModal = document.getElementById('save_modal');
     // モーダルが表示されている(= display: flex;)時のみ処理を実行
-    if (saveModal.style.display === 'flex') {
+    // 保存モーダル表示かつ送信中でない場合
+    if (saveModal.style.display === 'flex' && !isSubmitting) {
       if (event.key === 'Enter') {
         event.preventDefault();
         // 保管場所の入力チェック
@@ -114,5 +128,14 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('confirm_save').click();
       }
     }
+  });
+
+  // フォームのsubmitイベントでも二重送信を防ぐ
+  form.addEventListener('submit', (event) => {
+    if (isSubmitting) {
+      event.preventDefault();
+      return false;
+    }
+    isSubmitting = true;
   });
 });
