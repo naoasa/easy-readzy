@@ -38,15 +38,54 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (searchInput && searchBox) {
+    const clearButton = document.querySelector('.header_search_clear_btn'); // バツボタン
+    let blurTimeout; // blurイベントの遅延用タイマー
+
+    // バツボタンの表示/非表示を制御する関数
+    const toggleClearButton = () => {
+      if (searchInput.value.length > 0 && document.activeElement === searchInput) {
+        clearButton.classList.remove('hidden');
+      } else {
+        clearButton.classList.add('hidden');
+      }
+    };
+
     // フォーカス時にクラスを追加し、枠線を青色に変更
     searchInput.addEventListener('focus', () => {
       searchBox.classList.add('header_search_focus');
+      toggleClearButton();
     });
 
     // フォーカスが外れたらクラスを削除し、枠線をもとに戻す
+    // setTimeoutで遅延を入れて、バツボタンのクリックイベントが先に発火するようにする
     searchInput.addEventListener('blur', () => {
-      searchBox.classList.remove('header_search_focus');
+      blurTimeout = setTimeout(() => {
+        searchBox.classList.remove('header_search_focus');
+        toggleClearButton();
+      }, 10); // 10ms遅延
     });
+
+    // 入力時にバツボタンの表示/非表示を更新
+    searchInput.addEventListener('input', () => {
+      toggleClearButton();
+    });
+
+    // バツボタンをクリックした時に入力フィールドをクリア
+    if (clearButton) {
+      clearButton.addEventListener('mousedown', (event) => {
+        event.preventDefault(); // blurイベントを防ぐ
+        event.stopPropagation(); // イベントの伝播を止める
+      });
+
+      clearButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        clearTimeout(blurTimeout); // 遅延されたblurイベントをキャンセル
+        searchInput.value = '';
+        searchInput.focus(); // クリア後もフォーカスを維持
+        toggleClearButton();
+      });
+    }
   }
 
   if (userIcon && userMenuCard) {

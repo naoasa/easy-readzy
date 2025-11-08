@@ -230,6 +230,7 @@ html, body {
 }
 
 .header_search {
+  position: relative; // バツボタンの配置の基準
   display: flex;
   align-items: center;
   background: $white;
@@ -256,6 +257,39 @@ html, body {
   border-radius: 20px;
   padding-left: 20px;
   font-size: $font-size-base;
+}
+
+.header_search_clear_btn {
+  position: absolute;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 6px;
+    width: 1.5px;
+    height: 20px;
+    background: #727272;
+    border-radius: 2px;
+  }
+  &::before {
+    transform: rotate(45deg);
+  }
+  &::after {
+    transform: rotate(-45deg);
+  }
+
+  &.hidden {
+    display: none;
+  }
 }
 
 .header_right {

@@ -46,6 +46,7 @@
         <%= form_with(url: search_books_path, method: :get, local: true, class: "header_search") do |f| %>
           <%= image_tag "icon_B_0741.svg", alt: "検索アイコン", class: "header_search_img" %>
           <%= f.text_field :query, placeholder: "タイトル・著者名・キーワード", class: "header_search_input" %>
+          <span id="search_clear_btn" class="header_search_clear_btn hidden"></span>
           <%#= f.submit "検索" %>
         <% end %>
         <div class="header_right">
