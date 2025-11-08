@@ -5,17 +5,35 @@ document.addEventListener('DOMContentLoaded', () => {
   const goalCountDisplay = document.getElementById('goal_text_count_show');
   const clearGoalTextButton = document.getElementById('clear_goal_text_show');
 
+  // 「アウトプット作成」ボタンの有効/無効を切り替える関数
+  const toggleCreateOutputButtons = (disabled) => {
+    const createOutputButtons = document.querySelectorAll('.create_output_btn');
+    createOutputButtons.forEach(button => {
+      button.disabled = disabled;
+      // 視覚的なフィードバックのため、無効化時にクラスを追加
+      if (disabled) {
+        button.classList.add('disabled');
+      } else {
+        button.classList.remove('disabled');
+      }
+    });
+  };
+
   // 目標追加フォームの表示/非表示
   if (showAddGoalFormButton && addGoalForm) {
     showAddGoalFormButton.addEventListener('click', () => {
       if (addGoalForm.style.display === 'none' || addGoalForm.style.display === '') {
         addGoalForm.style.display = 'block';
+        // フォーム表示時に「アウトプット作成」ボタンを無効化
+        toggleCreateOutputButtons(true);
         // フォーム表示時にフォーカス
         if (goalTextarea) {
           goalTextarea.focus();
         }
       } else {
         addGoalForm.style.display = 'none';
+        // フォーム非表示時に「アウトプット作成」ボタンを再有効化
+        toggleCreateOutputButtons(false);
       }
     });
   }

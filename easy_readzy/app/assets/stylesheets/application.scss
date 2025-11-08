@@ -1018,3 +1018,9 @@ a.cancel_link {
     background: #DA3034;
   }
 }
+
+.create_output_btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
