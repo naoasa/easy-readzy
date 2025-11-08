@@ -55,12 +55,20 @@ document.addEventListener('DOMContentLoaded', () => {
     suggestionsContainer.querySelectorAll('.suggestion_item').forEach((item) => {
       item.addEventListener('click', () => {
         const googleBooksId = item.dataset.googleBooksId;
-        const form = searchInput.closest('form');
-        if (form) {
-          // 検索ページにリダイレクト（サジェストのタイトルで検索）
-          const title = item.querySelector('.suggestion_title').textContent;
-          searchInput.value = title;
-          form.submit();
+        const searchForm = searchInput.closest('form');
+
+        if (searchForm && googleBooksId) {
+          // フォームのdata属性からユーザーIDと本棚IDを取得
+          const userId = searchForm.dataset.userId;
+          const bookshelfId = searchForm.dataset.bookshelfId;
+
+          if (userId && bookshelfId) {
+            // newアクションへのURLを構築して遷移
+            const newBookPath = `/users/${userId}/bookshelves/${bookshelfId}/books/new?google_books_id=${encodeURIComponent(googleBooksId)}`;
+            window.location.href = newBookPath;
+          } else {
+            console.error('ユーザーIDまたは本棚IDが取得できませんでした');
+          }
         }
       });
     });
