@@ -167,9 +167,20 @@ class BooksController < ApplicationController
       @bookshelf = @user.bookshelves.first # 最初の本棚を取得
     end
 
-    # 本棚の本一覧を取得(preloadを使用)
-    # @books = @bookshelf.books.preload(:cover_image_attachment) # kaminari 導入前
-    @books = @bookshelf.books.preload(:cover_image_attachment).page(params[:page]).per(15) # 3 * 5 = 15 [冊 / ページ]
+    # locationパラメータがある場合は絞り込み
+    if params[:location].present?
+      @location_filter = params[:location]
+      # 指定されたlocationのbookshelf_booksを取得し、そこからbooksを取得
+      shelf_books = @bookshelf.bookshelf_books.where(location: @location_filter)
+      @books = Book.where(id: shelf_books.select(:book_id))
+                   .preload(:cover_image_attachment)
+                   .page(params[:page])
+                   .per(15) # 3 * 5 = 15 [冊 / ページ]
+    else
+      # 本棚の本一覧を取得(preloadを使用)
+      # @books = @bookshelf.books.preload(:cover_image_attachment) # kaminari 導入前
+      @books = @bookshelf.books.preload(:cover_image_attachment).page(params[:page]).per(15) # 3 * 5 = 15 [冊 / ページ]
+    end
   end
 
   def show

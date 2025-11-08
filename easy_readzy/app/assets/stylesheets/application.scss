@@ -534,6 +534,16 @@ span.prev {
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - 64px); // ヘッダー分の高さを引く
+  .location_filter_title {
+    margin: 10px 0;
+    font-size: $font-size-h2;
+    color: $intro-gray;
+  }
+}
+
+.location_filter_container {
+  display: flex;
+  justify-content: center;
 }
 
 .narrow_container {
@@ -853,6 +863,18 @@ a.book_item {
       background: #D9D9D9;
       padding: 5px 8px;
       border-radius: 5px;
+    }
+    .location_link {
+      background: #D9D9D9;
+      padding: 5px 8px;
+      border-radius: 5px;
+      text-decoration: none;
+      color: inherit;
+      display: inline-block;
+      transition: background-color 0.2s;
+      &:hover {
+        background: #C0C0C0;
+      }
     }
     .edit_location_link {
       .edit_location_btn {

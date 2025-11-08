@@ -11,7 +11,11 @@
         <div class="author_and_location">
           <p class="author"><%= @book.author || "-" %> / <%= @book.publisher || "-" %> / <%= @book.published_date || "-" %></p>
           <div class="location_container">
-            <p class="location" id="location_display"><%= @shelf_book&.location || "-" %></p>
+            <% if @shelf_book&.location.present? %>
+              <%= link_to @shelf_book.location, user_bookshelf_books_path(@user, @bookshelf, location: @shelf_book.location), class: "location_link", id: "location_display" %>
+            <% else %>
+              <p class="location" id="location_display">-</p>
+            <% end %>
             <div class="edit_location_link">
               <%= link_to image_tag("edit-icon.svg"), "javascript:void(0);", id: "show_edit_location_form", class: "edit_location_btn" %>
             </div>

@@ -1,5 +1,10 @@
 <div class="books_index">
   <div class="container">
+    <% if @location_filter.present? %>
+      <div class="location_filter_container">
+        <h2 class="location_filter_title"><%= @location_filter %>にある書籍一覧</h2>
+      </div>
+    <% end %>
     <div class="grid_container">
       <ul class="books_grid">
       <% @books.each do |book| %>
