@@ -41,15 +41,57 @@ class BooksController < ApplicationController
       categories_ok = categories.blank? || categories !~ disallowed_keywords
       print_type_ok && categories_ok
     end
+
+    # 各書籍がすでに所有されているかチェック
+    @owned_books = {}
+    @books.each do |book|
+      google_books_id = book["id"]
+      db_book = Book.find_by(google_book_id: google_books_id)
+
+      if db_book
+        # 現在のユーザーの本棚で、この書籍が登録されているかチェック
+        user_bookshelf = @user.bookshelves.joins(:bookshelf_books)
+                              .where(bookshelf_books: { book_id: db_book.id })
+                              .first
+
+        if user_bookshelf
+          # 登録済みの場合は、book_idとbookshelf_idを保存
+          @owned_books[google_books_id] = {
+            book_id: db_book.id,
+            bookshelf_id: user_bookshelf.id
+          }
+        end
+      end
+    end
   rescue JSON::ParserError, HTTParty::Error, SocketError => e
     Rails.logger.warn("Google Books search error: #{e.message}")
     @books = []
+    @owned_books = {}
   end
 
   def new
     @user = current_user
     @bookshelf = @user.bookshelves.find(params[:bookshelf_id])
     @google_books_id = params[:google_books_id]
+
+    # google_books_idからBookを検索
+    book = Book.find_by(google_book_id: @google_books_id)
+
+    # 書籍が登録済みの場合、現在のユーザーの本棚に登録されているかチェック
+    if book
+      # 現在のユーザーの本棚で、この書籍が登録されているかチェック
+      user_bookshelf = @user.bookshelves.joins(:bookshelf_books)
+                            .where(bookshelf_books: { book_id: book.id })
+                            .first
+
+      if user_bookshelf
+        # 登録済みの場合は、showアクションにリダイレクト
+        redirect_to user_bookshelf_book_path(@user, user_bookshelf, book.id)
+        return
+      end
+    end
+
+    # 未登録の場合は、通常通りnew.html.erbを表示
     @book_info = fetch_book_info(@google_books_id)
   end
 
@@ -125,9 +167,29 @@ class BooksController < ApplicationController
       @bookshelf = @user.bookshelves.first # 最初の本棚を取得
     end
 
-    # 本棚の本一覧を取得(preloadを使用)
-    # @books = @bookshelf.books.preload(:cover_image_attachment) # kaminari 導入前
-    @books = @bookshelf.books.preload(:cover_image_attachment).page(params[:page]).per(15) # 3 * 5 = 15 [冊 / ページ]
+    # queryパラメータがある場合はキーワード検索
+    if params[:query].present?
+      @query = params[:query].to_s.strip
+      # 本棚のbookshelf_booksを取得
+      shelf_books = @bookshelf.bookshelf_books
+      # キーワードでタイトルまたは著者名を検索
+      books = Book.where(id: shelf_books.select(:book_id))
+                  .where("title LIKE ? OR author LIKE ?", "%#{@query}%", "%#{@query}%")
+      @books = books.preload(:cover_image_attachment).page(params[:page]).per(15)
+    # locationパラメータがある場合は絞り込み
+    elsif params[:location].present?
+      @location_filter = params[:location]
+      # 指定されたlocationのbookshelf_booksを取得し、そこからbooksを取得
+      shelf_books = @bookshelf.bookshelf_books.where(location: @location_filter)
+      @books = Book.where(id: shelf_books.select(:book_id))
+                   .preload(:cover_image_attachment)
+                   .page(params[:page])
+                   .per(15) # 3 * 5 = 15 [冊 / ページ]
+    else
+      # 本棚の本一覧を取得(preloadを使用)
+      # @books = @bookshelf.books.preload(:cover_image_attachment) # kaminari 導入前
+      @books = @bookshelf.books.preload(:cover_image_attachment).page(params[:page]).per(15) # 3 * 5 = 15 [冊 / ページ]
+    end
   end
 
   def show
@@ -135,6 +197,19 @@ class BooksController < ApplicationController
     @bookshelf = @user.bookshelves.find(params[:bookshelf_id])
     @book = @bookshelf.books.find(params[:id])
     @shelf_book = @bookshelf.bookshelf_books.preload(goals: :output).find_by(book_id: @book.id)
+  end
+
+  def update
+    @user = User.find(params[:user_id])
+    @bookshelf = @user.bookshelves.find(params[:bookshelf_id])
+    @book = @bookshelf.books.find(params[:id])
+    @shelf_book = @bookshelf.bookshelf_books.find_by(book_id: @book.id)
+
+    if @shelf_book&.update(location: params[:location])
+      redirect_to user_bookshelf_book_path(@user, @bookshelf, @book), notice: "保管場所を更新しました"
+    else
+      redirect_to user_bookshelf_book_path(@user, @bookshelf, @book), alert: "保管場所の更新に失敗しました"
+    end
   end
 
   def destroy
@@ -147,6 +222,59 @@ class BooksController < ApplicationController
     else
       redirect_to user_bookshelf_book_path(@user, @bookshelf, params[:id]), alert: "本の削除に失敗しました"
     end
+  end
+
+  def suggest
+    query = params[:query].to_s.strip
+
+    # クエリが空の場合は空配列を返す
+    if query.blank?
+      render json: []
+      return
+    end
+
+    # Google Books API: サジェスト用に少ない件数を取得
+    response = HTTParty.get(
+      GOOGLE_BOOKS_ENDPOINT,
+      query: {
+        q: query,
+        maxResults: 5,  # サジェストは5件程度
+        key: ENV["GOOGLE_BOOKS_API_KEY"],
+        langRestrict: "ja",
+        country: "JP",
+        printType: "books"
+      },
+      timeout: 5
+    )
+
+    results = JSON.parse(response.body)
+    raw_items = results["items"] || []
+
+    # 非書籍を除外
+    disallowed_keywords = /(periodicals|journal|newspaper|magazine|proceedings|conference|学会誌|紀要|論文集|雑誌|新聞)/i
+
+    books = raw_items.select do |item|
+      v = item["volumeInfo"] || {}
+      print_type_ok = (v["printType"] == "BOOK")
+      categories = Array(v["categories"]).join(" ")
+      categories_ok = categories.blank? || categories !~ disallowed_keywords
+      print_type_ok && categories_ok
+    end
+
+    # サジェスト用のデータを整形
+    suggestions = books.map do |book|
+      {
+        id: book["id"],
+        title: book.dig("volumeInfo", "title") || "",
+        authors: book.dig("volumeInfo", "authors")&.join(", ") || "-",
+        thumbnail: book.dig("volumeInfo", "imageLinks", "thumbnail")
+      }
+    end
+
+    render json: suggestions
+  rescue JSON::ParserError, HTTParty::Error, SocketError => e
+    Rails.logger.warn("Google Books suggest error: #{e.message}")
+    render json: []
   end
 
   private

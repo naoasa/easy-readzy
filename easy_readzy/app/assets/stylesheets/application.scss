@@ -229,13 +229,57 @@ html, body {
   padding: 10px 16px;
 }
 
-.header_search {
+.header_search_container {
   display: flex;
   align-items: center;
-  background: $white;
-  width: 30%;
-  border-radius: 7px;
+  gap: 12px;
+  width: 50%;
   min-width: 500px;
+}
+
+.header_search_type_buttons {
+  display: flex;
+  gap: 0;
+  background: $white;
+  border: 1px solid $light-azure;
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.header_search_type_btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: $font-weight-medium;
+  color: $dark-azure;
+  background: $white;
+  border: none;
+  border-right: 1px solid $light-azure;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  white-space: nowrap;
+
+  &:last-child {
+    border-right: none;
+  }
+
+  &:hover {
+    background: $light-azure;
+  }
+
+  &.active {
+    background: $azure;
+    color: $white;
+  }
+}
+
+.header_search {
+  position: relative; // バツボタンの配置の基準
+  display: flex;
+  min-width: 400px;
+  align-items: center;
+  background: $white;
+  flex: 1;
+  border-radius: 7px;
   border: 1px solid $light-azure;
   outline: none; // デフォルトはアウトラインなし
 }
@@ -255,7 +299,54 @@ html, body {
   height: 40px;
   border-radius: 20px;
   padding-left: 20px;
+  padding-right: 120px; // クリアボタンとEnterヒントのスペースを確保
   font-size: $font-size-base;
+}
+
+.header_search_clear_btn {
+  position: absolute;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 6px;
+    width: 1.5px;
+    height: 20px;
+    background: #727272;
+    border-radius: 2px;
+  }
+  &::before {
+    transform: rotate(45deg);
+  }
+  &::after {
+    transform: rotate(-45deg);
+  }
+
+  &.hidden {
+    display: none;
+  }
+}
+
+.header_search_enter_hint {
+  position: absolute;
+  right: 50px; // クリアボタン（right: 10px）より左側に配置
+  font-size: 12px;
+  color: #999;
+  pointer-events: none; // クリックイベントを無効化
+  white-space: nowrap;
+
+  &.hidden {
+    display: none;
+  }
 }
 
 .header_right {
@@ -486,6 +577,16 @@ span.prev {
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - 64px); // ヘッダー分の高さを引く
+  .location_filter_title {
+    margin: 10px 0;
+    font-size: $font-size-h2;
+    color: $intro-gray;
+  }
+}
+
+.location_filter_container {
+  display: flex;
+  justify-content: center;
 }
 
 .narrow_container {
@@ -552,14 +653,6 @@ span.prev {
   justify-content: center;
 }
 
-.search_name {
-  height: 40px;
-  display: flex;
-  margin-top: 10px;
-  font-size: $font-size-h2;
-  align-items: center;
-}
-
 a.search_book_card {
   border-radius: 12px;
   background: white;
@@ -583,6 +676,9 @@ a.search_book_card {
     }
     .button.add_to_bookshelf {
       background: $dark-azure;
+    }
+    .button.view_details {
+      background: $dark-gold;
     }
   }
 }
@@ -624,6 +720,22 @@ a.book_item {
   width: 190px;
   height: 65px;
   margin-right: 5%;
+}
+
+.view_details {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 13px;
+  font-size: 18px;
+  width: 190px;
+  height: 65px;
+  margin-right: 5%;
+  background: $gold;
+  color: $white;
+  &:hover {
+    background: $dark-gold;
+  }
 }
 
 // 新規登録
@@ -773,14 +885,48 @@ a.book_item {
 
 .author_and_location {
   display: flex;
+  flex-direction: column;
   margin-top: 12px;
   .author {
     padding: 5px 8px;
   }
-  .location {
-    background: #D9D9D9;
-    padding: 5px 8px;
-    border-radius: 5px;
+  .location_container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    .location {
+      background: #D9D9D9;
+      padding: 5px 8px;
+      border-radius: 5px;
+    }
+    .location_link {
+      background: #D9D9D9;
+      padding: 5px 8px;
+      border-radius: 5px;
+      text-decoration: none;
+      color: inherit;
+      display: inline-block;
+      transition: background-color 0.2s;
+      &:hover {
+        background: #C0C0C0;
+      }
+    }
+    .edit_location_link {
+      .edit_location_btn {
+        img {
+          width: 42px;
+        }
+      }
+    }
+  }
+  .edit_location_form {
+    margin-top: 12px;
+    .location_form_btns {
+      display: flex;
+      gap: 12px;
+      margin-top: 12px;
+      align-items: center;
+    }
   }
 }
 
@@ -883,6 +1029,18 @@ a.cancel_link {
   border-radius: 50px;
   font-size: $font-size-base;
   margin-left: 12px;
+  &:hover {
+    background: $dark-gold;
+  }
+}
+
+.save_location_btn {
+  width: 128px;
+  height: 48px;
+  background: $gold;
+  color: $white;
+  border-radius: 50px;
+  font-size: $font-size-base;
   &:hover {
     background: $dark-gold;
   }
@@ -1035,4 +1193,99 @@ a.cancel_link {
   &:hover {
     background: #DA3034;
   }
+}
+
+.header_search_suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: $white;
+  border: 1px solid $light-azure;
+  border-top: none;
+  border-radius: 0 0 7px 7px;
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 1px;
+
+  &.hidden {
+    display: none;
+  }
+}
+
+.suggestion_item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  cursor: pointer;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background-color 0.2s;
+
+  &:hover,
+  &.selected {
+    background-color: #f5f5f5;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.suggestion_thumbnail {
+  width: 40px;
+  height: 60px;
+  object-fit: cover;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.suggestion_info {
+  flex: 1;
+  min-width: 0;
+}
+
+.suggestion_title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.suggestion_author {
+  font-size: 12px;
+  color: #666;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// 404エラー
+.error-page-buttons {
+  margin-top: 32px;
+  a {
+    text-decoration: none;
+    color: $azure;
+  }
+}
+
+.error-page {
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  h2 {
+    margin-top: 12px;
+  }
+  p {
+    margin-top: 24px;
+  }
+}
+
+.question_logo_img {
+  height: 128px;
+  margin-top: 12px;
 }

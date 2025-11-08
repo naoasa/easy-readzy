@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   # ユーザーの本棚の本一覧ページのルーティング
   resources :users do
     resources :bookshelves do
-      resources :books, only: [ :index, :new, :create, :show, :destroy ] do
+      resources :books, only: [ :index, :new, :create, :show, :update, :destroy ] do
         resources :goals, only: [ :create ]
       end
     end
@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   resources :books do
     collection do
       get "search"
+      get "suggest"  # サジェスト用のエンドポイントを追加
     end
   end
 
@@ -42,4 +43,9 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  # 404エラー用のルーティング
+  match "*path", to: "errors#not_found", via: :all, constraints: lambda { |req|
+    !req.path.start_with?("/rails")
+  }
 end

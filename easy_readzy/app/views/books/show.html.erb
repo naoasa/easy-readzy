@@ -10,7 +10,25 @@
         <h1><%= @book.title %></h1>
         <div class="author_and_location">
           <p class="author"><%= @book.author || "-" %> / <%= @book.publisher || "-" %> / <%= @book.published_date || "-" %></p>
-          <p class="location"><%= @shelf_book&.location || "-" %></p>
+          <div class="location_container">
+            <% if @shelf_book&.location.present? %>
+              <%= link_to @shelf_book.location, user_bookshelf_books_path(@user, @bookshelf, location: @shelf_book.location), class: "location_link", id: "location_display" %>
+            <% else %>
+              <p class="location" id="location_display">-</p>
+            <% end %>
+            <div class="edit_location_link">
+              <%= link_to image_tag("edit-icon.svg"), "javascript:void(0);", id: "show_edit_location_form", class: "edit_location_btn" %>
+            </div>
+          </div>
+          <div id="edit_location_form" class="edit_location_form" style="display: none;">
+            <%= form_with url: user_bookshelf_book_path(@user, @bookshelf, @book), method: :patch, local: true do |f| %>
+              <%= f.text_field :location, value: @shelf_book&.location || "", placeholder: "例: Kindle", class: "one_line_input", maxlength: "100" %>
+              <div class="location_form_btns">
+                <%= link_to "キャンセル", user_bookshelf_book_path(@user, @bookshelf, @book), id: "cancel_edit_location", class: "cancel_link" %>
+                <%= f.submit "保管場所を保存", class: "save_location_btn" %>
+              </div>
+            <% end %>
+          </div>
         </div>
         <div class="description"><%= simple_format(sanitize_description(@book.description)) %></div>
         <!-- モーダルを表示させるためのダミーのリンク -->

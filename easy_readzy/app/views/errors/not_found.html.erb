@@ -1,0 +1,24 @@
+<% content_for :title, "ページが見つかりません - Easy Readzy" %>
+
+<div class="books_index">
+  <div class="dialog_card">
+    <div class="error-page">
+      <h1>404</h1>
+      <h2>ページが見つかりません</h2>
+      <p>お探しのページは存在しないか、移動した可能性があります。</p>
+      <%= image_tag("question_logo.svg", class: "question_logo_img") %>
+      <div class="error-page-buttons">
+      <% if user_signed_in? %>
+        <% first_bookshelf_id = current_user.bookshelves.minimum(:id) %>
+        <% if first_bookshelf_id %>
+          <%= link_to "ホームに戻る", user_bookshelf_books_path(user_id: current_user.id, bookshelf_id: first_bookshelf_id), class: "btn" %>
+        <% else %>
+          <%= link_to "ホームに戻る", root_path, class: "btn" %>
+        <% end %>
+      <% else %>
+        <%= link_to "ホームに戻る", root_path, class: "btn" %>
+      <% end %>
+      </div>
+    </div>
+  </div>
+</div>

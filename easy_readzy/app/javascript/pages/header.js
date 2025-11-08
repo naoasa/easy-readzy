@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.querySelector('.header_search_input'); // 入力フィールド
   const searchBox = document.querySelector('.header_search'); // 検索ボックス
+  const searchForm = document.querySelector('#header_search_form'); // 検索フォーム
   const userIcon = document.querySelector('.header_user_icon'); // ユーザーアイコン
   const userMenuCard = document.querySelector('.header_user_menu_card'); // ユーザーメニューカード
   const openLogoutDialogButton = document.querySelector('.header_user_logout_btn'); // ログアウトダイアログを表示するボタン
@@ -8,6 +9,94 @@ document.addEventListener('DOMContentLoaded', () => {
   const cancelButton = document.querySelector('.dialog_cancel_btn'); // キャンセルボタン
   const dialogOverlay = document.querySelector('.dialog_overlay'); // ダイアログオーバーレイ
   const dialogCard = document.querySelector('.dialog_card'); // ダイアログカード
+  const suggestionsContainer = document.querySelector('#search_suggestions');
+  const searchTypeButtons = document.querySelectorAll('.header_search_type_btn'); // 検索タイプ切り替えボタン
+  let suggestTimeout;
+  let currentSuggestions = [];
+  let currentSearchType = 'web'; // デフォルトは 'web'
+
+  // サジェストを取得する関数
+  const fetchSuggestions = async (query) => {
+    // Web上検索の時のみサジェストを表示
+    if (currentSearchType !== 'web') {
+      hideSuggestions();
+      return;
+    }
+
+    if (query.length < 2) {
+      hideSuggestions();
+      return;
+    }
+
+    try {
+      const response = await fetch(`/books/suggest?query=${encodeURIComponent(query)}`);
+      const suggestions = await response.json();
+      currentSuggestions = suggestions;
+      displaySuggestions(suggestions);
+    } catch (error) {
+      console.error('サジェスト取得エラー:', error);
+      hideSuggestions();
+    }
+  };
+
+  // サジェストを表示する関数
+  const displaySuggestions = (suggestions) => {
+    if (!suggestionsContainer) return;
+
+    if (suggestions.length === 0) {
+      hideSuggestions();
+      return;
+    }
+
+    suggestionsContainer.innerHTML = suggestions.map((book, index) => `
+      <div class="suggestion_item" data-index="${index}" data-google-books-id="${book.id}">
+        ${book.thumbnail ? `<img src="${book.thumbnail}" alt="${book.title}" class="suggestion_thumbnail">` : ''}
+        <div class="suggestion_info">
+          <div class="suggestion_title">${escapeHtml(book.title)}</div>
+          <div class="suggestion_author">${escapeHtml(book.authors)}</div>
+        </div>
+      </div>
+    `).join('');
+
+    suggestionsContainer.classList.remove('hidden');
+
+    // サジェスト項目のクリックイベント
+    suggestionsContainer.querySelectorAll('.suggestion_item').forEach((item) => {
+      item.addEventListener('click', () => {
+        const googleBooksId = item.dataset.googleBooksId;
+        const searchForm = searchInput.closest('form');
+
+        if (searchForm && googleBooksId) {
+          // フォームのdata属性からユーザーIDと本棚IDを取得
+          const userId = searchForm.dataset.userId;
+          const bookshelfId = searchForm.dataset.bookshelfId;
+
+          if (userId && bookshelfId) {
+            // newアクションへのURLを構築して遷移
+            const newBookPath = `/users/${userId}/bookshelves/${bookshelfId}/books/new?google_books_id=${encodeURIComponent(googleBooksId)}`;
+            window.location.href = newBookPath;
+          } else {
+            console.error('ユーザーIDまたは本棚IDが取得できませんでした');
+          }
+        }
+      });
+    });
+  };
+
+  // サジェストを非表示にする関数
+  const hideSuggestions = () => {
+    if (suggestionsContainer) {
+      suggestionsContainer.classList.add('hidden');
+      suggestionsContainer.innerHTML = '';
+    }
+  };
+
+  // HTMLエスケープ関数
+  const escapeHtml = (text) => {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  };
 
   if (openLogoutDialogButton) {
     // ログアウトボタンをクリックした時にダイアログを表示し、ユーザーメニューカードを非表示にする
@@ -38,14 +127,120 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (searchInput && searchBox) {
+    const clearButton = document.querySelector('.header_search_clear_btn'); // バツボタン
+    const enterHint = document.querySelector('#search_enter_hint'); // [Enter]キーで検索のヒント
+    let blurTimeout; // blurイベントの遅延用タイマー
+
+    // バツボタンとEnterヒントの表示/非表示を制御する関数
+    const toggleClearButton = () => {
+      if (searchInput.value.length > 0 && document.activeElement === searchInput) {
+        clearButton.classList.remove('hidden');
+        enterHint.classList.remove('hidden');
+      } else {
+        clearButton.classList.add('hidden');
+        enterHint.classList.add('hidden');
+      }
+    };
+
     // フォーカス時にクラスを追加し、枠線を青色に変更
     searchInput.addEventListener('focus', () => {
       searchBox.classList.add('header_search_focus');
+      toggleClearButton();
+
+      if (searchInput.value.trim().length >= 2) {
+        fetchSuggestions(searchInput.value.trim());
+      }
     });
 
     // フォーカスが外れたらクラスを削除し、枠線をもとに戻す
+    // setTimeoutで遅延を入れて、バツボタンのクリックイベントが先に発火するようにする
     searchInput.addEventListener('blur', () => {
-      searchBox.classList.remove('header_search_focus');
+      blurTimeout = setTimeout(() => {
+        searchBox.classList.remove('header_search_focus');
+        toggleClearButton();
+        hideSuggestions();
+      }, 200); // サジェストクリックを待つため少し長めに
+    });
+
+    // 入力時にバツボタンとEnterヒントの表示/非表示を更新
+    searchInput.addEventListener('input', () => {
+      toggleClearButton();
+
+      // 既存のタイマーをクリア
+      clearTimeout(suggestTimeout);
+
+      const query = searchInput.value.trim();
+
+      // 300ms後にサジェストを取得（デバウンス）
+      suggestTimeout = setTimeout(() => {
+        fetchSuggestions(query);
+      }, 300);
+    });
+
+    // バツボタンをクリックした時に入力フィールドをクリア
+    if (clearButton) {
+      clearButton.addEventListener('mousedown', (event) => {
+        event.preventDefault(); // blurイベントを防ぐ
+        event.stopPropagation(); // イベントの伝播を止める
+      });
+
+      clearButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        clearTimeout(blurTimeout); // 遅延されたblurイベントをキャンセル
+        clearTimeout(suggestTimeout);
+        searchInput.value = '';
+        searchInput.focus(); // クリア後もフォーカスを維持
+        toggleClearButton();
+        hideSuggestions();
+      });
+    }
+
+    // Enterキーで検索を実行（サジェストが表示されていない場合）
+    searchInput.addEventListener('keydown', (event) => {
+      // サジェストが表示されている場合は、サジェストの選択処理を優先
+      if (suggestionsContainer && !suggestionsContainer.classList.contains('hidden')) {
+        const items = suggestionsContainer.querySelectorAll('.suggestion_item');
+        const currentIndex = Array.from(items).findIndex(item => item.classList.contains('selected'));
+
+        switch (event.key) {
+          case 'ArrowDown':
+            event.preventDefault();
+            const nextIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
+            items.forEach(item => item.classList.remove('selected'));
+            if (items[nextIndex]) {
+              items[nextIndex].classList.add('selected');
+              items[nextIndex].scrollIntoView({ block: 'nearest' });
+            }
+            break;
+          case 'ArrowUp':
+            event.preventDefault();
+            const prevIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
+            items.forEach(item => item.classList.remove('selected'));
+            if (items[prevIndex]) {
+              items[prevIndex].classList.add('selected');
+              items[prevIndex].scrollIntoView({ block: 'nearest' });
+            }
+            break;
+          case 'Enter':
+            if (currentIndex >= 0 && items[currentIndex]) {
+              event.preventDefault();
+              items[currentIndex].click();
+            }
+            break;
+          case 'Escape':
+            hideSuggestions();
+            break;
+        }
+      } else if (event.key === 'Enter' && searchInput.value.trim().length > 0) {
+        // サジェストが表示されていない場合、Enterキーで検索を実行
+        // IME変換中は検索を実行しない
+        if (event.isComposing) {
+          return;
+        }
+        event.preventDefault();
+        executeSearch();
+      }
     });
   }
 
@@ -79,4 +274,68 @@ document.addEventListener('DOMContentLoaded', () => {
       logoutButton.click(); // ログアウトボタンをクリック
     }
   });
+
+  // 検索タイプ切り替えボタンの処理
+  if (searchTypeButtons.length > 0) {
+    const defaultPlaceholder = 'タイトル・著者名・キーワード';
+    const locationPlaceholder = '保管場所';
+
+    searchTypeButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        // すべてのボタンからactiveクラスを削除
+        searchTypeButtons.forEach((btn) => btn.classList.remove('active'));
+        // クリックされたボタンにactiveクラスを追加
+        button.classList.add('active');
+        // 現在の検索タイプを更新
+        currentSearchType = button.dataset.searchType;
+        // 検索タイプが変更されたらサジェストを非表示にする
+        hideSuggestions();
+        // placeholderを更新
+        if (currentSearchType === 'location') {
+          searchInput.placeholder = locationPlaceholder;
+        } else {
+          searchInput.placeholder = defaultPlaceholder;
+        }
+        // 検索タイプが変更されたら、Web上以外の場合はサジェストを取得しない
+        if (currentSearchType === 'web' && searchInput.value.trim().length >= 2) {
+          fetchSuggestions(searchInput.value.trim());
+        }
+      });
+    });
+  }
+
+  // 検索を実行する関数
+  const executeSearch = () => {
+    const query = searchInput.value.trim();
+    if (!query) return;
+
+    const userId = searchForm?.dataset.userId;
+    const bookshelfId = searchForm?.dataset.bookshelfId;
+
+    if (!userId || !bookshelfId) {
+      console.error('ユーザーIDまたは本棚IDが取得できませんでした');
+      return;
+    }
+
+    let searchUrl;
+
+    switch (currentSearchType) {
+      case 'web':
+        // Web上検索: 既存のsearch_books_pathを使用
+        searchUrl = `/books/search?query=${encodeURIComponent(query)}`;
+        break;
+      case 'owned':
+        // 所有書籍検索: indexアクションにqueryパラメータを渡す
+        searchUrl = `/users/${userId}/bookshelves/${bookshelfId}/books?query=${encodeURIComponent(query)}`;
+        break;
+      case 'location':
+        // 保管場所検索: indexアクションにlocationパラメータを渡す
+        searchUrl = `/users/${userId}/bookshelves/${bookshelfId}/books?location=${encodeURIComponent(query)}`;
+        break;
+      default:
+        searchUrl = `/books/search?query=${encodeURIComponent(query)}`;
+    }
+
+    window.location.href = searchUrl;
+  };
 });
