@@ -50,6 +50,25 @@ class BooksController < ApplicationController
     @user = current_user
     @bookshelf = @user.bookshelves.find(params[:bookshelf_id])
     @google_books_id = params[:google_books_id]
+
+    # google_books_idからBookを検索
+    book = Book.find_by(google_book_id: @google_books_id)
+
+    # 書籍が登録済みの場合、現在のユーザーの本棚に登録されているかチェック
+    if book
+      # 現在のユーザーの本棚で、この書籍が登録されているかチェック
+      user_bookshelf = @user.bookshelves.joins(:bookshelf_books)
+                            .where(bookshelf_books: { book_id: book.id })
+                            .first
+
+      if user_bookshelf
+        # 登録済みの場合は、showアクションにリダイレクト
+        redirect_to user_bookshelf_book_path(@user, user_bookshelf, book.id)
+        return
+      end
+    end
+
+    # 未登録の場合は、通常通りnew.html.erbを表示
     @book_info = fetch_book_info(@google_books_id)
   end
 
