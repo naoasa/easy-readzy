@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   const showEditLocationFormButton = document.getElementById('show_edit_location_form');
   const editLocationForm = document.getElementById('edit_location_form');
-  const locationDisplay = document.getElementById('location_display');
   const cancelEditLocationButton = document.getElementById('cancel_edit_location');
 
   // 編集フォームの表示/非表示
