@@ -28,21 +28,32 @@ document.addEventListener('DOMContentLoaded', () => {
   const goalTextarea = document.getElementById('goal_text');
   const goalCountDisplay = document.getElementById('goal_text_count');
 
+  // 文字数カウントを更新する関数（外部からも呼び出せるようにする）
+  const updateGoalCount = () => {
+    if (!goalTextarea || !goalCountDisplay) return;
+
+    const currentLength = goalTextarea.value.length;
+    const maxLength = 500;
+    goalCountDisplay.textContent = currentLength;
+
+    // 文字数が上限に近づいたら色を変更
+    if (currentLength > maxLength * 0.9) {
+      goalCountDisplay.parentElement.classList.add('warning');
+    } else {
+      goalCountDisplay.parentElement.classList.remove('warning');
+    }
+  };
+
   if (goalTextarea && goalCountDisplay) {
-    const updateGoalCount = () => {
-      const currentLength = goalTextarea.value.length;
+    // 入力制限: 500文字を超えないようにする
+    goalTextarea.addEventListener('input', (e) => {
       const maxLength = 500;
-      goalCountDisplay.textContent = currentLength;
-
-      // 文字数が上限に近づいたら色を変更
-      if (currentLength > maxLength * 0.9) {
-        goalCountDisplay.parentElement.classList.add('warning');
-      } else {
-        goalCountDisplay.parentElement.classList.remove('warning');
+      if (e.target.value.length > maxLength) {
+        e.target.value = e.target.value.slice(0, maxLength);
       }
-    };
+      updateGoalCount();
+    });
 
-    goalTextarea.addEventListener('input', updateGoalCount);
     goalTextarea.addEventListener('keyup', updateGoalCount);
     updateGoalCount(); // 初期表示
   }
@@ -64,6 +75,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       document.getElementById('goal_text').value = ''; // 要素を取得し直して、テキストエリアを空にする
 
+      // 文字数カウントをリセット
+      updateGoalCount();
+
       // フラッシュメッセージを表示
       showFlashMessage('目標が本に追加されました\n本棚への保存は完了していません');
 
@@ -75,6 +89,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // 入力中の目標テキストを一気に消すボタン
   clearGoalText.addEventListener('click', () => {
     document.getElementById('goal_text').value = '';
+    // 文字数カウントを更新
+    updateGoalCount();
   });
 
   // locationモーダルを出す
