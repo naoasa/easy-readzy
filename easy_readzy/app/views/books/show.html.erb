@@ -12,7 +12,7 @@
           <p class="author"><%= @book.author || "-" %> / <%= @book.publisher || "-" %> / <%= @book.published_date || "-" %></p>
           <p class="location"><%= @shelf_book&.location || "-" %></p>
         </div>
-        <p class="description"><%= @book.description || "-" %></p>
+        <div class="description"><%= simple_format(sanitize_description(@book.description)) %></div>
         <!-- モーダルを表示させるためのダミーのリンク -->
         <a href="javascript:void(0);" id="show_delete_modal" class="delete_book_link">マイ本棚から削除</a>
       </div>
@@ -44,7 +44,9 @@
         <% @shelf_book.goals.each do |goal| %>
           <li>
             <div class="goal_item" data_goal_id="<%= goal.id %>">
-              <div class="goal_text text_card"><%= goal.goal_text %>
+              <div class="goal_text text_card">
+                <div class="label">目標・目的</div>
+                <%= goal.goal_text %>
                 <%# アウトプット未作成の場合のみ、ここに作成ボタンを表示 %>
                 <% unless goal.output.present? %>
                   <button type="button" class="create_output_btn">アウトプット作成</button>
@@ -55,6 +57,7 @@
                 <div class="connector_line"></div>
                 <%# アウトプットがある場合は、アウトプットテキストを表示 %>
                 <div class="output_text text_card">
+                  <span class="label output_label">アウトプット</span>
                   <%= goal.output.output_text %>
                   <div class="edit_link">
                     <%= link_to image_tag("edit-icon.svg"), edit_goal_output_path(goal), class: "edit_output_btn" %>
@@ -64,10 +67,14 @@
                 <%# 隠しフォーム %>
                 <div class="output_form" style="display: none;">
                   <%= form_with scope: :output, url: goal_output_path(goal), method: :post, local: true do |f| %>
-                    <%= f.text_area :output_text, rows: 4, placeholder: "アウトプットを入力", class: "input_form" %>
+                    <%= f.text_area :output_text, rows: 4, placeholder: "アウトプットを入力", class: "input_form", maxlength: "5000" %>
+                    <div class="character_count">
+                      <span class="output_text_count">0</span> / 5000
+                    </div>
                     <div class="c_s_btns_container">
                       <div class="clear_and_save_btns">
                         <button type="button" id="clear_output_text" class="clear_input_btn"><%= image_tag "icon_B_0405.svg", class: "eraser_img" %>入力をクリア</button>
+                        <%= link_to "キャンセル", user_bookshelf_book_path(@user, @bookshelf, @book), id: "cancel_edit", class: "cancel_link" %>
                         <%= f.submit "アウトプットを保存", class: "save_output_btn" %>
                       </div>
                     </div>
@@ -81,5 +88,30 @@
     <% else %>
       <p>目標テキストがありません</p>
     <% end %>
+
+    <!-- 目標追加セクション -->
+    <div class="add_goal_section">
+      <div class="add_goal_btn_container">
+        <button type="button" id="show_add_goal_form" class="add_goal_btn add_goal_btn_show">目標を追加</button>
+      </div>
+
+      <div id="add_goal_form" class="add_goal_form" style="display: none;">
+        <%= form_with scope: :goal, url: user_bookshelf_book_goals_path(@user, @bookshelf, @book), method: :post, local: true, id: "new_goal_form" do |f| %>
+          <%= f.text_area :goal_text, rows: 4, placeholder: "目標・目的を入力（例: テーブル結合を使えるようになる）", class: "input_form", maxlength: "500" %>
+          <div class="character_count">
+            <span id="goal_text_count_show">0</span> / 500
+          </div>
+          <div class="footer_btns">
+            <div class="clear_and_add_goal_btns">
+              <button type="button" id="clear_goal_text_show" class="clear_input_btn">
+                <%= image_tag "icon_B_0405.svg", class: "eraser_img" %>入力をクリア
+              </button>
+              <%= link_to "キャンセル", user_bookshelf_book_path(@user, @bookshelf, @book), id: "cancel_edit", class: "cancel_link" %>
+              <%= f.submit "目標を保存", class: "save_goal_btn" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
   </div>
 </div>

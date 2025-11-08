@@ -12,7 +12,7 @@
           <div class="author_and_location">
             <p class="author"><%= @book_info[:authors] %> / <%= @book_info[:publisher] %> / <%= @book_info[:published_date] %></p>
           </div>
-          <p class="description"><%= @book_info[:description] %></p>
+          <div class="description"><%= simple_format(sanitize_description(@book_info[:description])) %></div>
       <% else %>
         <p>書籍情報を取得できませんでした。</p>
       <% end %>
@@ -27,6 +27,9 @@
       <div class="goal_section">
         <div id="goals_list"></div>
         <textarea id="goal_text" class="input_form" placeholder="目標・目的を入力（例: テーブル結合を使えるようになる）"></textarea>
+        <div class="character_count">
+          <span id="goal_text_count">0</span> / 500
+        </div>
       </div>
 
       <div class="footer_btns">
