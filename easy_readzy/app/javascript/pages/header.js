@@ -225,6 +225,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       } else if (event.key === 'Enter' && searchInput.value.trim().length > 0) {
         // サジェストが表示されていない場合、Enterキーで検索を実行
+        // IME変換中は検索を実行しない
+        if (event.isComposing) {
+          return;
+        }
         const form = searchInput.closest('form');
         if (form) {
           form.submit();
