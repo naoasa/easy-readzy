@@ -179,6 +179,19 @@ class BooksController < ApplicationController
     @shelf_book = @bookshelf.bookshelf_books.preload(goals: :output).find_by(book_id: @book.id)
   end
 
+  def update
+    @user = User.find(params[:user_id])
+    @bookshelf = @user.bookshelves.find(params[:bookshelf_id])
+    @book = @bookshelf.books.find(params[:id])
+    @shelf_book = @bookshelf.bookshelf_books.find_by(book_id: @book.id)
+
+    if @shelf_book&.update(location: params[:location])
+      redirect_to user_bookshelf_book_path(@user, @bookshelf, @book), notice: "保管場所を更新しました"
+    else
+      redirect_to user_bookshelf_book_path(@user, @bookshelf, @book), alert: "保管場所の更新に失敗しました"
+    end
+  end
+
   def destroy
     @user = User.find(params[:user_id]) # ユーザーを取得
     @bookshelf = @user.bookshelves.find(params[:bookshelf_id]) # 本棚を取得

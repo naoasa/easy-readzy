@@ -840,14 +840,36 @@ a.book_item {
 
 .author_and_location {
   display: flex;
+  flex-direction: column;
   margin-top: 12px;
   .author {
     padding: 5px 8px;
   }
-  .location {
-    background: #D9D9D9;
-    padding: 5px 8px;
-    border-radius: 5px;
+  .location_container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    .location {
+      background: #D9D9D9;
+      padding: 5px 8px;
+      border-radius: 5px;
+    }
+    .edit_location_link {
+      .edit_location_btn {
+        img {
+          width: 42px;
+        }
+      }
+    }
+  }
+  .edit_location_form {
+    margin-top: 12px;
+    .location_form_btns {
+      display: flex;
+      gap: 12px;
+      margin-top: 12px;
+      align-items: center;
+    }
   }
 }
 
@@ -950,6 +972,18 @@ a.cancel_link {
   border-radius: 50px;
   font-size: $font-size-base;
   margin-left: 12px;
+  &:hover {
+    background: $dark-gold;
+  }
+}
+
+.save_location_btn {
+  width: 128px;
+  height: 48px;
+  background: $gold;
+  color: $white;
+  border-radius: 50px;
+  font-size: $font-size-base;
   &:hover {
     background: $dark-gold;
   }
