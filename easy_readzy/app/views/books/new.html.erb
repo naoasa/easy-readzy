@@ -12,7 +12,7 @@
           <div class="author_and_location">
             <p class="author"><%= @book_info[:authors] %> / <%= @book_info[:publisher] %> / <%= @book_info[:published_date] %></p>
           </div>
-          <p class="description"><%= @book_info[:description] %></p>
+          <div class="description"><%= simple_format(sanitize_description(@book_info[:description])) %></div>
       <% else %>
         <p>書籍情報を取得できませんでした。</p>
       <% end %>
