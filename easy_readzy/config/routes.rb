@@ -43,4 +43,9 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  # 404エラー用のルーティング
+  match "*path", to: "errors#not_found", via: :all, constraints: lambda { |req|
+    !req.path.start_with?("/rails")
+  }
 end

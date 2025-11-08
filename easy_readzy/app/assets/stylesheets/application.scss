@@ -1172,3 +1172,29 @@ a.cancel_link {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+// 404エラー
+.error-page-buttons {
+  margin-top: 32px;
+  a {
+    text-decoration: none;
+    color: $azure;
+  }
+}
+
+.error-page {
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  h2 {
+    margin-top: 12px;
+  }
+  p {
+    margin-top: 24px;
+  }
+}
+
+.question_logo_img {
+  height: 128px;
+  margin-top: 12px;
+}
