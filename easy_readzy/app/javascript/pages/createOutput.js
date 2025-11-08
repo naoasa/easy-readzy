@@ -30,6 +30,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // 「目標を追加」ボタンの有効/無効を切り替える関数
+  const toggleAddGoalButton = () => {
+    const addGoalButton = document.getElementById('show_add_goal_form');
+    if (!addGoalButton) return;
+
+    // 表示されている output_form の数をチェック
+    const visibleOutputForms = document.querySelectorAll('.output_form[style*="block"], .output_form:not([style*="none"])');
+    const hasVisibleForm = Array.from(visibleOutputForms).some(form => {
+      const style = form.style.display;
+      return style === 'block' || (style !== 'none' && style !== '');
+    });
+
+    if (hasVisibleForm) {
+      // output_form が表示されている場合は無効化
+      addGoalButton.disabled = true;
+      addGoalButton.classList.add('disabled');
+    } else {
+      // すべて非表示の場合は再有効化
+      addGoalButton.disabled = false;
+      addGoalButton.classList.remove('disabled');
+    }
+  };
+
   // 「アウトプット作成」ボタンのクリックでフォーム表示/非表示
   document.querySelectorAll('.create_output_btn').forEach(button => {
     button.addEventListener('click', () => {
@@ -44,8 +67,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (textarea && countDisplay) {
           setupCharacterCount(textarea, countDisplay);
         }
+        // 「目標を追加」ボタンを無効化
+        toggleAddGoalButton();
       } else {
         form.style.display = 'none';
+        // 「目標を追加」ボタンの状態を更新
+        toggleAddGoalButton();
       }
     });
   });
@@ -65,6 +92,16 @@ document.addEventListener('DOMContentLoaded', () => {
           countContainer.classList.remove('warning');
         }
       }
+    });
+  });
+
+  // キャンセルリンクのクリック時にも「目標を追加」ボタンの状態を更新
+  document.querySelectorAll('#cancel_edit').forEach(cancelLink => {
+    cancelLink.addEventListener('click', () => {
+      // 少し遅延させてから状態を更新（フォームが非表示になった後）
+      setTimeout(() => {
+        toggleAddGoalButton();
+      }, 100);
     });
   });
 });

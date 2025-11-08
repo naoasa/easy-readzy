@@ -914,6 +914,19 @@ a.cancel_link {
   background: #fad679;
 }
 
+
+.create_output_btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.add_goal_btn_show.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 // フォーム
 
 .input_form {
@@ -1017,10 +1030,4 @@ a.cancel_link {
   &:hover {
     background: #DA3034;
   }
-}
-
-.create_output_btn.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  pointer-events: none;
 }
