@@ -5,11 +5,19 @@ class OutputsController < ApplicationController
     goal = Goal.find(params[:goal_id])
     # 既にアウトプットが存在する場合は上書き、存在しなければ新規作成
     if goal.output.present?
-      goal.output.update(output_text: output_params[:output_text])
+      if goal.output.update(output_params)
+        redirect_to request.referer, notice: "アウトプットが保存されました"
+      else
+        redirect_to request.referer, alert: "アウトプットの保存に失敗しました"
+      end
     else
-      goal.create_output(output_text: output_params[:output_text])
+      output = goal.build_output(output_text: output_params[:output_text])
+      if output.save
+        redirect_to request.referer, notice: "アウトプットが保存されました"
+      else
+        redirect_to request.referer, alert: "アウトプットの保存に失敗しました"
+      end
     end
-    redirect_to request.referer, notice: "アウトプットが保存されました"
   end
 
   def edit
