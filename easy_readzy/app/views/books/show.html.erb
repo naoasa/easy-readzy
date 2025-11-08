@@ -88,5 +88,27 @@
     <% else %>
       <p>目標テキストがありません</p>
     <% end %>
+
+    <!-- 目標追加セクション -->
+    <div class="add_goal_section">
+      <button type="button" id="show_add_goal_form" class="add_goal_btn add_goal_btn_show">目標を追加</button>
+
+      <div id="add_goal_form" class="add_goal_form" style="display: none;">
+        <%= form_with scope: :goal, url: user_bookshelf_book_goals_path(@user, @bookshelf, @book), method: :post, local: true, id: "new_goal_form" do |f| %>
+          <%= f.text_area :goal_text, rows: 4, placeholder: "目標・目的を入力（例: テーブル結合を使えるようになる）", class: "input_form", maxlength: "500" %>
+          <div class="character_count">
+            <span id="goal_text_count_show">0</span> / 500
+          </div>
+          <div class="footer_btns">
+            <div class="clear_and_add_goal_btns">
+              <button type="button" id="clear_goal_text_show" class="clear_input_btn">
+                <%= image_tag "icon_B_0405.svg", class: "eraser_img" %>入力をクリア
+              </button>
+              <%= f.submit "目標を保存", class: "save_goal_btn" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
   </div>
 </div>

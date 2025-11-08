@@ -857,6 +857,24 @@ a.cancel_link {
   background: $dark-azure;
 }
 
+.save_goal_btn {
+  width: 187px;
+  height: 58px;
+  background: $azure;
+  color: $white;
+  border-radius: 50px;
+  font-size: $font-size-base;
+  margin-left: 12px;
+}
+
+.add_goal_btn_show {
+  margin-bottom: 20px;
+}
+
+.save_goal_btn:hover {
+  background: $dark-azure;
+}
+
 .save_output_btn {
   width: 187px;
   height: 58px;

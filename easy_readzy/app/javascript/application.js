@@ -3,6 +3,7 @@
 import 'pages/header';
 import 'pages/saveToBookshelf';
 import 'pages/createOutput';
+import 'pages/addGoal';
 import 'pages/deleteBook';
 import 'pages/deleteOutput';
 import 'pages/flash';
