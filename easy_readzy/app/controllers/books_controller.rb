@@ -41,9 +41,32 @@ class BooksController < ApplicationController
       categories_ok = categories.blank? || categories !~ disallowed_keywords
       print_type_ok && categories_ok
     end
+
+    # 各書籍がすでに所有されているかチェック
+    @owned_books = {}
+    @books.each do |book|
+      google_books_id = book["id"]
+      db_book = Book.find_by(google_book_id: google_books_id)
+
+      if db_book
+        # 現在のユーザーの本棚で、この書籍が登録されているかチェック
+        user_bookshelf = @user.bookshelves.joins(:bookshelf_books)
+                              .where(bookshelf_books: { book_id: db_book.id })
+                              .first
+
+        if user_bookshelf
+          # 登録済みの場合は、book_idとbookshelf_idを保存
+          @owned_books[google_books_id] = {
+            book_id: db_book.id,
+            bookshelf_id: user_bookshelf.id
+          }
+        end
+      end
+    end
   rescue JSON::ParserError, HTTParty::Error, SocketError => e
     Rails.logger.warn("Google Books search error: #{e.message}")
     @books = []
+    @owned_books = {}
   end
 
   def new

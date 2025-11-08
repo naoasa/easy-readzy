@@ -632,6 +632,9 @@ a.search_book_card {
     .button.add_to_bookshelf {
       background: $dark-azure;
     }
+    .button.view_details {
+      background: $dark-gold;
+    }
   }
 }
 
@@ -672,6 +675,22 @@ a.book_item {
   width: 190px;
   height: 65px;
   margin-right: 5%;
+}
+
+.view_details {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 13px;
+  font-size: 18px;
+  width: 190px;
+  height: 65px;
+  margin-right: 5%;
+  background: $gold;
+  color: $white;
+  &:hover {
+    background: $dark-gold;
+  }
 }
 
 // 新規登録

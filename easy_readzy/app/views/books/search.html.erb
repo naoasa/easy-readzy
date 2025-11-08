@@ -8,20 +8,42 @@
       <% @books.each do |book| %>
         <%# itemからid(google_books_id)を取得 %>
         <% google_books_id = book["id"] %>
-        <%= link_to new_user_bookshelf_book_path(@user, @bookshelf, google_books_id: google_books_id), class: "search_book_card book_item" do %>
-          <% if book.dig("volumeInfo", "imageLinks", "thumbnail") %>
-            <%= image_tag book.dig("volumeInfo", "imageLinks", "thumbnail"), alt: book.dig("volumeInfo", "title"), class: "search_book_cover" %>
-          <% else %>
-            <%= image_tag "no_image.jpg", alt: book.dig("volumeInfo", "title") %>
+        <% owned_info = @owned_books[google_books_id] %>
+
+        <% if owned_info %>
+          <%# すでに所有している場合は、詳細ページへのリンク %>
+          <%= link_to user_bookshelf_book_path(@user, owned_info[:bookshelf_id], owned_info[:book_id]), class: "search_book_card book_item" do %>
+            <% if book.dig("volumeInfo", "imageLinks", "thumbnail") %>
+              <%= image_tag book.dig("volumeInfo", "imageLinks", "thumbnail"), alt: book.dig("volumeInfo", "title"), class: "search_book_cover" %>
+            <% else %>
+              <%= image_tag "no_image.jpg", alt: book.dig("volumeInfo", "title") %>
+            <% end %>
+            <div class="search_book_info">
+              <h2><%= book.dig("volumeInfo", "title") %></h2>
+              <%# 著者が複数の場合はカンマ区切りでまとめる(["著者A", "著者B"] => "著者A, 著者B") %>
+              <p>
+                <%= book.dig("volumeInfo", "authors")&.join(", ") || "-" %> / <%= book.dig("volumeInfo", "publisher") || "-" %> / <%= book.dig("volumeInfo", "publishedDate") || "-" %>
+              </p>
+            </div>
+            <div class="button view_details">詳細に移動</div>
           <% end %>
-          <div class="search_book_info">
-            <h2><%= book.dig("volumeInfo", "title") %></h2>
-            <%# 著者が複数の場合はカンマ区切りでまとめる(["著者A", "著者B"] => "著者A, 著者B") %>
-            <p>
-              <%= book.dig("volumeInfo", "authors")&.join(", ") || "-" %> / <%= book.dig("volumeInfo", "publisher") || "-" %> / <%= book.dig("volumeInfo", "publishedDate") || "-" %>
-            </p>
-          </div>
-          <div class="button add_to_bookshelf">本棚に追加</div>
+        <% else %>
+          <%# 未所有の場合は、新規登録ページへのリンク %>
+          <%= link_to new_user_bookshelf_book_path(@user, @bookshelf, google_books_id: google_books_id), class: "search_book_card book_item" do %>
+            <% if book.dig("volumeInfo", "imageLinks", "thumbnail") %>
+              <%= image_tag book.dig("volumeInfo", "imageLinks", "thumbnail"), alt: book.dig("volumeInfo", "title"), class: "search_book_cover" %>
+            <% else %>
+              <%= image_tag "no_image.jpg", alt: book.dig("volumeInfo", "title") %>
+            <% end %>
+            <div class="search_book_info">
+              <h2><%= book.dig("volumeInfo", "title") %></h2>
+              <%# 著者が複数の場合はカンマ区切りでまとめる(["著者A", "著者B"] => "著者A, 著者B") %>
+              <p>
+                <%= book.dig("volumeInfo", "authors")&.join(", ") || "-" %> / <%= book.dig("volumeInfo", "publisher") || "-" %> / <%= book.dig("volumeInfo", "publishedDate") || "-" %>
+              </p>
+            </div>
+            <div class="button add_to_bookshelf">本棚に追加</div>
+          <% end %>
         <% end %>
       <% end %>
     </div>
