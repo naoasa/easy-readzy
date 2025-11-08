@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.querySelector('.header_search_input'); // 入力フィールド
   const searchBox = document.querySelector('.header_search'); // 検索ボックス
+  const searchForm = document.querySelector('#header_search_form'); // 検索フォーム
   const userIcon = document.querySelector('.header_user_icon'); // ユーザーアイコン
   const userMenuCard = document.querySelector('.header_user_menu_card'); // ユーザーメニューカード
   const openLogoutDialogButton = document.querySelector('.header_user_logout_btn'); // ログアウトダイアログを表示するボタン
@@ -9,11 +10,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const dialogOverlay = document.querySelector('.dialog_overlay'); // ダイアログオーバーレイ
   const dialogCard = document.querySelector('.dialog_card'); // ダイアログカード
   const suggestionsContainer = document.querySelector('#search_suggestions');
+  const searchTypeButtons = document.querySelectorAll('.header_search_type_btn'); // 検索タイプ切り替えボタン
   let suggestTimeout;
   let currentSuggestions = [];
+  let currentSearchType = 'web'; // デフォルトは 'web'
 
   // サジェストを取得する関数
   const fetchSuggestions = async (query) => {
+    // Web上検索の時のみサジェストを表示
+    if (currentSearchType !== 'web') {
+      hideSuggestions();
+      return;
+    }
+
     if (query.length < 2) {
       hideSuggestions();
       return;
@@ -229,10 +238,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (event.isComposing) {
           return;
         }
-        const form = searchInput.closest('form');
-        if (form) {
-          form.submit();
-        }
+        event.preventDefault();
+        executeSearch();
       }
     });
   }
@@ -267,4 +274,59 @@ document.addEventListener('DOMContentLoaded', () => {
       logoutButton.click(); // ログアウトボタンをクリック
     }
   });
+
+  // 検索タイプ切り替えボタンの処理
+  if (searchTypeButtons.length > 0) {
+    searchTypeButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        // すべてのボタンからactiveクラスを削除
+        searchTypeButtons.forEach((btn) => btn.classList.remove('active'));
+        // クリックされたボタンにactiveクラスを追加
+        button.classList.add('active');
+        // 現在の検索タイプを更新
+        currentSearchType = button.dataset.searchType;
+        // 検索タイプが変更されたらサジェストを非表示にする
+        hideSuggestions();
+        // 検索タイプが変更されたら、Web上以外の場合はサジェストを取得しない
+        if (currentSearchType === 'web' && searchInput.value.trim().length >= 2) {
+          fetchSuggestions(searchInput.value.trim());
+        }
+      });
+    });
+  }
+
+  // 検索を実行する関数
+  const executeSearch = () => {
+    const query = searchInput.value.trim();
+    if (!query) return;
+
+    const userId = searchForm?.dataset.userId;
+    const bookshelfId = searchForm?.dataset.bookshelfId;
+
+    if (!userId || !bookshelfId) {
+      console.error('ユーザーIDまたは本棚IDが取得できませんでした');
+      return;
+    }
+
+    let searchUrl;
+
+    switch (currentSearchType) {
+      case 'web':
+        // Web上検索: 既存のsearch_books_pathを使用
+        searchUrl = `/books/search?query=${encodeURIComponent(query)}`;
+        break;
+      case 'owned':
+        // 所有書籍検索: indexアクションにqueryパラメータを渡す
+        searchUrl = `/users/${userId}/bookshelves/${bookshelfId}/books?query=${encodeURIComponent(query)}`;
+        break;
+      case 'location':
+        // 保管場所検索: indexアクションにlocationパラメータを渡す
+        searchUrl = `/users/${userId}/bookshelves/${bookshelfId}/books?location=${encodeURIComponent(query)}`;
+        break;
+      default:
+        searchUrl = `/books/search?query=${encodeURIComponent(query)}`;
+    }
+
+    window.location.href = searchUrl;
+  };
 });

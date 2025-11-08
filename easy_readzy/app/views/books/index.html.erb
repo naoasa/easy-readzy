@@ -1,6 +1,10 @@
 <div class="books_index">
   <div class="container">
-    <% if @location_filter.present? %>
+    <% if @query.present? %>
+      <div class="location_filter_container">
+        <h2 class="location_filter_title">「<%= @query %>」の検索結果</h2>
+      </div>
+    <% elsif @location_filter.present? %>
       <div class="location_filter_container">
         <h2 class="location_filter_title"><%= @location_filter %>にある書籍一覧</h2>
       </div>

@@ -167,8 +167,17 @@ class BooksController < ApplicationController
       @bookshelf = @user.bookshelves.first # 最初の本棚を取得
     end
 
+    # queryパラメータがある場合はキーワード検索
+    if params[:query].present?
+      @query = params[:query].to_s.strip
+      # 本棚のbookshelf_booksを取得
+      shelf_books = @bookshelf.bookshelf_books
+      # キーワードでタイトルまたは著者名を検索
+      books = Book.where(id: shelf_books.select(:book_id))
+                  .where("title LIKE ? OR author LIKE ?", "%#{@query}%", "%#{@query}%")
+      @books = books.preload(:cover_image_attachment).page(params[:page]).per(15)
     # locationパラメータがある場合は絞り込み
-    if params[:location].present?
+    elsif params[:location].present?
       @location_filter = params[:location]
       # 指定されたlocationのbookshelf_booksを取得し、そこからbooksを取得
       shelf_books = @bookshelf.bookshelf_books.where(location: @location_filter)

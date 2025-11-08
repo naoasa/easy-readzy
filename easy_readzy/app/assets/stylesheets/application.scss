@@ -229,14 +229,57 @@ html, body {
   padding: 10px 16px;
 }
 
+.header_search_container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 50%;
+  min-width: 500px;
+}
+
+.header_search_type_buttons {
+  display: flex;
+  gap: 0;
+  background: $white;
+  border: 1px solid $light-azure;
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.header_search_type_btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: $font-weight-medium;
+  color: $dark-azure;
+  background: $white;
+  border: none;
+  border-right: 1px solid $light-azure;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  white-space: nowrap;
+
+  &:last-child {
+    border-right: none;
+  }
+
+  &:hover {
+    background: $light-azure;
+  }
+
+  &.active {
+    background: $azure;
+    color: $white;
+  }
+}
+
 .header_search {
   position: relative; // バツボタンの配置の基準
   display: flex;
+  min-width: 400px;
   align-items: center;
   background: $white;
-  width: 30%;
+  flex: 1;
   border-radius: 7px;
-  min-width: 500px;
   border: 1px solid $light-azure;
   outline: none; // デフォルトはアウトラインなし
 }
