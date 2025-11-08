@@ -277,6 +277,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 検索タイプ切り替えボタンの処理
   if (searchTypeButtons.length > 0) {
+    const defaultPlaceholder = 'タイトル・著者名・キーワード';
+    const locationPlaceholder = '保管場所';
+
     searchTypeButtons.forEach((button) => {
       button.addEventListener('click', () => {
         // すべてのボタンからactiveクラスを削除
@@ -287,6 +290,12 @@ document.addEventListener('DOMContentLoaded', () => {
         currentSearchType = button.dataset.searchType;
         // 検索タイプが変更されたらサジェストを非表示にする
         hideSuggestions();
+        // placeholderを更新
+        if (currentSearchType === 'location') {
+          searchInput.placeholder = locationPlaceholder;
+        } else {
+          searchInput.placeholder = defaultPlaceholder;
+        }
         // 検索タイプが変更されたら、Web上以外の場合はサジェストを取得しない
         if (currentSearchType === 'web' && searchInput.value.trim().length >= 2) {
           fetchSuggestions(searchInput.value.trim());
