@@ -927,6 +927,11 @@ a.cancel_link {
   pointer-events: none;
 }
 
+.add_goal_btn_container {
+  display: flex;
+  justify-content: center;
+}
+
 // フォーム
 
 .input_form {
