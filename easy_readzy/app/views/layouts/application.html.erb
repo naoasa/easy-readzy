@@ -43,10 +43,10 @@
             <% end %>
           <% end %>
         </div>
-        <%#= form_with(url: search_books_path, method: :get, local: true, class: "header_search") do |f| %>
         <%= form_with(url: search_books_path, method: :get, local: true, class: "header_search", data: { user_id: user_signed_in? ? current_user.id : nil, bookshelf_id: user_signed_in? ? current_user.bookshelves.minimum(:id) : nil }) do |f| %>
           <%= image_tag "icon_B_0741.svg", alt: "検索アイコン", class: "header_search_img" %>
           <%= f.text_field :query, placeholder: "タイトル・著者名・キーワード", class: "header_search_input" %>
+          <span id="search_enter_hint" class="header_search_enter_hint hidden">[Enter]キーで検索</span>
           <span id="search_clear_btn" class="header_search_clear_btn hidden"></span>
           <div id="search_suggestions" class="header_search_suggestions hidden"></div>
           <%#= f.submit "検索" %>

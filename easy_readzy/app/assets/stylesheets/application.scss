@@ -256,6 +256,7 @@ html, body {
   height: 40px;
   border-radius: 20px;
   padding-left: 20px;
+  padding-right: 120px; // クリアボタンとEnterヒントのスペースを確保
   font-size: $font-size-base;
 }
 
@@ -286,6 +287,19 @@ html, body {
   &::after {
     transform: rotate(-45deg);
   }
+
+  &.hidden {
+    display: none;
+  }
+}
+
+.header_search_enter_hint {
+  position: absolute;
+  right: 50px; // クリアボタン（right: 10px）より左側に配置
+  font-size: 12px;
+  color: #999;
+  pointer-events: none; // クリックイベントを無効化
+  white-space: nowrap;
 
   &.hidden {
     display: none;

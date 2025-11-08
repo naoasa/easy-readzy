@@ -119,14 +119,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (searchInput && searchBox) {
     const clearButton = document.querySelector('.header_search_clear_btn'); // バツボタン
+    const enterHint = document.querySelector('#search_enter_hint'); // [Enter]キーで検索のヒント
     let blurTimeout; // blurイベントの遅延用タイマー
 
-    // バツボタンの表示/非表示を制御する関数
+    // バツボタンとEnterヒントの表示/非表示を制御する関数
     const toggleClearButton = () => {
       if (searchInput.value.length > 0 && document.activeElement === searchInput) {
         clearButton.classList.remove('hidden');
+        enterHint.classList.remove('hidden');
       } else {
         clearButton.classList.add('hidden');
+        enterHint.classList.add('hidden');
       }
     };
 
@@ -150,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 200); // サジェストクリックを待つため少し長めに
     });
 
-    // 入力時にバツボタンの表示/非表示を更新
+    // 入力時にバツボタンとEnterヒントの表示/非表示を更新
     searchInput.addEventListener('input', () => {
       toggleClearButton();
 
@@ -184,43 +187,48 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // キーボード操作（矢印キー、Enterキー）
+    // Enterキーで検索を実行（サジェストが表示されていない場合）
     searchInput.addEventListener('keydown', (event) => {
-      if (!suggestionsContainer || suggestionsContainer.classList.contains('hidden')) {
-        return;
-      }
+      // サジェストが表示されている場合は、サジェストの選択処理を優先
+      if (suggestionsContainer && !suggestionsContainer.classList.contains('hidden')) {
+        const items = suggestionsContainer.querySelectorAll('.suggestion_item');
+        const currentIndex = Array.from(items).findIndex(item => item.classList.contains('selected'));
 
-      const items = suggestionsContainer.querySelectorAll('.suggestion_item');
-      const currentIndex = Array.from(items).findIndex(item => item.classList.contains('selected'));
-
-      switch (event.key) {
-        case 'ArrowDown':
-          event.preventDefault();
-          const nextIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
-          items.forEach(item => item.classList.remove('selected'));
-          if (items[nextIndex]) {
-            items[nextIndex].classList.add('selected');
-            items[nextIndex].scrollIntoView({ block: 'nearest' });
-          }
-          break;
-        case 'ArrowUp':
-          event.preventDefault();
-          const prevIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
-          items.forEach(item => item.classList.remove('selected'));
-          if (items[prevIndex]) {
-            items[prevIndex].classList.add('selected');
-            items[prevIndex].scrollIntoView({ block: 'nearest' });
-          }
-          break;
-        case 'Enter':
-          if (currentIndex >= 0 && items[currentIndex]) {
+        switch (event.key) {
+          case 'ArrowDown':
             event.preventDefault();
-            items[currentIndex].click();
-          }
-          break;
-        case 'Escape':
-          hideSuggestions();
-          break;
+            const nextIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
+            items.forEach(item => item.classList.remove('selected'));
+            if (items[nextIndex]) {
+              items[nextIndex].classList.add('selected');
+              items[nextIndex].scrollIntoView({ block: 'nearest' });
+            }
+            break;
+          case 'ArrowUp':
+            event.preventDefault();
+            const prevIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
+            items.forEach(item => item.classList.remove('selected'));
+            if (items[prevIndex]) {
+              items[prevIndex].classList.add('selected');
+              items[prevIndex].scrollIntoView({ block: 'nearest' });
+            }
+            break;
+          case 'Enter':
+            if (currentIndex >= 0 && items[currentIndex]) {
+              event.preventDefault();
+              items[currentIndex].click();
+            }
+            break;
+          case 'Escape':
+            hideSuggestions();
+            break;
+        }
+      } else if (event.key === 'Enter' && searchInput.value.trim().length > 0) {
+        // サジェストが表示されていない場合、Enterキーで検索を実行
+        const form = searchInput.closest('form');
+        if (form) {
+          form.submit();
+        }
       }
     });
   }
