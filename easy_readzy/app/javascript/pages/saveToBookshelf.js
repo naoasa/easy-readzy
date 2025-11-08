@@ -24,6 +24,29 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('new_book_form');
   let isSubmitting = false; // フォームが送信中であるか判定するため(二重送信防止用)
 
+  // 目標テキストの文字数カウント
+  const goalTextarea = document.getElementById('goal_text');
+  const goalCountDisplay = document.getElementById('goal_text_count');
+
+  if (goalTextarea && goalCountDisplay) {
+    const updateGoalCount = () => {
+      const currentLength = goalTextarea.value.length;
+      const maxLength = 500;
+      goalCountDisplay.textContent = currentLength;
+
+      // 文字数が上限に近づいたら色を変更
+      if (currentLength > maxLength * 0.9) {
+        goalCountDisplay.parentElement.classList.add('warning');
+      } else {
+        goalCountDisplay.parentElement.classList.remove('warning');
+      }
+    };
+
+    goalTextarea.addEventListener('input', updateGoalCount);
+    goalTextarea.addEventListener('keyup', updateGoalCount);
+    updateGoalCount(); // 初期表示
+  }
+
   // 目標追加ボタンをクリックした時にテキストエリアの文字をgoalTextに格納
   addGoalButton.addEventListener('click', () => {
     const goalText = document.getElementById('goal_text').value;

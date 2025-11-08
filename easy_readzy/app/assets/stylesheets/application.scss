@@ -675,6 +675,18 @@ a.book_item {
   }
 }
 
+.character_count {
+  text-align: right;
+  font-size: $font-size-caption;
+  color: #666;
+  margin-top: 6px;
+
+  &.warning {
+    color: #ff6b6b;
+    font-weight: bold;
+  }
+}
+
 .clear_and_add_goal_btns {
   display: flex;
 }
