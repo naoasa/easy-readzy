@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   resources :books do
     collection do
       get "search"
+      get "suggest"  # サジェスト用のエンドポイントを追加
     end
   end
 

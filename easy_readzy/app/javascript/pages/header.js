@@ -8,6 +8,78 @@ document.addEventListener('DOMContentLoaded', () => {
   const cancelButton = document.querySelector('.dialog_cancel_btn'); // キャンセルボタン
   const dialogOverlay = document.querySelector('.dialog_overlay'); // ダイアログオーバーレイ
   const dialogCard = document.querySelector('.dialog_card'); // ダイアログカード
+  const suggestionsContainer = document.querySelector('#search_suggestions');
+  let suggestTimeout;
+  let currentSuggestions = [];
+
+  // サジェストを取得する関数
+  const fetchSuggestions = async (query) => {
+    if (query.length < 2) {
+      hideSuggestions();
+      return;
+    }
+
+    try {
+      const response = await fetch(`/books/suggest?query=${encodeURIComponent(query)}`);
+      const suggestions = await response.json();
+      currentSuggestions = suggestions;
+      displaySuggestions(suggestions);
+    } catch (error) {
+      console.error('サジェスト取得エラー:', error);
+      hideSuggestions();
+    }
+  };
+
+  // サジェストを表示する関数
+  const displaySuggestions = (suggestions) => {
+    if (!suggestionsContainer) return;
+
+    if (suggestions.length === 0) {
+      hideSuggestions();
+      return;
+    }
+
+    suggestionsContainer.innerHTML = suggestions.map((book, index) => `
+      <div class="suggestion_item" data-index="${index}" data-google-books-id="${book.id}">
+        ${book.thumbnail ? `<img src="${book.thumbnail}" alt="${book.title}" class="suggestion_thumbnail">` : ''}
+        <div class="suggestion_info">
+          <div class="suggestion_title">${escapeHtml(book.title)}</div>
+          <div class="suggestion_author">${escapeHtml(book.authors)}</div>
+        </div>
+      </div>
+    `).join('');
+
+    suggestionsContainer.classList.remove('hidden');
+
+    // サジェスト項目のクリックイベント
+    suggestionsContainer.querySelectorAll('.suggestion_item').forEach((item) => {
+      item.addEventListener('click', () => {
+        const googleBooksId = item.dataset.googleBooksId;
+        const form = searchInput.closest('form');
+        if (form) {
+          // 検索ページにリダイレクト（サジェストのタイトルで検索）
+          const title = item.querySelector('.suggestion_title').textContent;
+          searchInput.value = title;
+          form.submit();
+        }
+      });
+    });
+  };
+
+  // サジェストを非表示にする関数
+  const hideSuggestions = () => {
+    if (suggestionsContainer) {
+      suggestionsContainer.classList.add('hidden');
+      suggestionsContainer.innerHTML = '';
+    }
+  };
+
+  // HTMLエスケープ関数
+  const escapeHtml = (text) => {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  };
 
   if (openLogoutDialogButton) {
     // ログアウトボタンをクリックした時にダイアログを表示し、ユーザーメニューカードを非表示にする
@@ -54,6 +126,10 @@ document.addEventListener('DOMContentLoaded', () => {
     searchInput.addEventListener('focus', () => {
       searchBox.classList.add('header_search_focus');
       toggleClearButton();
+
+      if (searchInput.value.trim().length >= 2) {
+        fetchSuggestions(searchInput.value.trim());
+      }
     });
 
     // フォーカスが外れたらクラスを削除し、枠線をもとに戻す
@@ -62,12 +138,23 @@ document.addEventListener('DOMContentLoaded', () => {
       blurTimeout = setTimeout(() => {
         searchBox.classList.remove('header_search_focus');
         toggleClearButton();
-      }, 10); // 10ms遅延
+        hideSuggestions();
+      }, 200); // サジェストクリックを待つため少し長めに
     });
 
     // 入力時にバツボタンの表示/非表示を更新
     searchInput.addEventListener('input', () => {
       toggleClearButton();
+
+      // 既存のタイマーをクリア
+      clearTimeout(suggestTimeout);
+
+      const query = searchInput.value.trim();
+
+      // 300ms後にサジェストを取得（デバウンス）
+      suggestTimeout = setTimeout(() => {
+        fetchSuggestions(query);
+      }, 300);
     });
 
     // バツボタンをクリックした時に入力フィールドをクリア
@@ -81,11 +168,53 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
         event.stopPropagation();
         clearTimeout(blurTimeout); // 遅延されたblurイベントをキャンセル
+        clearTimeout(suggestTimeout);
         searchInput.value = '';
         searchInput.focus(); // クリア後もフォーカスを維持
         toggleClearButton();
+        hideSuggestions();
       });
     }
+
+    // キーボード操作（矢印キー、Enterキー）
+    searchInput.addEventListener('keydown', (event) => {
+      if (!suggestionsContainer || suggestionsContainer.classList.contains('hidden')) {
+        return;
+      }
+
+      const items = suggestionsContainer.querySelectorAll('.suggestion_item');
+      const currentIndex = Array.from(items).findIndex(item => item.classList.contains('selected'));
+
+      switch (event.key) {
+        case 'ArrowDown':
+          event.preventDefault();
+          const nextIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
+          items.forEach(item => item.classList.remove('selected'));
+          if (items[nextIndex]) {
+            items[nextIndex].classList.add('selected');
+            items[nextIndex].scrollIntoView({ block: 'nearest' });
+          }
+          break;
+        case 'ArrowUp':
+          event.preventDefault();
+          const prevIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
+          items.forEach(item => item.classList.remove('selected'));
+          if (items[prevIndex]) {
+            items[prevIndex].classList.add('selected');
+            items[prevIndex].scrollIntoView({ block: 'nearest' });
+          }
+          break;
+        case 'Enter':
+          if (currentIndex >= 0 && items[currentIndex]) {
+            event.preventDefault();
+            items[currentIndex].click();
+          }
+          break;
+        case 'Escape':
+          hideSuggestions();
+          break;
+      }
+    });
   }
 
   if (userIcon && userMenuCard) {

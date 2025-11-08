@@ -149,6 +149,59 @@ class BooksController < ApplicationController
     end
   end
 
+  def suggest
+    query = params[:query].to_s.strip
+
+    # クエリが空の場合は空配列を返す
+    if query.blank?
+      render json: []
+      return
+    end
+
+    # Google Books API: サジェスト用に少ない件数を取得
+    response = HTTParty.get(
+      GOOGLE_BOOKS_ENDPOINT,
+      query: {
+        q: query,
+        maxResults: 5,  # サジェストは5件程度
+        key: ENV["GOOGLE_BOOKS_API_KEY"],
+        langRestrict: "ja",
+        country: "JP",
+        printType: "books"
+      },
+      timeout: 5
+    )
+
+    results = JSON.parse(response.body)
+    raw_items = results["items"] || []
+
+    # 非書籍を除外
+    disallowed_keywords = /(periodicals|journal|newspaper|magazine|proceedings|conference|学会誌|紀要|論文集|雑誌|新聞)/i
+
+    books = raw_items.select do |item|
+      v = item["volumeInfo"] || {}
+      print_type_ok = (v["printType"] == "BOOK")
+      categories = Array(v["categories"]).join(" ")
+      categories_ok = categories.blank? || categories !~ disallowed_keywords
+      print_type_ok && categories_ok
+    end
+
+    # サジェスト用のデータを整形
+    suggestions = books.map do |book|
+      {
+        id: book["id"],
+        title: book.dig("volumeInfo", "title") || "",
+        authors: book.dig("volumeInfo", "authors")&.join(", ") || "-",
+        thumbnail: book.dig("volumeInfo", "imageLinks", "thumbnail")
+      }
+    end
+
+    render json: suggestions
+  rescue JSON::ParserError, HTTParty::Error, SocketError => e
+    Rails.logger.warn("Google Books suggest error: #{e.message}")
+    render json: []
+  end
+
   private
 
     # google_books_id をもとに書籍情報を取得して整形して返す
