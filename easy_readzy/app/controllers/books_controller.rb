@@ -31,6 +31,10 @@ class BooksController < ApplicationController
 
     raw_items = results["items"] || []
 
+    # 検証用(書籍の言語の種類数をカウント)
+    lang_counts = raw_items.map { |i| i.dig("volumeInfo", "language") }.tally
+    Rails.logger.info("GoogleBooks language tally: #{lang_counts}")
+
     # 念のためクライアント側でも非書籍を除外
     disallowed_keywords = /(periodicals|journal|newspaper|magazine|proceedings|conference|学会誌|紀要|論文集|雑誌|新聞)/i
 
