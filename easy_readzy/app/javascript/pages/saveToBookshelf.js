@@ -156,6 +156,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // 保存モーダル表示かつ送信中でない場合
     if (saveModal.style.display === 'flex' && !isSubmitting) {
       if (event.key === 'Enter') {
+        // IME変換中の Enter は無視する
+        if (event.isComposing || event.keyCode === 229) {
+          return;
+        }
+
         event.preventDefault();
         // 保管場所の入力チェック
         const locationValue = document.getElementById('modal_location_input').value.trim();
