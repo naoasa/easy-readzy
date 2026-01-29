@@ -294,6 +294,10 @@ html, body {
   margin-left: 10px;
 }
 
+input:focus {
+  outline: none; // デフォルトのアウトラインを削除
+}
+
 .header_search_input {
   width: 100%;
   height: 40px;
