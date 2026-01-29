@@ -17,7 +17,7 @@
 // colors
 $azure: #6097E1;
 $white: #FFFFFF;
-$cloud: #F6F6F6;
+$cloud: #ECEFF2;
 $gold: #F5B50F;
 $dark-gold: #d49306;
 $light-azure: #E7EEF7;
@@ -292,6 +292,10 @@ html, body {
   width: 20px;
   height: 20px;
   margin-left: 10px;
+}
+
+input:focus {
+  outline: none; // デフォルトのアウトラインを削除
 }
 
 .header_search_input {
@@ -848,6 +852,7 @@ a.book_item {
 .book_show_card {
   background: $white;
   border-radius: 7px;
+  box-shadow: 1px 2px 14px #dadada;
   display: flex;
   h1 {
     font-weight: normal;
@@ -942,6 +947,7 @@ a.book_item {
     margin-top: 24px;
     padding: 20px 42px;
     font-size: $font-size-h3;
+    box-shadow: 1px 2px 14px #dadada;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
