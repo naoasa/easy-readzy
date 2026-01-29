@@ -155,8 +155,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // フォーカスが外れたらクラスを削除し、枠線をもとに戻す
     // setTimeoutで遅延を入れて、バツボタンのクリックイベントが先に発火するようにする
     searchInput.addEventListener('blur', () => {
+      searchBox.classList.remove('header_search_focus'); // アウトライン用クラスはすぐに削除
       blurTimeout = setTimeout(() => {
-        searchBox.classList.remove('header_search_focus');
         toggleClearButton();
         hideSuggestions();
       }, 200); // サジェストクリックを待つため少し長めに
