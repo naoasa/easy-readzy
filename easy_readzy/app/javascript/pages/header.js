@@ -277,7 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 検索タイプ切り替えボタンの処理
   if (searchTypeButtons.length > 0) {
-    const defaultPlaceholder = 'タイトル・著者名・キーワード';
+    const defaultPlaceholder = 'タイトルで検索';
     const locationPlaceholder = '保管場所';
 
     searchTypeButtons.forEach((button) => {
