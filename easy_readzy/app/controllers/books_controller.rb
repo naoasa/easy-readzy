@@ -27,6 +27,8 @@ class BooksController < ApplicationController
       timeout: 5
     )
 
+    Rails.logger.info("クエリ: #{response.request.uri}")
+
     results = JSON.parse(response.body)
 
     raw_items = results["items"] || []
