@@ -17,12 +17,9 @@ class BooksController < ApplicationController
     response = HTTParty.get(
       GOOGLE_BOOKS_ENDPOINT,
       query: {
-        q: @query.presence || "",
+        q: "intitle:#{@query.presence || ""}",
         maxResults: 20,
-        key: ENV["GOOGLE_BOOKS_API_KEY"],
-        langRestrict: "ja",
-        country: "JP",
-        printType: "books" # 雑誌・新聞（magazines）を除外
+        key: ENV["GOOGLE_BOOKS_API_KEY"]
       },
       timeout: 5
     )
@@ -243,12 +240,9 @@ class BooksController < ApplicationController
     response = HTTParty.get(
       GOOGLE_BOOKS_ENDPOINT,
       query: {
-        q: query,
+        q: "intitle:#{query}",
         maxResults: 5,  # サジェストは5件程度
-        key: ENV["GOOGLE_BOOKS_API_KEY"],
-        langRestrict: "ja",
-        country: "JP",
-        printType: "books"
+        key: ENV["GOOGLE_BOOKS_API_KEY"]
       },
       timeout: 5
     )
